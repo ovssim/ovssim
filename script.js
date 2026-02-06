@@ -107,3 +107,40 @@ document.getElementById("open-btn").addEventListener("click", () => {
   margin-right: 10px;
   border-radius: 8px;
 }
+
+function populateSpinner(items) {
+  const strip = document.getElementById("spinner-strip");
+  strip.innerHTML = "";
+
+  // Repeat items to make it look continuous
+  const repeatedItems = [...items, ...items, ...items];
+
+  repeatedItems.forEach(item => {
+    const img = document.createElement("img");
+    img.src = item.image;
+    strip.appendChild(img);
+  });
+}
+
+function spinToItem(item) {
+  const strip = document.getElementById("spinner-strip");
+  const imgs = strip.querySelectorAll("img");
+  
+  // Find all indices of the winning item
+  const itemIndices = [];
+  imgs.forEach((img, i) => {
+    if (img.src.includes(item.image)) itemIndices.push(i);
+  });
+
+  // Pick a random occurrence
+  const targetIndex = itemIndices[Math.floor(Math.random() * itemIndices.length)];
+
+  // Calculate new left position
+  const imgWidth = 160; // 150px + 10px margin
+  const containerWidth = document.getElementById("spinner-container").offsetWidth;
+  const left = -(targetIndex * imgWidth - containerWidth / 2 + imgWidth / 2);
+
+  // Animate
+  strip.style.transition = "left 4s cubic-bezier(.1,.6,0,1)";
+  strip.style.left = `${left}px`;
+}
