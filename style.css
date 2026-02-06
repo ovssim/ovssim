@@ -18,4 +18,34 @@ body {
   color: purple;
   text-shadow: 0 0 10px purple;
 }
+.inv-item {
+  display: inline-block;
+  margin: 8px;
+  padding: 6px;
+  border-radius: 8px;
+  background: #111;
+  width: 120px;
+}
+
+.inv-item img {
+  width: 100px;
+}
+
+.Common {
+  box-shadow: 0 0 8px gray;
+}
+
+.Strange {
+  box-shadow: 0 0 10px orange;
+}
+
+.Unusual {
+  box-shadow: 0 0 15px purple;
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px purple; }
+  to   { box-shadow: 0 0 25px magenta; }
+}
 
