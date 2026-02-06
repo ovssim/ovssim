@@ -78,4 +78,11 @@ function renderInventory() {
 }
 
 renderInventory();
+function showResult(item) {
+  document.getElementById("result").innerHTML = `
+    <h2 class="${item.rarity}">${item.name}</h2>
+    <img src="${item.image}">
+    <p>Value: ${item.price} coins</p>
+  `;
+}
 
