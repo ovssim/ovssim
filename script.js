@@ -1,3 +1,11 @@
+let coins = localStorage.getItem("coins");
+
+if (coins === null) {
+  coins = 1000; // starting coins
+  localStorage.setItem("coins", coins);
+} else {
+  coins = parseInt(coins);
+}
 let caseData;
 
 fetch("data/cases.json")
