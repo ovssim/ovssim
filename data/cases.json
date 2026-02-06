@@ -11,14 +11,14 @@
           "rarity": "Strange",
           "price": 0.30,
           "weight": 600,
-          "image": "images/items/fedora.png"
+          "image": "images/items/f.png"
         },
         {
           "name": "★ Aurora Polaris Unusual Taunt: Kazotsky Kick",
           "rarity": "Unusual",
           "price": 130.00,
           "weight": 3,
-          "image": "images/items/team_captain.png"
+          "image": "images/items/polariskazot.png"
         }
       ]
     }
