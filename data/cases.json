@@ -7,11 +7,32 @@
       "image": "images/cases/new_hire.png",
       "items": [
         {
+          "name": "Syringe Gun",
+          "rarity": "Common",
+          "price": 0.07,
+          "weight": 800,
+          "image": "images/items/basic_cap.png"
+        },
+        {
+          "name": "",
+          "rarity": "Common",
+          "price": 0.75,
+          "weight": 600,
+          "image": "images/items/workers_hat.png"
+        },
+        {
           "name": "Strange Fedora",
           "rarity": "Strange",
           "price": 1.25,
-          "weight": 600,
+          "weight": 300,
           "image": "images/items/s.png"
+        },
+        {
+          "name": "Spiked Hard Hat",
+          "rarity": "Strange",
+          "price": 2.50,
+          "weight": 200,
+          "image": "images/items/spiked_hat.png"
         },
         {
           "name": "Aurora Polaris Taunt: Kaotsky Kick",
@@ -19,9 +40,15 @@
           "price": 130.00,
           "weight": 5,
           "image": "images/items/polariskazot.png"
+        },
+        {
+          "name": "Glowing Rocket Launcher",
+          "rarity": "Unusual",
+          "price": 150.00,
+          "weight": 3,
+          "image": "images/items/glow_rocket.png"
         }
       ]
     }
   ]
 }
-
