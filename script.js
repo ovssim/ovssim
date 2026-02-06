@@ -35,4 +35,10 @@ function openCase(items) {
     roll -= item.weight;
   }
 }
+function updateCoins() {
+  document.getElementById("coins").textContent =
+    `Coins: ${coins}`;
+}
+
+updateCoins();
 
