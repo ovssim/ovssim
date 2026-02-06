@@ -1,1 +1,27 @@
+{
+  "cases": [
+    {
+      "id": "elite_case",
+      "name": "Elite Mann Co. Case",
+      "price": 2.49,
+      "image": "images/cases/elite_case.png",
+      "items": [
+        {
+          "name": "Strange Fedora",
+          "rarity": "Strange",
+          "price": 1.25,
+          "weight": 600,
+          "image": "images/items/fedora.png"
+        },
+        {
+          "name": "Unusual Team Captain",
+          "rarity": "Unusual",
+          "price": 85.50,
+          "weight": 5,
+          "image": "images/items/team_captain.png"
+        }
+      ]
+    }
+  ]
+}
 
