@@ -1,23 +1,41 @@
-body {
-  background: #0b0f14;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
+/* Spinner container */
+#spinner-container {
+  width: 600px;
+  height: 150px;
+  margin: 20px auto;
+  overflow: hidden;
+  border: 2px solid #555;
+  border-radius: 10px;
+  background: #111;
+  position: relative;
 }
 
-#case-container img {
-  width: 200px;
+#spinner-strip {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  left: 0;
+  transition: left 4s cubic-bezier(.1,.6,0,1);
 }
 
-#result img {
+#spinner-strip img {
   width: 150px;
-  margin-top: 10px;
+  height: 150px;
+  margin-right: 10px;
+  border-radius: 8px;
 }
 
-.Unusual {
-  color: purple;
-  text-shadow: 0 0 10px purple;
+/* Rarity glows */
+#spinner-strip img.Common { box-shadow: 0 0 8px gray; }
+#spinner-strip img.Strange { box-shadow: 0 0 10px orange; }
+#spinner-strip img.Unusual { box-shadow: 0 0 15px purple; animation: glow 1.5s infinite alternate; }
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px purple; }
+  to { box-shadow: 0 0 25px magenta; }
 }
+
+/* Inventory styling */
 .inv-item {
   display: inline-block;
   margin: 8px;
@@ -30,22 +48,3 @@ body {
 .inv-item img {
   width: 100px;
 }
-
-.Common {
-  box-shadow: 0 0 8px gray;
-}
-
-.Strange {
-  box-shadow: 0 0 10px orange;
-}
-
-.Unusual {
-  box-shadow: 0 0 15px purple;
-  animation: glow 1.5s infinite alternate;
-}
-
-@keyframes glow {
-  from { box-shadow: 0 0 10px purple; }
-  to   { box-shadow: 0 0 25px magenta; }
-}
-
