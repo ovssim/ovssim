@@ -62,4 +62,20 @@ function addToInventory(item) {
   localStorage.setItem("inventory", JSON.stringify(inventory));
   renderInventory();
 }
+function renderInventory() {
+  const inv = document.getElementById("inventory");
+  inv.innerHTML = "";
+
+  inventory.forEach(item => {
+    const div = document.createElement("div");
+    div.className = `inv-item ${item.rarity}`;
+    div.innerHTML = `
+      <img src="${item.image}">
+      <p>${item.name}</p>
+    `;
+    inv.appendChild(div);
+  });
+}
+
+renderInventory();
 
