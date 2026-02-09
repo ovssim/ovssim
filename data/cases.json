@@ -22,26 +22,26 @@
           "image": "images/items/shotgun.png"
         },
         {
-          "name": "Worker's Cap",
-          "rarity": "Common",
-          "price": 0.25,
-          "weight": 700,
-          "image": "images/items/workers_hat.png"
+          "name": "Bills Hat",
+          "rarity": "Strange",
+          "price": 8.99,
+          "weight": 400,
+          "image": "images/items/billshat.png"
         },
 
         {
-          "name": "Strange Fedora",
-          "rarity": "Strange",
-          "price": 1.25,
-          "weight": 250,
-          "image": "images/items/strange_fedora.png"
+          "name": "Stock Scattergun",
+          "rarity": "Common",
+          "price": 0.06,
+          "weight": 700,
+          "image": "images/items/stockscatt.png"
         },
         {
-          "name": "Spiked Hard Hat",
+          "name": "Ghost Town Claidheamh Mor",
           "rarity": "Strange",
-          "price": 2.50,
-          "weight": 180,
-          "image": "images/items/spiked_hat.png"
+          "price": 5.75,
+          "weight": 500,
+          "image": "images/items/spooky.png"
         },
         {
           "name": "Helldiver Black Box",
