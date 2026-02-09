@@ -1,6 +1,12 @@
-// -------------------- Coins --------------------
-let coins = parseInt(localStorage.getItem("coins")) || 1000;
-localStorage.setItem("coins", coins);
+// ==================== COINS ====================
+let coins = localStorage.getItem("coins");
+
+if (coins === null) {
+  coins = 1000;
+  localStorage.setItem("coins", coins);
+} else {
+  coins = parseInt(coins);
+}
 
 function updateCoins() {
   document.getElementById("coins").textContent = `Coins: ${coins}`;
@@ -8,7 +14,7 @@ function updateCoins() {
 
 updateCoins();
 
-// -------------------- Inventory --------------------
+// ==================== INVENTORY ====================
 let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
 
 function addToInventory(item) {
@@ -34,20 +40,26 @@ function renderInventory() {
 
 renderInventory();
 
-// -------------------- Case Data --------------------
+// ==================== CASE DATA ====================
 let caseData;
 
 fetch("data/cases.json")
   .then(res => res.json())
   .then(data => {
     caseData = data.cases[0];
-    document.getElementById("case-container").innerHTML =
-      `<img src="${caseData.image}"><p>Price: ${caseData.price} coins</p>`;
+
+    document.getElementById("case-container").innerHTML = `
+      <img src="${caseData.image}">
+      <p>Price: ${caseData.price} coins</p>
+    `;
+
+    // Populate spinner ONCE
+    populateSpinner(caseData.items);
   });
 
-// -------------------- Case Opening --------------------
+// ==================== RNG ====================
 function openCase(items) {
-  const total = items.reduce((s, i) => s + i.weight, 0);
+  const total = items.reduce((sum, i) => sum + i.weight, 0);
   let roll = Math.random() * total;
 
   for (let item of items) {
@@ -56,13 +68,14 @@ function openCase(items) {
   }
 }
 
-// -------------------- Spinner --------------------
+// ==================== SPINNER ====================
 function populateSpinner(items) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
-  const repeatedItems = [...items, ...items, ...items];
-  repeatedItems.forEach(item => {
+  const repeated = [...items, ...items, ...items];
+
+  repeated.forEach(item => {
     const img = document.createElement("img");
     img.src = item.image;
     img.className = item.rarity;
@@ -73,25 +86,37 @@ function populateSpinner(items) {
 function spinToItem(item) {
   const strip = document.getElementById("spinner-strip");
   const imgs = strip.querySelectorAll("img");
-  const itemIndices = [];
 
+  const matches = [];
   imgs.forEach((img, i) => {
-    if (img.src.includes(item.image)) itemIndices.push(i);
+    if (img.src.includes(item.image)) matches.push(i);
   });
 
-  const targetIndex = itemIndices[Math.floor(Math.random() * itemIndices.length)];
-  const imgWidth = 160;
-  const containerWidth = document.getElementById("spinner-container").offsetWidth;
-  const left = -(targetIndex * imgWidth - containerWidth / 2 + imgWidth / 2);
+  const targetIndex = matches[Math.floor(Math.random() * matches.length)];
+  const imgWidth = imgs[0].offsetWidth + 10;
+  const containerWidth =
+    document.getElementById("spinner-container").offsetWidth;
+
+  const left =
+    -(targetIndex * imgWidth - containerWidth / 2 + imgWidth / 2);
+
+  // reset before spin
+  strip.style.transition = "none";
+  strip.style.left = "0px";
+  strip.offsetHeight;
 
   strip.style.transition = "left 4s cubic-bezier(.1,.6,0,1)";
   strip.style.left = `${left}px`;
 }
 
-// -------------------- Open Button --------------------
-document.getElementById("open-btn").addEventListener("click", () => {
+// ==================== OPEN BUTTON ====================
+const openBtn = document.getElementById("open-btn");
+
+openBtn.addEventListener("click", () => {
   if (!caseData) return alert("Case not loaded yet!");
   if (coins < caseData.price) return alert("Not enough coins!");
+
+  openBtn.disabled = true;
 
   coins -= caseData.price;
   localStorage.setItem("coins", coins);
@@ -99,16 +124,15 @@ document.getElementById("open-btn").addEventListener("click", () => {
 
   const item = openCase(caseData.items);
   addToInventory(item);
-
-  populateSpinner(caseData.items);
   spinToItem(item);
 
   setTimeout(() => {
     showResult(item);
+    openBtn.disabled = false;
   }, 4000);
 });
 
-// Show the opening result
+// ==================== RESULT ====================
 function showResult(item) {
   document.getElementById("result").innerHTML = `
     <h2 class="${item.rarity}">${item.name}</h2>
@@ -116,4 +140,3 @@ function showResult(item) {
     <p>Value: ${item.price} coins</p>
   `;
 }
-
