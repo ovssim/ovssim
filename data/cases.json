@@ -44,11 +44,11 @@
           "image": "images/items/spiked_hat.png"
         },
         {
-          "name": "Strange Rocket Launcher",
+          "name": "Helldiver Black Box",
           "rarity": "Strange",
-          "price": 4.75,
+          "price": 20.19,
           "weight": 120,
-          "image": "images/items/strange_rocket.png"
+          "image": "images/items/hellblackbox.png"
         },
 
         {
@@ -56,14 +56,14 @@
           "rarity": "Unusual",
           "price": 130.00,
           "weight": 5,
-          "image": "images/items/polariskazot.png"
+          "image": "images/items/kazopolaris.png"
         },
         {
-          "name": "Burning Flames Team Captain",
-          "rarity": "Unusual",
-          "price": 250.00,
-          "weight": 2,
-          "image": "images/items/burning_tc.png"
+          "name": "Strange Pistol",
+          "rarity": "Strange",
+          "price": 0.89,
+          "weight": 350,
+          "image": "images/items/pistol.png"
         }
       ]
     }
