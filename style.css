@@ -2,37 +2,46 @@
 #spinner-container {
   width: 600px;
   height: 150px;
-  margin: 20px auto;
+  margin: 20px auto 20px;
   overflow: hidden;
   border: 2px solid #555;
   border-radius: 10px;
   background: #111;
   position: relative;
+  max-width: 90%;
 }
 
 #spinner-strip {
   display: flex;
-  flex-direction: row;
   position: relative;
   left: 0;
   transition: left 4s cubic-bezier(.1,.6,0,1);
 }
 
 #spinner-strip img {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   margin-right: 10px;
   border-radius: 8px;
 }
 
 /* Rarity glows */
-#spinner-strip img.Common { box-shadow: 0 0 8px gray; }
-#spinner-strip img.Strange { box-shadow: 0 0 10px orange; }
-#spinner-strip img.Unusual { box-shadow: 0 0 15px purple; animation: glow 1.5s infinite alternate; }
+#spinner-strip img.Common {
+  box-shadow: 0 0 8px gray;
+}
+
+#spinner-strip img.Strange {
+  box-shadow: 0 0 10px orange;
+}
+
+#spinner-strip img.Unusual {
+  box-shadow: 0 0 15px purple;
+  animation: glow 1.5s infinite alternate;
+}
 
 @keyframes glow {
   from { box-shadow: 0 0 10px purple; }
-  to { box-shadow: 0 0 25px magenta; }
+  to   { box-shadow: 0 0 25px magenta; }
 }
 
 /* Inventory styling */
@@ -47,4 +56,11 @@
 
 .inv-item img {
   width: 100px;
+}
+
+/* Case layout */
+#case-container,
+#open-btn {
+  text-align: center;
+  margin: 10px auto;
 }
