@@ -22,33 +22,40 @@
           "image": "images/items/shotgun.png"
         },
         {
-          "name": "Bills Hat",
-          "rarity": "Strange",
-          "price": 8.99,
-          "weight": 400,
-          "image": "images/items/billshat.png"
-        },
-
-        {
           "name": "Stock Scattergun",
           "rarity": "Common",
           "price": 0.06,
           "weight": 700,
           "image": "images/items/stockscatt.png"
         },
+
+        {
+          "name": "Bill's Hat",
+          "rarity": "Strange",
+          "price": 8.99,
+          "weight": 350,
+          "image": "images/items/billshat.png"
+        },
         {
           "name": "Ghost Town Claidheamh Mor",
           "rarity": "Strange",
           "price": 5.75,
-          "weight": 500,
+          "weight": 320,
           "image": "images/items/spooky.png"
         },
         {
           "name": "Helldiver Black Box",
           "rarity": "Strange",
           "price": 20.19,
-          "weight": 120,
+          "weight": 220,
           "image": "images/items/hellblackbox.png"
+        },
+        {
+          "name": "Strange Pistol",
+          "rarity": "Strange",
+          "price": 0.89,
+          "weight": 450,
+          "image": "images/items/pistol.png"
         },
 
         {
@@ -57,15 +64,9 @@
           "price": 130.00,
           "weight": 5,
           "image": "images/items/kazopolaris.png"
-        },
-        {
-          "name": "Strange Pistol",
-          "rarity": "Strange",
-          "price": 0.89,
-          "weight": 350,
-          "image": "images/items/pistol.png"
         }
       ]
     }
   ]
 }
+
