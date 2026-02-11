@@ -84,23 +84,23 @@ h1, h2 {
   object-fit: cover;
 }
 
-/* ---------- Winning Arrows ---------- */
+/* ---------- Winning Arrows Pointing to Center ---------- */
 #winner-left, #winner-right {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   pointer-events: none;
   z-index: 10;
 }
 
 #winner-left {
-  left: calc(50% - 70px);
+  left: 0; /* left edge of spinner wrapper */
 }
 
 #winner-right {
-  right: calc(50% - 70px);
+  right: 0; /* right edge of spinner wrapper */
 }
 
 #winner-left::before, #winner-right::before {
@@ -112,12 +112,12 @@ h1, h2 {
 }
 
 #winner-left::before {
-  border-width: 20px 20px 20px 0;
+  border-width: 25px 25px 25px 0;
   border-color: transparent white transparent transparent;
 }
 
 #winner-right::before {
-  border-width: 20px 0 20px 20px;
+  border-width: 25px 0 25px 25px;
   border-color: transparent transparent transparent white;
 }
 
@@ -143,17 +143,5 @@ h1, h2 {
 
 #spinner-strip img.unusual {
   box-shadow: 0 0 15px purple;
-  animation: glow 1.5s infinite alternate;
-}
+  animation: glow 1.5s in
 
-@keyframes glow {
-  from { box-shadow: 0 0 10px purple; }
-  to   { box-shadow: 0 0 25px magenta; }
-}
-
-/* ---------- Inventory ---------- */
-.inv-item {
-  background: #111;
-  border-radius: 10px;
-  padding: 10px;
-  width: 140px;
