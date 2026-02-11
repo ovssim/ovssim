@@ -1,4 +1,3 @@
-/* ---------- Global ---------- */
 body {
   background: radial-gradient(circle at top, #1e1e1e, #0b0b0b);
   color: #f2f2f2;
@@ -12,12 +11,10 @@ body {
   min-height: 100vh;
 }
 
-h1, h2 { margin-bottom: 10px; }
+h1,h2 { margin-bottom: 10px; }
 
-/* ---------- Coins ---------- */
 #coins { font-size: 18px; margin-bottom: 20px; }
 
-/* ---------- Case ---------- */
 #case-container img { width: 180px; margin-bottom: 10px; }
 
 #open-btn {
@@ -37,15 +34,9 @@ h1, h2 { margin-bottom: 10px; }
 #open-btn:hover { transform: scale(1.05); }
 
 /* ---------- Spinner Wrapper ---------- */
-#spinner-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  position: relative;
-  margin: 20px 0;
-}
+#spinner-wrapper { width: 100%; display: flex; justify-content: center; margin: 20px 0; }
 
-/* ---------- Spinner ---------- */
+/* ---------- Spinner Container ---------- */
 #spinner-container {
   width: 600px;
   height: 150px;
@@ -58,6 +49,7 @@ h1, h2 { margin-bottom: 10px; }
   align-items: center;
 }
 
+/* ---------- Spinner Strip ---------- */
 #spinner-strip {
   display: flex;
   position: absolute;
@@ -73,7 +65,7 @@ h1, h2 { margin-bottom: 10px; }
   object-fit: cover;
 }
 
-/* ---------- Spinner Item Rarity Glows ---------- */
+/* ---------- Spinner Item Glow ---------- */
 #spinner-strip img.common {
   box-shadow: 0 0 10px gray, 0 0 20px rgba(128,128,128,0.2);
 }
@@ -84,39 +76,33 @@ h1, h2 { margin-bottom: 10px; }
 
 #spinner-strip img.unusual {
   box-shadow: 0 0 15px purple, 0 0 30px rgba(128,0,128,0.3);
-  animation: glow 1.5s infinite alternate;
 }
 
-/* ---------- Glowing Winning Item ---------- */
+/* ---------- Winning Glow ---------- */
 #spinner-strip img.winning {
   animation: glow-win 1s ease-in-out infinite alternate;
 }
 
 @keyframes glow-win {
   0%   { box-shadow: 0 0 10px gold; transform: scale(1); }
-  50%  { box-shadow: 0 0 20px gold; transform: scale(1.05); }
+  50%  { box-shadow: 0 0 25px gold; transform: scale(1.05); }
   100% { box-shadow: 0 0 10px gold; transform: scale(1); }
 }
 
-@keyframes glow {
-  from { box-shadow: 0 0 10px purple; }
-  to   { box-shadow: 0 0 25px magenta; }
-}
-
-/* ---------- Winning Arrows ---------- */
+/* ---------- Arrows ---------- */
 .winner-arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   font-size: 50px;
   color: white;
   pointer-events: none;
   z-index: 10;
-  text-shadow: 0 0 5px white;
+  text-shadow: 0 0 10px white;
+  transform: translateY(-50%);
 }
 
-#winner-left { left: 0; }
-#winner-right { right: 0; }
+#winner-left { left: 50%; transform: translate(-150%, -50%); }
+#winner-right { left: 50%; transform: translate(50%, -50%) rotate(180deg); }
 
 .winner-arrow.glow {
   animation: arrow-glow 1s ease-in-out infinite alternate;
@@ -124,7 +110,7 @@ h1, h2 { margin-bottom: 10px; }
 
 @keyframes arrow-glow {
   0%   { text-shadow: 0 0 5px currentColor; transform: translateY(-50%) scale(1); }
-  50%  { text-shadow: 0 0 15px currentColor; transform: translateY(-50%) scale(1.1); }
+  50%  { text-shadow: 0 0 15px currentColor; transform: translateY(-50%) scale(1.2); }
   100% { text-shadow: 0 0 5px currentColor; transform: translateY(-50%) scale(1); }
 }
 
@@ -138,12 +124,9 @@ h1, h2 { margin-bottom: 10px; }
   margin: 10px;
   transition: transform 0.15s ease;
 }
-
 .inv-item:hover { transform: translateY(-4px); }
-
 .inv-item img { width: 100px; height: auto; object-fit: cover; }
 
-/* ---------- Sell Button ---------- */
 .sell-btn {
   margin-top: 6px;
   background: #c0392b;
@@ -154,11 +137,10 @@ h1, h2 { margin-bottom: 10px; }
   cursor: pointer;
   transition: transform 0.1s ease;
 }
-
 .sell-btn:hover { transform: scale(1.05); }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 500px) {
+@media(max-width:500px){
   #spinner-container { width: 90%; }
   #spinner-strip img { width: 80px; height: 80px; }
   .inv-item { width: 100px; padding: 6px; }
