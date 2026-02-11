@@ -1,9 +1,9 @@
 // ==================== COINS ====================
-let coins = parseInt(localStorage.getItem("coins")) || 1000;
+let coins = parseFloat(localStorage.getItem("coins")) || 1000;
 localStorage.setItem("coins", coins);
 
 function updateCoins() {
-  document.getElementById("coins").textContent = `Coins: ${coins}`;
+  document.getElementById("coins").textContent = `Coins: ${coins.toFixed(2)}`;
 }
 updateCoins();
 
@@ -22,8 +22,8 @@ function addToInventory(item) {
 
 function sellItem(index) {
   coins += inventory[index].price;
+  coins = parseFloat(coins.toFixed(2));
   inventory.splice(index, 1);
-  localStorage.setItem("coins", coins);
   updateCoins();
   saveInventory();
   renderInventory();
@@ -37,9 +37,9 @@ function renderInventory() {
     const div = document.createElement("div");
     div.className = `inv-item ${item.rarity}`;
     div.innerHTML = `
-      <img src="${item.image}">
+      <img src="${item.image}" alt="${item.name}">
       <p>${item.name}</p>
-      <small>${item.price} coins</small>
+      <small>${item.price} coins</small><br>
       <button class="sell-btn">Sell</button>
     `;
     div.querySelector(".sell-btn").onclick = () => sellItem(index);
@@ -54,23 +54,25 @@ let caseData = null;
 fetch("data/cases.json")
   .then(res => res.json())
   .then(data => {
+    if (!data.cases || data.cases.length === 0) throw new Error("No cases found");
     caseData = data.cases[0];
 
-    document.getElementById("case-container").innerHTML = `
-      <img src="${caseData.image}">
-      <p>Price: ${caseData.price} coins</p>
+    const container = document.getElementById("case-container");
+    container.innerHTML = `
+      <img src="${caseData.image}" alt="${caseData.name}">
+      <p>${caseData.name} - Price: ${caseData.price} coins</p>
     `;
 
     populateSpinner(caseData.items);
   })
   .catch(err => {
-    console.error("Failed to load case data", err);
-    alert("Failed to load cases.json");
+    console.error("Failed to load case data:", err);
+    alert("Failed to load cases.json. Check path and structure.");
   });
 
 // ==================== RNG ====================
 function rollItem(items) {
-  const total = items.reduce((s, i) => s + i.weight, 0);
+  const total = items.reduce((sum, i) => sum + i.weight, 0);
   let roll = Math.random() * total;
 
   for (let item of items) {
@@ -84,18 +86,16 @@ function populateSpinner(items) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
-  // Build BIG randomized wheel
+  // Duplicate items to make a long strip
   let wheel = [];
-  for (let i = 0; i < 10; i++) {
-    wheel.push(...items);
-  }
-
-  wheel = wheel.sort(() => Math.random() - 0.5);
+  for (let i = 0; i < 10; i++) wheel.push(...items);
+  wheel.sort(() => Math.random() - 0.5);
 
   wheel.forEach(item => {
     const img = document.createElement("img");
     img.src = item.image;
     img.className = item.rarity;
+    img.alt = item.name;
     strip.appendChild(img);
   });
 }
@@ -103,25 +103,22 @@ function populateSpinner(items) {
 function spinToItem(item) {
   const strip = document.getElementById("spinner-strip");
   const imgs = strip.querySelectorAll("img");
+  if (!imgs.length) return;
 
-  const matches = [];
-  imgs.forEach((img, i) => {
-    if (img.src.includes(item.image)) matches.push(i);
-  });
+  // Match image using endsWith to handle absolute URLs
+  const matches = [...imgs].map((img, i) => img.src.endsWith(item.image) ? i : -1).filter(i => i >= 0);
+  let targetIndex = matches.length ? matches[Math.floor(Math.random() * matches.length)] : 0;
 
-  const target = matches[Math.floor(Math.random() * matches.length)];
-  const imgWidth = imgs[0].offsetWidth + 10;
-  const containerWidth =
-    document.getElementById("spinner-container").offsetWidth;
+  const imgWidth = imgs[0].offsetWidth + 10; // width + margin
+  const containerWidth = document.getElementById("spinner-container").offsetWidth;
 
-  const offset =
-    -(target * imgWidth - containerWidth / 2 + imgWidth / 2);
+  // Calculate offset so target lands in center
+  const offset = -(targetIndex * imgWidth - containerWidth / 2 + imgWidth / 2);
 
   strip.style.transition = "none";
   strip.style.left = "0px";
-  strip.offsetHeight;
+  strip.offsetHeight; // force reflow
 
-  // LONGER SPIN
   strip.style.transition = "left 6s cubic-bezier(.1,.7,0,1)";
   strip.style.left = `${offset}px`;
 }
@@ -131,7 +128,10 @@ document.getElementById("open-btn").onclick = () => {
   if (!caseData) return alert("Case not loaded yet!");
   if (coins < caseData.price) return alert("Not enough coins!");
 
-  coins -= caseData.price;
+  const openBtn = document.getElementById("open-btn");
+  openBtn.disabled = true;
+
+  coins = parseFloat((coins - caseData.price).toFixed(2));
   localStorage.setItem("coins", coins);
   updateCoins();
 
@@ -143,15 +143,15 @@ document.getElementById("open-btn").onclick = () => {
   setTimeout(() => {
     addToInventory(item);
     showResult(item);
-  }, 6000);
+    openBtn.disabled = false;
+  }, 6000); // match spinner duration
 };
 
 // ==================== RESULT ====================
 function showResult(item) {
   document.getElementById("result").innerHTML = `
     <h2 class="${item.rarity}">${item.name}</h2>
-    <img src="${item.image}">
+    <img src="${item.image}" alt="${item.name}">
     <p>Value: ${item.price} coins</p>
   `;
 }
-
