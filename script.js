@@ -1,97 +1,47 @@
-let coins = parseFloat(localStorage.getItem("coins")) || 1000;
-localStorage.setItem("coins", coins);
+// ----------------- Spinner Arrows & Center -----------------
+const leftArrow = document.getElementById("winner-left");
+const rightArrow = document.getElementById("winner-right");
+const spinnerContainer = document.getElementById("spinner-container");
 
-function updateCoins(){
-  document.getElementById("coins").textContent=`Coins: ${coins.toFixed(2)}`;
-}
-updateCoins();
+function updateArrowPositions(targetIndex){
+  const strip = document.getElementById("spinner-strip");
+  const imgs = strip.querySelectorAll("img");
+  if(!imgs.length) return;
 
-let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
-function saveInventory(){ localStorage.setItem("inventory", JSON.stringify(inventory)); }
-function addToInventory(item){ inventory.push(item); saveInventory(); renderInventory(); }
-function sellItem(index){ coins += inventory[index].price; coins=parseFloat(coins.toFixed(2)); inventory.splice(index,1); updateCoins(); saveInventory(); renderInventory(); }
+  const imgWidth = imgs[0].offsetWidth + 10;
+  const containerWidth = spinnerContainer.offsetWidth;
+  const offset = -(targetIndex * imgWidth - containerWidth/2 + imgWidth/2);
 
-function renderInventory(){
-  const inv=document.getElementById("inventory");
-  inv.innerHTML="";
-  inventory.forEach((item,index)=>{
-    const div=document.createElement("div");
-    div.className=`inv-item ${item.rarity.toLowerCase()}`;
-    div.innerHTML=`<img src="${item.image}" alt="${item.name}"><p>${item.name}</p><small>${item.price} coins</small><br><button class="sell-btn">Sell</button>`;
-    div.querySelector(".sell-btn").onclick=()=>sellItem(index);
-    inv.appendChild(div);
-  });
-}
-renderInventory();
+  strip.style.left = `${offset}px`;
 
-// ----------------- Cases -----------------
-let caseData=null;
-let allCases=[];
-
-fetch("data/cases.json")
-.then(res=>res.json())
-.then(data=>{
-  allCases=data.cases;
-  populateCaseMenu(allCases);
-  loadCase(allCases[0].id);
-})
-.catch(err=>{ console.error(err); alert("Failed to load cases.json"); });
-
-function populateCaseMenu(cases){
-  const select=document.getElementById("case-select");
-  select.innerHTML="";
-  cases.forEach(c=>{
-    const option=document.createElement("option");
-    option.value=c.id;
-    option.textContent=c.name;
-    select.appendChild(option);
-  });
-  select.onchange=()=>loadCase(select.value);
+  // Position arrows at the center
+  leftArrow.style.left = `${containerWidth/2 - 50}px`;
+  rightArrow.style.left = `${containerWidth/2 + 50}px`;
 }
 
-function loadCase(caseId){
-  const c=allCases.find(x=>x.id===caseId);
-  if(!c) return;
-  caseData=c;
-  const container=document.getElementById("case-container");
-  container.innerHTML=`<img src="${caseData.image}" alt="${caseData.name}"><p>${caseData.name} - Price: ${caseData.price} coins</p>`;
-  populateSpinner(caseData.items);
-}
+// Call on window resize to keep arrows aligned
+window.addEventListener("resize", ()=>{ 
+  const winningImg = document.querySelector("#spinner-strip img.winning");
+  if(winningImg){
+    const imgs = [...document.querySelectorAll("#spinner-strip img")];
+    const index = imgs.indexOf(winningImg);
+    updateArrowPositions(index);
+  }
+});
 
-// ----------------- Spinner -----------------
-function rollItem(items){
-  const total=items.reduce((s,i)=>s+i.weight,0);
-  let roll=Math.random()*total;
-  for(let item of items){ if(roll<item.weight) return item; roll-=item.weight; }
-}
-
-function populateSpinner(items){
-  const strip=document.getElementById("spinner-strip");
-  strip.innerHTML="";
-  let wheel=[];
-  for(let i=0;i<10;i++) wheel.push(...items);
-  wheel.sort(()=>Math.random()-0.5);
-  wheel.forEach(item=>{
-    const img=document.createElement("img");
-    img.src=item.image;
-    img.className=item.rarity.toLowerCase();
-    img.alt=item.name;
-    strip.appendChild(img);
-  });
-}
-
+// ----------------- Spin to item -----------------
 function spinToItem(item){
-  const strip=document.getElementById("spinner-strip");
-  const imgs=strip.querySelectorAll("img");
+  const strip = document.getElementById("spinner-strip");
+  const imgs = strip.querySelectorAll("img");
   if(!imgs.length) return;
   imgs.forEach(img=>img.classList.remove("winning"));
 
   const matches=[...imgs].map((img,i)=>img.src.endsWith(item.image)?i:-1).filter(i=>i>=0);
   const targetIndex=matches.length ? matches[Math.floor(Math.random()*matches.length)] : 0;
 
-  const imgWidth=imgs[0].offsetWidth + 10;
-  const containerWidth=document.getElementById("spinner-container").offsetWidth;
-  const offset=-(targetIndex*imgWidth - containerWidth/2 + imgWidth/2);
+  const imgWidth = imgs[0].offsetWidth + 10;
+  const containerWidth = spinnerContainer.offsetWidth;
+  const offset = -(targetIndex * imgWidth - containerWidth/2 + imgWidth/2);
 
   strip.style.transition="none";
   strip.style.left="0px";
@@ -99,10 +49,7 @@ function spinToItem(item){
   strip.style.transition="left 6s cubic-bezier(.1,.7,0,1)";
   strip.style.left=`${offset}px`;
 
-  // Highlight winning arrows
-  const leftArrow=document.getElementById("winner-left");
-  const rightArrow=document.getElementById("winner-right");
-
+  // Highlight arrows and color by rarity
   let color="white";
   switch(item.rarity.toLowerCase()){
     case "common": color="gray"; break;
@@ -113,34 +60,15 @@ function spinToItem(item){
     case "legendary": color="gold"; break;
     case "mythical": color="violet"; break;
   }
-
   leftArrow.style.color=color;
   rightArrow.style.color=color;
   leftArrow.classList.add("glow");
   rightArrow.classList.add("glow");
 
   // Glow winning item after spin
-  setTimeout(()=>{ imgs[targetIndex].classList.add("winning"); },6000);
-}
-
-// ----------------- Open Case Button -----------------
-document.getElementById("open-btn").onclick=()=>{
-  if(!caseData) return alert("Case not loaded yet!");
-  if(coins<caseData.price) return alert("Not enough coins!");
-
-  const btn=document.getElementById("open-btn");
-  btn.disabled=true;
-  coins=parseFloat((coins-caseData.price).toFixed(2));
-  localStorage.setItem("coins",coins);
-  updateCoins();
-
-  populateSpinner(caseData.items);
-
-  const item=rollItem(caseData.items);
-  spinToItem(item);
-
   setTimeout(()=>{
-    addToInventory(item);
-    showResult(item);
-    btn.disab
+    imgs[targetIndex].classList.add("winning");
+    updateArrowPositions(targetIndex);
+  },6000);
+}
 
