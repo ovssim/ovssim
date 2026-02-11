@@ -86,7 +86,6 @@ function populateSpinner(items) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
-  // Duplicate items to make a long strip
   let wheel = [];
   for (let i = 0; i < 10; i++) wheel.push(...items);
   wheel.sort(() => Math.random() - 0.5);
@@ -105,19 +104,18 @@ function spinToItem(item) {
   const imgs = strip.querySelectorAll("img");
   if (!imgs.length) return;
 
-  // Match image using endsWith to handle absolute URLs
+  // match images by filename
   const matches = [...imgs].map((img, i) => img.src.endsWith(item.image) ? i : -1).filter(i => i >= 0);
   let targetIndex = matches.length ? matches[Math.floor(Math.random() * matches.length)] : 0;
 
-  const imgWidth = imgs[0].offsetWidth + 10; // width + margin
+  const imgWidth = imgs[0].offsetWidth + 10;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
 
-  // Calculate offset so target lands in center
   const offset = -(targetIndex * imgWidth - containerWidth / 2 + imgWidth / 2);
 
   strip.style.transition = "none";
   strip.style.left = "0px";
-  strip.offsetHeight; // force reflow
+  strip.offsetHeight;
 
   strip.style.transition = "left 6s cubic-bezier(.1,.7,0,1)";
   strip.style.left = `${offset}px`;
@@ -144,7 +142,7 @@ document.getElementById("open-btn").onclick = () => {
     addToInventory(item);
     showResult(item);
     openBtn.disabled = false;
-  }, 6000); // match spinner duration
+  }, 6000);
 };
 
 // ==================== RESULT ====================
@@ -155,3 +153,4 @@ function showResult(item) {
     <p>Value: ${item.price} coins</p>
   `;
 }
+
