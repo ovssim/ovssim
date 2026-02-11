@@ -58,14 +58,14 @@
         },
         {
           "name": "Ghost Town Claidheamh Mor",
-          "rarity": "Strange",
+          "rarity": "rare",
           "price": 5.75,
           "weight": 320,
           "image": "images/items/spooky.png"
         },
         {
           "name": "Helldiver Black Box",
-          "rarity": "Strange",
+          "rarity": "rare",
           "price": 20.19,
           "weight": 220,
           "image": "images/items/hellblackbox.png"
