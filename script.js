@@ -39,6 +39,39 @@ function renderInventory() {
 }
 
 renderInventory();
+function renderInventory() {
+  const inv = document.getElementById("inventory");
+  inv.innerHTML = "";
+
+  inventory.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = `inv-item ${item.rarity}`;
+
+    div.innerHTML = `
+      <img src="${item.image}">
+      <p>${item.name}</p>
+      <small>${item.price} coins</small>
+      <button class="sell-btn">Sell</button>
+    `;
+
+    div.querySelector(".sell-btn").addEventListener("click", () => {
+      sellItem(index);
+    });
+
+    inv.appendChild(div);
+  });
+}
+function sellItem(index) {
+  const item = inventory[index];
+  coins += item.price;
+
+  inventory.splice(index, 1);
+  localStorage.setItem("inventory", JSON.stringify(inventory));
+  localStorage.setItem("coins", coins);
+
+  updateCoins();
+  renderInventory();
+}
 
 // ==================== CASE DATA ====================
 let caseData;
