@@ -6,7 +6,6 @@ body {
   text-align: center;
   margin: 0;
   padding: 20px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,6 +73,36 @@ h1, h2 { margin-bottom: 10px; }
   object-fit: cover;
 }
 
+/* ---------- Spinner Item Rarity Glows ---------- */
+#spinner-strip img.common {
+  box-shadow: 0 0 10px gray, 0 0 20px rgba(128,128,128,0.2);
+}
+
+#spinner-strip img.strange {
+  box-shadow: 0 0 12px orange, 0 0 25px rgba(255,165,0,0.2);
+}
+
+#spinner-strip img.unusual {
+  box-shadow: 0 0 15px purple, 0 0 30px rgba(128,0,128,0.3);
+  animation: glow 1.5s infinite alternate;
+}
+
+/* ---------- Glowing Winning Item ---------- */
+#spinner-strip img.winning {
+  animation: glow-win 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow-win {
+  0%   { box-shadow: 0 0 10px gold; transform: scale(1); }
+  50%  { box-shadow: 0 0 20px gold; transform: scale(1.05); }
+  100% { box-shadow: 0 0 10px gold; transform: scale(1); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px purple; }
+  to   { box-shadow: 0 0 25px magenta; }
+}
+
 /* ---------- Winning Arrows ---------- */
 .winner-arrow {
   position: absolute;
@@ -86,11 +115,9 @@ h1, h2 { margin-bottom: 10px; }
   text-shadow: 0 0 5px white;
 }
 
-/* left and right positions */
 #winner-left { left: 0; }
 #winner-right { right: 0; }
 
-/* glowing effect for arrows */
 .winner-arrow.glow {
   animation: arrow-glow 1s ease-in-out infinite alternate;
 }
@@ -100,24 +127,6 @@ h1, h2 { margin-bottom: 10px; }
   50%  { text-shadow: 0 0 15px currentColor; transform: translateY(-50%) scale(1.1); }
   100% { text-shadow: 0 0 5px currentColor; transform: translateY(-50%) scale(1); }
 }
-
-/* ---------- Glowing Won Item ---------- */
-#spinner-strip img.winning {
-  animation: glow-win 1s ease-in-out infinite alternate;
-}
-
-@keyframes glow-win {
-  0%   { box-shadow: 0 0 10px gold; transform: scale(1); }
-  50%  { box-shadow: 0 0 20px gold; transform: scale(1.05); }
-  100% { box-shadow: 0 0 10px gold; transform: scale(1); }
-}
-
-/* ---------- Rarity Glows ---------- */
-#spinner-strip img.common { box-shadow: 0 0 8px gray; }
-#spinner-strip img.strange { box-shadow: 0 0 10px orange; }
-#spinner-strip img.unusual { box-shadow: 0 0 15px purple; animation: glow 1.5s infinite alternate; }
-
-@keyframes glow { from { box-shadow: 0 0 10px purple; } to { box-shadow: 0 0 25px magenta; } }
 
 /* ---------- Inventory ---------- */
 .inv-item {
@@ -157,4 +166,3 @@ h1, h2 { margin-bottom: 10px; }
   #case-container img { width: 120px; }
   #open-btn { padding: 10px 20px; font-size: 16px; }
 }
-
