@@ -25,16 +25,37 @@ function renderInventory(){
 renderInventory();
 
 let caseData=null;
+let allCases=[];
+
 fetch("data/cases.json")
 .then(res=>res.json())
 .then(data=>{
-  if(!data.cases||!data.cases.length)throw new Error("No cases found");
-  caseData=data.cases[0];
+  allCases=data.cases;
+  populateCaseMenu(allCases);
+  loadCase(allCases[0].id); // Load first case by default
+})
+.catch(err=>{ console.error(err); alert("Failed to load cases.json"); });
+
+function populateCaseMenu(cases){
+  const select=document.getElementById("case-select");
+  select.innerHTML="";
+  cases.forEach(c=>{
+    const option=document.createElement("option");
+    option.value=c.id;
+    option.textContent=c.name;
+    select.appendChild(option);
+  });
+  select.onchange=()=>loadCase(select.value);
+}
+
+function loadCase(caseId){
+  const c=allCases.find(x=>x.id===caseId);
+  if(!c) return;
+  caseData=c;
   const container=document.getElementById("case-container");
   container.innerHTML=`<img src="${caseData.image}" alt="${caseData.name}"><p>${caseData.name} - Price: ${caseData.price} coins</p>`;
   populateSpinner(caseData.items);
-})
-.catch(err=>{ console.error(err); alert("Failed to load cases.json"); });
+}
 
 function rollItem(items){
   const total=items.reduce((s,i)=>s+i.weight,0);
@@ -79,7 +100,6 @@ function spinToItem(item){
   const leftArrow=document.getElementById("winner-left");
   const rightArrow=document.getElementById("winner-right");
 
-  // Set arrow glow by rarity
   let color="white";
   switch(item.rarity.toLowerCase()){
     case "common": color="gray"; break;
@@ -91,10 +111,8 @@ function spinToItem(item){
     case "legendary": color="gold"; break;
     case "mythical": color="violet"; break;
   }
-  leftArrow.style.color=color; 
-  rightArrow.style.color=color;
-  leftArrow.classList.add("glow"); 
-  rightArrow.classList.add("glow");
+  leftArrow.style.color=color; rightArrow.style.color=color;
+  leftArrow.classList.add("glow"); rightArrow.classList.add("glow");
 
   setTimeout(()=>{ imgs[targetIndex].classList.add("winning"); },6000);
 }
