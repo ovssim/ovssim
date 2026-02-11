@@ -4,6 +4,8 @@ body {
   color: #f2f2f2;
   font-family: "Segoe UI", Arial, sans-serif;
   text-align: center;
+  margin: 0;
+  padding: 20px;
 }
 
 h1, h2 {
@@ -57,7 +59,6 @@ h1, h2 {
   display: flex;
   position: relative;
   left: 0;
-  transition: left 4s cubic-bezier(.1,.6,0,1);
 }
 
 #spinner-strip img {
@@ -65,18 +66,19 @@ h1, h2 {
   height: 120px;
   margin-right: 10px;
   border-radius: 8px;
+  object-fit: cover;
 }
 
 /* ---------- Rarity Glows ---------- */
-#spinner-strip img.Common {
+#spinner-strip img.common {
   box-shadow: 0 0 8px gray;
 }
 
-#spinner-strip img.Strange {
+#spinner-strip img.strange {
   box-shadow: 0 0 10px orange;
 }
 
-#spinner-strip img.Unusual {
+#spinner-strip img.unusual {
   box-shadow: 0 0 15px purple;
   animation: glow 1.5s infinite alternate;
 }
@@ -103,6 +105,8 @@ h1, h2 {
 
 .inv-item img {
   width: 100px;
+  height: auto;
+  object-fit: cover;
 }
 
 /* ---------- Sell Button ---------- */
@@ -114,4 +118,31 @@ h1, h2 {
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.sell-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 500px) {
+  #spinner-strip img {
+    width: 80px;
+    height: 80px;
+  }
+  .inv-item {
+    width: 100px;
+    padding: 6px;
+  }
+  .inv-item img {
+    width: 70px;
+  }
+  #case-container img {
+    width: 120px;
+  }
+  #open-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
 }
