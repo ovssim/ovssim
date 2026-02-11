@@ -35,7 +35,7 @@ function renderInventory() {
 
   inventory.forEach((item, index) => {
     const div = document.createElement("div");
-    div.className = `inv-item ${item.rarity}`;
+    div.className = `inv-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `
       <img src="${item.image}" alt="${item.name}">
       <p>${item.name}</p>
@@ -91,7 +91,7 @@ function populateSpinner(items) {
   wheel.forEach(item => {
     const img = document.createElement("img");
     img.src = item.image;
-    img.className = item.rarity;
+    img.className = item.rarity.toLowerCase(); // lowercase to match CSS
     img.alt = item.name;
     strip.appendChild(img);
   });
@@ -133,7 +133,7 @@ function spinToItem(item) {
   leftArrow.classList.add('glow');
   rightArrow.classList.add('glow');
 
-  // highlight winning image
+  // highlight winning image after spin
   setTimeout(()=>{ imgs[targetIndex].classList.add('winning'); }, 6000);
 }
 
