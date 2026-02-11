@@ -28,7 +28,27 @@
           "weight": 700,
           "image": "images/items/stockscatt.png"
         },
-
+{
+          "name": "Diamondback",
+          "rarity": "Common",
+          "price": 0.01,
+          "weight": 1000,
+          "image": "images/items/diaback.png"
+        },
+        {
+          "name": "Strange Frontier Justice",
+          "rarity": "Strange",
+          "price": 3.27,
+          "weight": 450,
+          "image": "images/items/frontjust.png"
+        },
+        {
+          "name": "Übersaw",
+          "rarity": "Common",
+          "price": 0.01,
+          "weight": 700,
+          "image": "images/items/ubersaw.png"
+        },
         {
           "name": "Bill's Hat",
           "rarity": "Strange",
@@ -57,9 +77,16 @@
           "weight": 450,
           "image": "images/items/pistol.png"
         },
-
         {
-          "name": "Aurora Polaris Taunt: Kazotsky Kick",
+          "name": "Unusual Circling Peace Sign Head Warmer",
+          "rarity": "Unusual",
+          "price": 27.99,
+          "weight": 100,
+          "image": "images/items/unusual1.png"
+        },
+        
+        {
+          "name": "Unusual Aurora Polaris Taunt: Kazotsky Kick",
           "rarity": "Unusual",
           "price": 130.00,
           "weight": 5,
