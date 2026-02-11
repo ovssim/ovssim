@@ -74,7 +74,6 @@ fetch("data/cases.json")
 function rollItem(items) {
   const total = items.reduce((sum, i) => sum + i.weight, 0);
   let roll = Math.random() * total;
-
   for (let item of items) {
     if (roll < item.weight) return item;
     roll -= item.weight;
@@ -85,7 +84,6 @@ function rollItem(items) {
 function populateSpinner(items) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
-
   let wheel = [];
   for (let i = 0; i < 10; i++) wheel.push(...items);
   wheel.sort(() => Math.random() - 0.5);
@@ -105,10 +103,10 @@ function spinToItem(item) {
   const imgs = strip.querySelectorAll("img");
   if (!imgs.length) return;
 
-  // Remove old winning glow
+  // remove old winning glow
   imgs.forEach(img => img.classList.remove('winning'));
 
-  // Determine target index
+  // target index
   const matches = [...imgs].map((img,i)=>img.src.endsWith(item.image)?i:-1).filter(i=>i>=0);
   let targetIndex = matches.length ? matches[Math.floor(Math.random()*matches.length)] : 0;
 
@@ -119,11 +117,10 @@ function spinToItem(item) {
   strip.style.transition = "none";
   strip.style.left = "0px";
   strip.offsetHeight;
-
   strip.style.transition = "left 6s cubic-bezier(.1,.7,0,1)";
   strip.style.left = `${offset}px`;
 
-  // Update arrow colors based on rarity
+  // update arrow color
   const leftArrow = document.getElementById("winner-left");
   const rightArrow = document.getElementById("winner-right");
   let color = "white";
@@ -131,13 +128,13 @@ function spinToItem(item) {
   else if(item.rarity.toLowerCase() === "strange") color="orange";
   else if(item.rarity.toLowerCase() === "unusual") color="purple";
 
-  leftArrow.querySelector('::before'); // pseudo-element
-  rightArrow.querySelector('::before');
-  leftArrow.style.filter = `drop-shadow(0 0 10px ${color})`;
-  rightArrow.style.filter = `drop-shadow(0 0 10px ${color})`;
+  leftArrow.style.color = color;
+  rightArrow.style.color = color;
+  leftArrow.classList.add('glow');
+  rightArrow.classList.add('glow');
 
-  // Highlight winning image after spin
-  setTimeout(()=>{ imgs[targetIndex].classList.add('winning'); },6000);
+  // highlight winning image
+  setTimeout(()=>{ imgs[targetIndex].classList.add('winning'); }, 6000);
 }
 
 // ==================== OPEN BUTTON ====================
@@ -148,7 +145,7 @@ document.getElementById("open-btn").onclick = () => {
   const openBtn = document.getElementById("open-btn");
   openBtn.disabled = true;
 
-  coins = parseFloat((coins-caseData.price).toFixed(2));
+  coins = parseFloat((coins - caseData.price).toFixed(2));
   localStorage.setItem("coins", coins);
   updateCoins();
 
@@ -161,7 +158,7 @@ document.getElementById("open-btn").onclick = () => {
     addToInventory(item);
     showResult(item);
     openBtn.disabled = false;
-  },6000);
+  }, 6000);
 };
 
 // ==================== RESULT ====================
