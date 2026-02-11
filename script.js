@@ -1,44 +1,43 @@
 // ==================== COINS ====================
-let coins = localStorage.getItem("coins");
+let coins = parseInt(localStorage.getItem("coins"));
+if (isNaN(coins)) coins = 1000;
 
-if (coins === null) {
-  coins = 1000;
+function saveCoins() {
   localStorage.setItem("coins", coins);
-} else {
-  coins = parseInt(coins);
 }
 
 function updateCoins() {
   document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 
+saveCoins();
 updateCoins();
 
 // ==================== INVENTORY ====================
 let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
 
+function saveInventory() {
+  localStorage.setItem("inventory", JSON.stringify(inventory));
+}
+
 function addToInventory(item) {
   inventory.push(item);
-  localStorage.setItem("inventory", JSON.stringify(inventory));
+  saveInventory();
   renderInventory();
 }
 
-function renderInventory() {
-  const inv = document.getElementById("inventory");
-  inv.innerHTML = "";
+function sellItem(index) {
+  const item = inventory[index];
+  coins = Math.floor(coins + item.price);
 
-  inventory.forEach(item => {
-    const div = document.createElement("div");
-    div.className = `inv-item ${item.rarity}`;
-    div.innerHTML = `
-      <img src="${item.image}">
-      <p>${item.name}</p>
-    `;
-    inv.appendChild(div);
-  });
+  inventory.splice(index, 1);
+  saveInventory();
+  saveCoins();
+
+  updateCoins();
+  renderInventory();
 }
 
-renderInventory();
 function renderInventory() {
   const inv = document.getElementById("inventory");
   inv.innerHTML = "";
@@ -54,27 +53,15 @@ function renderInventory() {
       <button class="sell-btn">Sell</button>
     `;
 
-    div.querySelector(".sell-btn").addEventListener("click", () => {
-      sellItem(index);
-    });
-
+    div.querySelector(".sell-btn").onclick = () => sellItem(index);
     inv.appendChild(div);
   });
 }
-function sellItem(index) {
-  const item = inventory[index];
-  coins += item.price;
 
-  inventory.splice(index, 1);
-  localStorage.setItem("inventory", JSON.stringify(inventory));
-  localStorage.setItem("coins", coins);
-
-  updateCoins();
-  renderInventory();
-}
+renderInventory();
 
 // ==================== CASE DATA ====================
-let caseData;
+let caseData = null;
 
 fetch("data/cases.json")
   .then(res => res.json())
@@ -86,16 +73,18 @@ fetch("data/cases.json")
       <p>Price: ${caseData.price} coins</p>
     `;
 
-    // Populate spinner ONCE
     populateSpinner(caseData.items);
+  })
+  .catch(err => {
+    console.error("Failed to load case data:", err);
   });
 
 // ==================== RNG ====================
 function openCase(items) {
-  const total = items.reduce((sum, i) => sum + i.weight, 0);
-  let roll = Math.random() * total;
+  const totalWeight = items.reduce((sum, i) => sum + i.weight, 0);
+  let roll = Math.random() * totalWeight;
 
-  for (let item of items) {
+  for (const item of items) {
     if (roll < item.weight) return item;
     roll -= item.weight;
   }
@@ -119,13 +108,16 @@ function populateSpinner(items) {
 function spinToItem(item) {
   const strip = document.getElementById("spinner-strip");
   const imgs = strip.querySelectorAll("img");
+  if (!imgs.length) return;
 
   const matches = [];
   imgs.forEach((img, i) => {
     if (img.src.includes(item.image)) matches.push(i);
   });
 
-  const targetIndex = matches[Math.floor(Math.random() * matches.length)];
+  const targetIndex =
+    matches[Math.floor(Math.random() * matches.length)];
+
   const imgWidth = imgs[0].offsetWidth + 10;
   const containerWidth =
     document.getElementById("spinner-container").offsetWidth;
@@ -133,10 +125,9 @@ function spinToItem(item) {
   const left =
     -(targetIndex * imgWidth - containerWidth / 2 + imgWidth / 2);
 
-  // reset before spin
   strip.style.transition = "none";
   strip.style.left = "0px";
-  strip.offsetHeight;
+  strip.offsetHeight; // force reflow
 
   strip.style.transition = "left 4s cubic-bezier(.1,.6,0,1)";
   strip.style.left = `${left}px`;
@@ -146,13 +137,20 @@ function spinToItem(item) {
 const openBtn = document.getElementById("open-btn");
 
 openBtn.addEventListener("click", () => {
-  if (!caseData) return alert("Case not loaded yet!");
-  if (coins < caseData.price) return alert("Not enough coins!");
+  if (!caseData) {
+    alert("Case not loaded yet!");
+    return;
+  }
+
+  if (coins < caseData.price) {
+    alert("Not enough coins!");
+    return;
+  }
 
   openBtn.disabled = true;
 
   coins -= caseData.price;
-  localStorage.setItem("coins", coins);
+  saveCoins();
   updateCoins();
 
   const item = openCase(caseData.items);
@@ -173,3 +171,4 @@ function showResult(item) {
     <p>Value: ${item.price} coins</p>
   `;
 }
+
