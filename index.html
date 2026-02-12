@@ -7,47 +7,30 @@
 </head>
 <body>
 
-  <h1>TF2 Case Simulator</h1>
+  <h1>TF2 Case Opening Simulator</h1>
 
   <!-- Coins Display -->
   <div id="coins"></div>
 
-  <!-- Controls: inventory toggle & coin adjustments -->
-  <div id="controls">
-    <button id="toggle-inv-btn">Toggle Inventory</button>
-    <button id="add-coins-btn">+50 Coins</button>
-    <button id="remove-coins-btn">-50 Coins</button>
-  </div>
+  <!-- Case -->
+  <div id="case-container"></div>
+  <button id="open-btn">Open Case</button>
 
-  <!-- CASE SECTION -->
-  <div id="case-section">
-    <div class="case-left">
-      <img id="case-image" src="" alt="Case Image">
-    </div>
-
-    <div class="case-right">
-      <h2 id="case-name"></h2>
-      <button id="open-btn"></button>
-    </div>
-  </div>
-
-  <!-- WINNER NAME -->
-  <div id="winner-name"></div>
-
-  <!-- SPINNER -->
+  <!-- Spinner wrapper with arrows -->
   <div id="spinner-wrapper">
+    <div id="winner-left">⮜</div>
+    <div id="winner-right">⮞</div>
     <div id="spinner-container">
       <div id="spinner-strip"></div>
     </div>
   </div>
 
-  <!-- INVENTORY -->
-  <h2>Inventory</h2>
-  <div id="inventory" class="hidden"></div>
+  <!-- Result of the case opening -->
+  <div id="result"></div>
 
-  <!-- TOP DROPS -->
-  <h2 class="top-title">• Last TOP Drops</h2>
-  <div id="top-drops"></div>
+  <!-- Inventory -->
+  <h2>Inventory</h2>
+  <div id="inventory"></div>
 
   <script src="script.js"></script>
 </body>
