@@ -120,14 +120,12 @@ function buildSpinner(winItem) {
   const winIndex = Math.floor(totalItems / 2);
   const randomItems = [];
 
-  // Fill spinner with random items
   for (let i = 0; i < totalItems; i++) {
     const random = caseData.items[Math.floor(Math.random() * caseData.items.length)];
     randomItems.push(random);
   }
-  randomItems[winIndex] = winItem; // Force winning item in middle
+  randomItems[winIndex] = winItem;
 
-  // Preload all images
   const preloadPromises = randomItems.map(item => {
     return new Promise(resolve => {
       const img = new Image();
@@ -138,36 +136,33 @@ function buildSpinner(winItem) {
   });
 
   Promise.all(preloadPromises).then(() => {
-    // Build spinner after all images are loaded
     randomItems.forEach(item => {
       const div = document.createElement("div");
       div.className = `spinner-item ${item.rarity.toLowerCase()}`;
-      div.innerHTML = `<img src="${item.image}" style="display:block; width:70px; height:70px;">`;
+      div.innerHTML = `<img src="${item.image}" style="display:block; width:100%; height:100%; object-fit:contain;">`;
       strip.appendChild(div);
     });
 
-    const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20; // include margin
-    const extraSpins = 3; // extra loops
+    const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20;
+    const extraSpins = 5; // more spins to prevent cut-off
     const distance = -(winIndex * itemWidth + totalItems * itemWidth * extraSpins);
 
-    // Remove glow from previous won item
     if (lastWonItemDiv) lastWonItemDiv.classList.remove("highlight-won");
 
-    // Reset position and force reflow
     strip.style.transition = "none";
     strip.style.left = "0px";
     strip.offsetHeight;
 
-    // Start transition
-    strip.style.transition = "left 11s cubic-bezier(.25,.1,.25,1)";
-    strip.style.left = `${distance}px`;
+    requestAnimationFrame(() => {
+      strip.style.transition = "left 11s cubic-bezier(.25,.1,.25,1)";
+      strip.style.left = `${distance}px`;
+    });
 
-    // Highlight winning item after spin
     setTimeout(() => {
       const wonItemDiv = strip.children[winIndex];
       if (wonItemDiv) {
         wonItemDiv.classList.add("highlight-won");
-        lastWonItemDiv = wonItemDiv; // store reference for next spin
+        lastWonItemDiv = wonItemDiv;
       }
     }, 11000);
   });
