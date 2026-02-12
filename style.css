@@ -1,3 +1,4 @@
+/* ================= BODY ================= */
 body {
   background: radial-gradient(circle at top, #1b1b1b, #0b0b0b);
   color: white;
@@ -14,9 +15,11 @@ h1 {
 #coins {
   margin-bottom: 20px;
   font-size: 18px;
+  font-weight: bold;
+  transition: color 0.3s;
 }
 
-/* CONTROLS */
+/* ================= CONTROLS ================= */
 #controls {
   margin-bottom: 20px;
   display: flex;
@@ -95,6 +98,7 @@ h1 {
   background: #111;
   border-radius: 15px;
   border: 2px solid #333;
+  position: relative;
 }
 
 #spinner-strip {
@@ -112,6 +116,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.3s;
 }
 
 .spinner-item img {
@@ -182,7 +187,11 @@ h1 {
 .common { box-shadow: 0 0 10px gray; }
 .rare { box-shadow: 0 0 12px blue; }
 .strange { box-shadow: 0 0 14px orange; }
-.unusual { box-shadow: 0 0 16px purple; }
-.legendary { box-shadow: 0 0 20px gold; }
-.mythical { box-shadow: 0 0 25px violet; }
+.unusual { box-shadow: 0 0 16px purple; animation: pulse 1.5s infinite alternate; }
+.legendary { box-shadow: 0 0 20px gold; animation: pulse 1.5s infinite alternate; }
+.mythical { box-shadow: 0 0 25px violet; animation: pulse 1.5s infinite alternate; }
 
+@keyframes pulse {
+  from { transform: scale(1); box-shadow: 0 0 20px currentColor; }
+  to { transform: scale(1.05); box-shadow: 0 0 30px currentColor; }
+}
