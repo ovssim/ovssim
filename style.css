@@ -1,5 +1,4 @@
 /* ================= GLOBAL ================= */
-
 body {
   margin: 0;
   padding: 20px;
@@ -21,7 +20,6 @@ h1 {
 }
 
 /* ================= CASE SECTION ================= */
-
 #case-section {
   display: flex;
   justify-content: center;
@@ -46,7 +44,6 @@ h1 {
 }
 
 /* ================= OPEN BUTTON ================= */
-
 #open-btn {
   background: linear-gradient(135deg, #ffb347, #ff9500);
   border: none;
@@ -64,7 +61,6 @@ h1 {
 }
 
 /* ================= WINNER NAME ================= */
-
 #winner-name {
   font-size: 22px;
   font-weight: bold;
@@ -72,7 +68,6 @@ h1 {
 }
 
 /* ================= SPINNER ================= */
-
 #spinner-wrapper {
   width: 1000px;
   max-width: 95%;
@@ -95,12 +90,11 @@ h1 {
   transition: transform 6s cubic-bezier(.08,.6,0,1);
 }
 
-/* Center marker */
+/* Right-side marker */
 #spinner-container::after {
   content: "";
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0;
   top: 0;
   width: 4px;
   height: 100%;
@@ -143,7 +137,6 @@ h1 {
 }
 
 /* ================= INVENTORY ================= */
-
 #inventory {
   display: flex;
   flex-wrap: wrap;
@@ -183,7 +176,6 @@ h1 {
 }
 
 /* ================= TOP DROPS ================= */
-
 #top-drops {
   display: flex;
   justify-content: center;
@@ -207,7 +199,6 @@ h1 {
 }
 
 /* ================= RARITY SYSTEM ================= */
-
 .common     { border: 2px solid #777; box-shadow: 0 0 10px #777; color: #bbb; }
 .rare       { border: 2px solid #4aa3ff; box-shadow: 0 0 14px #4aa3ff; color: #4aa3ff; }
 .strange    { border: 2px solid orange; box-shadow: 0 0 16px orange; color: orange; }
@@ -220,7 +211,7 @@ h1 {
 .collector  { border: 2px solid #AA0000; box-shadow: 0 0 22px #AA0000; color: #AA0000; }
 .haunted    { border: 2px solid #38F3AB; box-shadow: 0 0 18px #38F3AB; color: #38F3AB; }
 
-/* Unusual animated glow */
+/* Unusual glow */
 .unusual img {
   animation: unusualGlow 4s infinite linear;
   filter: drop-shadow(0 0 20px purple);
