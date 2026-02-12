@@ -1,61 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TF2 Case Simulator</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>TF2 Case Simulator</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>TF2 Case Simulator</h1>
+<h1>TF2 Case Simulator</h1>
 
-  <!-- Coins Display -->
-  <div id="coins"></div>
+<div id="coins"></div>
 
-  <!-- Controls: inventory toggle & coin adjustments -->
-  <div id="controls">
-    <button id="toggle-inv-btn">Toggle Inventory</button>
-    <button id="add-coins-btn">+50 Coins</button>
-    <button id="remove-coins-btn">-50 Coins</button>
+<div id="controls">
+  <button id="toggle-inv-btn">Toggle Inventory</button>
+  <button id="add-coins-btn">+50 Coins</button>
+  <button id="remove-coins-btn">-50 Coins</button>
+</div>
+
+<!-- Case selection -->
+<div id="case-select-wrapper">
+  <button id="show-select-btn">Select Case</button>
+  <select id="case-select" class="hidden"></select>
+</div>
+
+<!-- Case section -->
+<div id="case-section">
+  <div class="case-left">
+    <img id="case-image" src="" alt="Case Image">
   </div>
-
-  <!-- CASE SELECT -->
-  <div id="case-select-wrapper">
-    <button id="show-select-btn">Select Case</button>
-    <select id="case-select" class="hidden"></select>
+  <div class="case-right">
+    <h2 id="case-name"></h2>
+    <button id="open-btn"></button>
   </div>
+</div>
 
-  <!-- CASE SECTION -->
-  <div id="case-section">
-    <div class="case-left">
-      <img id="case-image" src="" alt="Case Image">
-    </div>
+<div id="winner-name"></div>
 
-    <div class="case-right">
-      <h2 id="case-name"></h2>
-      <button id="open-btn"></button>
-    </div>
+<!-- Spinner -->
+<div id="spinner-wrapper">
+  <div id="spinner-container">
+    <div id="spinner-strip"></div>
   </div>
+</div>
 
-  <!-- WINNER NAME -->
-  <div id="winner-name"></div>
+<h2>Inventory</h2>
+<div id="inventory" class="hidden"></div>
 
-  <!-- SPINNER -->
-  <div id="spinner-wrapper">
-    <div id="spinner-container">
-      <div id="spinner-strip"></div>
-    </div>
-  </div>
+<h2 class="top-title">• Last TOP Drops</h2>
+<div id="top-drops"></div>
 
-  <!-- INVENTORY -->
-  <h2>Inventory</h2>
-  <div id="inventory" class="hidden"></div>
-
-  <!-- TOP DROPS -->
-  <h2 class="top-title">• Last TOP Drops</h2>
-  <div id="top-drops"></div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
+
 
