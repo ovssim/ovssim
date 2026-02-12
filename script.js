@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCoins();
   };
   document.getElementById("remove-coins-btn").onclick = () => {
-    coins = Math.max(0, coins - 0.10);
+    coins = Math.max(0, coins - 0.04);
     updateCoins();
   };
 });
