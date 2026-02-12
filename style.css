@@ -1,116 +1,104 @@
-/* ---------- Spinner wrapper ---------- */
+body {
+  background: radial-gradient(circle at top, #1b1b1b, #0b0b0b);
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
+
+#coins {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+button {
+  margin: 5px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* ================= CASE ================= */
+#case-container img {
+  width: 180px;
+  margin: 10px;
+  border-radius: 12px;
+}
+
+/* ================= SPINNER ================= */
 #spinner-wrapper {
   position: relative;
-  width: 600px;
-  margin: 20px auto;
-  max-width: 90%;
-}
-
-#winner-left, #winner-right {
-  position: absolute;
-  top: 50%;
-  font-size: 40px;
-  transform: translateY(-50%);
-  z-index: 2;
-  pointer-events: none;
-  text-shadow: 0 0 5px #fff;
-}
-
-#winner-left.glow, #winner-right.glow {
-  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+  width: 650px;
+  max-width: 95%;
+  margin: 30px auto;
 }
 
 #spinner-container {
   width: 100%;
-  height: 150px;
+  height: 180px;
   overflow: hidden;
-  border: 2px solid #555;
-  border-radius: 10px;
-  background: #111;
+  border-radius: 14px;
+  background: #0e0e0e;
+  border: 2px solid #2a2a2a;
   position: relative;
 }
 
 #spinner-strip {
   display: flex;
+  gap: 18px;
   position: relative;
   left: 0;
+  padding: 20px;
 }
 
-#spinner-strip img {
-  width: 120px;
-  height: 120px;
-  margin-right: 10px;
-  border-radius: 8px;
-  object-fit: cover;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-/* ---------- Rarity Glows ---------- */
-#spinner-strip img.common { box-shadow: 0 0 5px gray; }
-#spinner-strip img.uncommon { box-shadow: 0 0 8px green; }
-#spinner-strip img.rare { box-shadow: 0 0 10px blue; }
-#spinner-strip img.strange { box-shadow: 0 0 12px orange; }
-#spinner-strip img.unusual { box-shadow: 0 0 15px purple; animation: glow 1.5s infinite alternate; }
-#spinner-strip img.legendary { box-shadow: 0 0 18px gold; animation: glow 1.5s infinite alternate; }
-#spinner-strip img.mythical { box-shadow: 0 0 20px violet; animation: glow 1.5s infinite alternate; }
-
-#spinner-strip img.winning {
-  transform: scale(1.3);
-  animation: pulse 1s infinite alternate;
-}
-
-@keyframes glow {
-  from { box-shadow: 0 0 10px currentColor; }
-  to { box-shadow: 0 0 25px currentColor; }
-}
-
-@keyframes pulse {
-  from { box-shadow: 0 0 20px currentColor; }
-  to { box-shadow: 0 0 35px currentColor; }
-}
-
-.inv-item img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-}
-
-.sell-btn {
-  margin-top: 5px;
-  padding: 5px;
-  background: #c0392b;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-}
-
-/* ================= TOP DROPS ================= */
-#top-drops {
+.spinner-item {
+  width: 130px;
+  height: 150px;
+  background: linear-gradient(145deg, #111, #1c1c1c);
+  border-radius: 14px;
+  border: 2px solid #333;
   display: flex;
+  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 20px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.top-drop {
-  width: 160px;
-  background: #111;
-  padding: 15px;
-  border-radius: 16px;
-}
-
-.top-drop img {
-  width: 70px;
-  height: 70px;
+.spinner-item img {
+  width: 80px;
+  height: 80px;
   object-fit: contain;
 }
 
-/* ================= RARITY GLOWS ================= */
-.common { box-shadow: 0 0 10px gray; }
-.rare { box-shadow: 0 0 12px blue; }
-.strange { box-shadow: 0 0 14px orange; }
-.unusual { box-shadow: 0 0 16px purple; }
-.legendary { box-shadow: 0 0 20px gold; }
-.mythical { box-shadow: 0 0 25px violet; }
+/* ================= RARITY STYLES ================= */
+.spinner-item.common { border-color: gray; box-shadow: 0 0 10px gray; }
+.spinner-item.uncommon { border-color: #22c55e; box-shadow: 0 0 12px #22c55e; }
+.spinner-item.rare { border-color: #3b82f6; box-shadow: 0 0 14px #3b82f6; }
+.spinner-item.strange { border-color: orange; box-shadow: 0 0 14px orange; }
+.spinner-item.unusual { border-color: purple; box-shadow: 0 0 18px purple; }
+.spinner-item.legendary { border-color: gold; box-shadow: 0 0 20px gold; }
+.spinner-item.mythical { border-color: violet; box-shadow: 0 0 24px violet; }
+.spinner-item.winning { transform: scale(1.18); box-shadow: 0 0 35px currentColor; }
+
+/* ================= ARROWS ================= */
+#winner-left, #winner-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 42px;
+  z-index: 5;
+  pointer-events: none;
+  color: white;
+}
+
+#winner-left { left: 48%; }
+#winner-right { right: 48%; }
+
+/* ================= INVENTORY ================= */
+#inventory { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+.inv-item { width: 130px; background: #111; padding: 10px; border-radius: 12px; }
+.inv-item img { width: 60px; height: 60px; object-fit: contain; }
+.sell-btn { margin-top: 5px; padding: 5px; background: #c0392b; border: none; border-radius: 6px; color: white; cursor: pointer; }
