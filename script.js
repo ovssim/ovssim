@@ -1,73 +1,152 @@
-// ----------------- Spinner Arrows & Center -----------------
-const leftArrow = document.getElementById("winner-left");
-const rightArrow = document.getElementById("winner-right");
-const spinnerContainer = document.getElementById("spinner-container");
+// ================= COINS =================
+let coins = parseInt(localStorage.getItem("coins")) || 1000;
+updateCoins();
 
-function updateArrowPositions(targetIndex){
-  const strip = document.getElementById("spinner-strip");
-  const imgs = strip.querySelectorAll("img");
-  if(!imgs.length) return;
-
-  const imgWidth = imgs[0].offsetWidth + 10;
-  const containerWidth = spinnerContainer.offsetWidth;
-  const offset = -(targetIndex * imgWidth - containerWidth/2 + imgWidth/2);
-
-  strip.style.left = `${offset}px`;
-
-  // Position arrows at the center
-  leftArrow.style.left = `${containerWidth/2 - 50}px`;
-  rightArrow.style.left = `${containerWidth/2 + 50}px`;
+function updateCoins() {
+  document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 
-// Call on window resize to keep arrows aligned
-window.addEventListener("resize", ()=>{ 
-  const winningImg = document.querySelector("#spinner-strip img.winning");
-  if(winningImg){
-    const imgs = [...document.querySelectorAll("#spinner-strip img")];
-    const index = imgs.indexOf(winningImg);
-    updateArrowPositions(index);
+// Add/Subtract 50 Coins
+document.getElementById("add50").onclick = () => { coins += 50; localStorage.setItem("coins", coins); updateCoins(); };
+document.getElementById("remove50").onclick = () => { coins -= 50; localStorage.setItem("coins", coins); updateCoins(); };
+
+// ================= INVENTORY =================
+let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+
+function saveInventory() {
+  localStorage.setItem("inventory", JSON.stringify(inventory));
+}
+
+function addToInventory(item) {
+  inventory.push(item);
+  saveInventory();
+  renderInventory();
+}
+
+function sellItem(index) {
+  coins += inventory[index].price;
+  inventory.splice(index, 1);
+  localStorage.setItem("coins", coins);
+  saveInventory();
+  updateCoins();
+  renderInventory();
+}
+
+function renderInventory() {
+  const inv = document.getElementById("inventory");
+  inv.innerHTML = "";
+  inventory.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = `inv-item ${item.rarity.toLowerCase()}`;
+    div.innerHTML = `<img src="${item.image}" width="70"><p>${item.name}</p><small>${item.price} coins</small><br><button class="sell-btn">Sell</button>`;
+    div.querySelector(".sell-btn").onclick = () => sellItem(index);
+    inv.appendChild(div);
+  });
+}
+
+// Toggle Inventory
+document.getElementById("toggle-inventory").onclick = () => {
+  const inv = document.getElementById("inventory");
+  inv.style.display = inv.style.display === "none" ? "flex" : "none";
+};
+
+// ================= CASE DATA =================
+let caseData = null;
+let allCases = [];
+
+fetch("data/cases.json")
+  .then(res => res.json())
+  .then(data => {
+    allCases = data.cases;
+    populateCaseMenu();
+    loadCase(allCases[0]);
+  });
+
+function populateCaseMenu() {
+  const menu = document.getElementById("case-menu");
+  allCases.forEach((c, i) => {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = c.name;
+    menu.appendChild(opt);
+  });
+
+  menu.onchange = () => loadCase(allCases[menu.value]);
+}
+
+function loadCase(c) {
+  caseData = c;
+  document.getElementById("case-container").innerHTML = `<img src="${c.image}" width="180"><p>Price: ${c.price} coins</p>`;
+  document.getElementById("open-btn").textContent = `Open Case`;
+}
+
+// ================= RNG =================
+function weightedRandom(items) {
+  const total = items.reduce((sum, i) => sum + i.weight, 0);
+  let roll = Math.random() * total;
+  for (let i of items) {
+    if (roll < i.weight) return i;
+    roll -= i.weight;
   }
-});
+}
 
-// ----------------- Spin to item -----------------
-function spinToItem(item){
+// ================= SPINNER =================
+function createSpinnerItem(item) {
+  const div = document.createElement("div");
+  div.classList.add("spinner-item", item.rarity.toLowerCase());
+  const img = document.createElement("img");
+  img.src = item.image;
+  div.appendChild(img);
+  return div;
+}
+
+function buildSpinner(items) {
   const strip = document.getElementById("spinner-strip");
-  const imgs = strip.querySelectorAll("img");
-  if(!imgs.length) return;
-  imgs.forEach(img=>img.classList.remove("winning"));
+  strip.innerHTML = "";
+  for (let i = 0; i < 60; i++) {
+    const rand = items[Math.floor(Math.random() * items.length)];
+    strip.appendChild(createSpinnerItem(rand));
+  }
+}
 
-  const matches=[...imgs].map((img,i)=>img.src.endsWith(item.image)?i:-1).filter(i=>i>=0);
-  const targetIndex=matches.length ? matches[Math.floor(Math.random()*matches.length)] : 0;
+function spinToItem(winItem) {
+  const strip = document.getElementById("spinner-strip");
+  const cards = strip.querySelectorAll(".spinner-item");
+  cards.forEach(c => c.classList.remove("winning"));
 
-  const imgWidth = imgs[0].offsetWidth + 10;
-  const containerWidth = spinnerContainer.offsetWidth;
-  const offset = -(targetIndex * imgWidth - containerWidth/2 + imgWidth/2);
+  const winIndex = Math.floor(cards.length * 0.75);
+  strip.replaceChild(createSpinnerItem(winItem), cards[winIndex]);
 
-  strip.style.transition="none";
-  strip.style.left="0px";
+  const cardWidth = cards[0].offsetWidth + 18;
+  const containerWidth = document.getElementById("spinner-container").offsetWidth;
+  const offset = -(winIndex * cardWidth - containerWidth / 2 + cardWidth / 2);
+
+  strip.style.transition = "none";
+  strip.style.left = "0px";
   strip.offsetHeight;
-  strip.style.transition="left 6s cubic-bezier(.1,.7,0,1)";
-  strip.style.left=`${offset}px`;
+  strip.style.transition = "left 6s cubic-bezier(.1,.7,0,1)";
+  strip.style.left = offset + "px";
 
-  // Highlight arrows and color by rarity
-  let color="white";
-  switch(item.rarity.toLowerCase()){
-    case "common": color="gray"; break;
-    case "uncommon": color="green"; break;
-    case "rare": color="blue"; break;
-    case "strange": color="orange"; break;
-    case "unusual": color="purple"; break;
-    case "legendary": color="gold"; break;
-    case "mythical": color="violet"; break;
-  }
-  leftArrow.style.color=color;
-  rightArrow.style.color=color;
-  leftArrow.classList.add("glow");
-  rightArrow.classList.add("glow");
-
-  // Glow winning item after spin
-  setTimeout(()=>{
-    imgs[targetIndex].classList.add("winning");
-    updateArrowPositions(targetIndex);
-  },6000);
+  setTimeout(() => {
+    strip.querySelectorAll(".spinner-item")[winIndex].classList.add("winning");
+    document.getElementById("result").textContent = `You won: ${winItem.name}`;
+    addToInventory(winItem);
+    document.getElementById("open-btn").disabled = false;
+  }, 6000);
 }
+
+// ================= OPEN BUTTON =================
+document.getElementById("open-btn").onclick = () => {
+  if (!caseData) return alert("Case not loaded!");
+  if (coins < caseData.price) return alert("Not enough coins!");
+
+  coins -= caseData.price;
+  updateCoins();
+  localStorage.setItem("coins", coins);
+
+  buildSpinner(caseData.items);
+  spinToItem(weightedRandom(caseData.items));
+
+  document.getElementById("open-btn").disabled = true;
+};
+
