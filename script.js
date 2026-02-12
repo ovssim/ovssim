@@ -81,22 +81,41 @@ document.getElementById("remove-coins-btn").addEventListener("click", () => {
 
 // ================= CASE DATA =================
 let caseData;
+let caseDataList = [];
 
 fetch("data/cases.json")
   .then(res => res.json())
   .then(data => {
-    caseData = data.cases[0];
-    document.getElementById("case-image").src = caseData.image;
-    document.getElementById("case-name").textContent = caseData.name;
-    document.getElementById("open-btn").textContent =
-      `Open for ${caseData.price} coins`;
-
-    // Preload all case images on page load
-    preloadAllCaseImages();
+    caseDataList = data.cases;
+    populateCaseSelect();
+    selectCase(caseDataList[0].id); // default to first case
   });
 
-// ================= PRELOAD CASE IMAGES =================
-function preloadAllCaseImages() {
+// Populate the select dropdown
+function populateCaseSelect() {
+  const select = document.getElementById("case-select");
+  select.innerHTML = "";
+
+  caseDataList.forEach(c => {
+    const option = document.createElement("option");
+    option.value = c.id;
+    option.textContent = c.name;
+    select.appendChild(option);
+  });
+
+  select.addEventListener("change", () => {
+    selectCase(select.value);
+  });
+}
+
+// Change the current case
+function selectCase(caseId) {
+  caseData = caseDataList.find(c => c.id === caseId);
+  document.getElementById("case-image").src = caseData.image;
+  document.getElementById("case-name").textContent = caseData.name;
+  document.getElementById("open-btn").textContent = `Open for ${caseData.price} coins`;
+
+  // preload images of the new case
   caseData.items.forEach(item => {
     const img = new Image();
     img.src = item.image;
@@ -121,7 +140,7 @@ function buildSpinner(winItem) {
 
   const randomItems = [];
   const totalItems = 60;
-  const winIndex = Math.floor(totalItems / 2); // center item
+  const winIndex = Math.floor(totalItems / 2);
 
   for (let i = 0; i < totalItems; i++) {
     const random = caseData.items[Math.floor(Math.random() * caseData.items.length)];
@@ -129,13 +148,13 @@ function buildSpinner(winItem) {
   }
   randomItems[winIndex] = winItem;
 
-  // Preload all spinner images before animation
+  // Preload spinner images
   const imagePromises = randomItems.map(item => {
     return new Promise(resolve => {
       const img = new Image();
       img.src = item.image;
       img.onload = resolve;
-      img.onerror = resolve; // continue even if error
+      img.onerror = resolve;
     });
   });
 
@@ -147,16 +166,13 @@ function buildSpinner(winItem) {
       strip.appendChild(div);
     });
 
-    // calculate dynamic distance to center winning item
-    const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20; // margin
+    const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20;
     const distance = winIndex * itemWidth * -1 + strip.parentElement.offsetWidth / 2 - itemWidth / 2;
 
-    // reset position
     strip.style.transition = "none";
     strip.style.left = "0px";
-    strip.offsetHeight; // force reflow
+    strip.offsetHeight;
 
-    // animate
     strip.style.transition = "left 8s cubic-bezier(.1,.7,0,1)";
     strip.style.left = `${distance}px`;
   });
@@ -167,7 +183,6 @@ document.getElementById("open-btn").addEventListener("click", () => {
   if (!caseData) return;
 
   if (coins < caseData.price) {
-    // flash coins red
     const coinsEl = document.getElementById("coins");
     coinsEl.style.color = "red";
     setTimeout(() => coinsEl.style.color = "white", 1000);
@@ -191,31 +206,4 @@ document.getElementById("open-btn").addEventListener("click", () => {
 
 // ================= TOP DROPS =================
 function addRecentDrop(item) {
-  recentDrops.push(item);
-  if (recentDrops.length > 20) recentDrops.shift();
-  saveData();
-  renderTopDrops();
-}
-
-function renderTopDrops() {
-  const container = document.getElementById("top-drops");
-  container.innerHTML = "";
-
-  const sorted = [...recentDrops]
-    .sort((a, b) => b.price - a.price)
-    .slice(0, 8);
-
-  sorted.forEach(item => {
-    const div = document.createElement("div");
-    div.className = `top-drop ${item.rarity.toLowerCase()}`;
-    div.innerHTML = `
-      <img src="${item.image}">
-      <p>${item.name}</p>
-      <strong>${item.price} coins</strong>
-    `;
-    container.appendChild(div);
-  });
-}
-
-renderTopDrops();
-
+  recentDr
