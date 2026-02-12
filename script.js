@@ -116,23 +116,38 @@ function weightedRandom(items) {
   }
 }
 
+// ================= UTIL =================
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 // ================= SPINNER =================
 let lastWonDiv = null;
+const SPIN_TIME = 7000; // ms (slower feel, shorter duration)
 
 function buildSpinner(win) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
+  // Build visual pool (weighted but NOT ordered)
   const visualPool = [];
   caseData.items.forEach(i => {
     const count = Math.max(1, Math.floor(i.weight / 100));
     for (let x = 0; x < count; x++) visualPool.push(i);
   });
 
-  const arr = [];
-  for (let i = 0; i < 12; i++) visualPool.forEach(v => arr.push(v));
+  shuffle(visualPool);
 
-  const winIndex = arr.length - 15;
+  // Repeat pool to make long strip
+  let arr = [];
+  for (let i = 0; i < 10; i++) arr = arr.concat(visualPool);
+
+  // Choose landing index
+  const winIndex = arr.length - 12;
   arr[winIndex] = win;
 
   arr.forEach(i => {
@@ -142,7 +157,8 @@ function buildSpinner(win) {
     strip.appendChild(div);
   });
 
-  const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20;
+  const itemWidth =
+    strip.querySelector(".spinner-item").offsetWidth + 20;
   const dist = itemWidth * winIndex;
 
   if (lastWonDiv) lastWonDiv.classList.remove("highlight-won");
@@ -152,7 +168,8 @@ function buildSpinner(win) {
   strip.offsetHeight;
 
   requestAnimationFrame(() => {
-    strip.style.transition = "transform 11s cubic-bezier(.25,.1,.25,1)";
+    strip.style.transition =
+      `transform ${SPIN_TIME}ms cubic-bezier(.22,.61,.36,1)`;
     strip.style.transform = `translateX(-${dist}px)`;
   });
 
@@ -162,7 +179,7 @@ function buildSpinner(win) {
       d.classList.add("highlight-won");
       lastWonDiv = d;
     }
-  }, 11000);
+  }, SPIN_TIME);
 }
 
 // ================= OPEN BUTTON =================
@@ -187,7 +204,7 @@ document.getElementById("open-btn").onclick = () => {
       `You won: ${won.name}`;
     addToInventory(won);
     addRecentDrop(won);
-  }, 11000);
+  }, SPIN_TIME);
 };
 
 // ================= TOP DROPS =================
