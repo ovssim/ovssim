@@ -111,3 +111,27 @@ h1{ margin-bottom:10px; }
 .unusual{ color:purple; box-shadow:0 0 16px purple; }
 .legendary{ color:gold; box-shadow:0 0 20px gold; }
 .mythical{ color:violet; box-shadow:0 0 25px violet; }
+/* Spinner center marker */
+#spinner-container::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+  width:4px;
+  height:100%;
+  background:gold;
+  z-index:20;
+}
+
+/* Unusual effects */
+.unusual img{
+  animation: unusualGlow 3s infinite linear;
+  filter: drop-shadow(0 0 20px purple);
+}
+
+@keyframes unusualGlow{
+  from{ filter:hue-rotate(0deg) drop-shadow(0 0 20px purple); }
+  to{ filter:hue-rotate(360deg) drop-shadow(0 0 20px purple); }
+}
+
