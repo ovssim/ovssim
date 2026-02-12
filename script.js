@@ -1,24 +1,10 @@
 // ================= COINS =================
-let coins = parseFloat(localStorage.getItem("coins")) || 1000;
+let coins = parseInt(localStorage.getItem("coins")) || 1000;
 updateCoins();
 
 function updateCoins() {
-  document.getElementById("coins").textContent = `Coins: ${coins.toFixed(2)}`;
+  document.getElementById("coins").textContent = `Coins: ${coins}`;
   localStorage.setItem("coins", coins);
-}
-
-// ================= ADMIN PASSWORD =================
-const ADMIN_PASSWORD = "tf2admin"; // CHANGE THIS
-let adminUnlocked = false;
-
-function checkPassword() {
-  if (adminUnlocked) return true;
-  const input = prompt("Enter admin password:");
-  if (input === ADMIN_PASSWORD) {
-    adminUnlocked = true;
-    return true;
-  }
-  return false;
 }
 
 // ================= INVENTORY =================
@@ -39,15 +25,17 @@ function addToInventory(item) {
 function renderInventory() {
   const inv = document.getElementById("inventory");
   inv.innerHTML = "";
+
   inventory.forEach((i, index) => {
     const div = document.createElement("div");
     div.className = `inv-item ${i.rarity.toLowerCase()}`;
     div.innerHTML = `
       <img src="${i.image}">
       <p>${i.name}</p>
-      <small>${i.price.toFixed(2)} coins</small><br>
+      <small>${i.price} coins</small><br>
       <button class="sell-btn">Sell</button>
     `;
+
     div.querySelector(".sell-btn").onclick = () => {
       coins += i.price;
       inventory.splice(index, 1);
@@ -55,26 +43,23 @@ function renderInventory() {
       saveData();
       renderInventory();
     };
+
     inv.appendChild(div);
   });
 }
 
 renderInventory();
 
-// Toggle inventory
-document.getElementById("toggle-inv-btn").onclick = () => {
-  document.getElementById("inventory").classList.toggle("hidden");
-};
+// ================= UI BUTTONS =================
+document.getElementById("toggle-inv-btn").onclick =
+  () => document.getElementById("inventory").classList.toggle("hidden");
 
-// ================= COIN BUTTONS (PASSWORD PROTECTED) =================
 document.getElementById("add-coins-btn").onclick = () => {
-  if (!checkPassword()) return alert("Wrong password!");
   coins += 50;
   updateCoins();
 };
 
 document.getElementById("remove-coins-btn").onclick = () => {
-  if (!checkPassword()) return alert("Wrong password!");
   coins = Math.max(0, coins - 50);
   updateCoins();
 };
@@ -83,7 +68,7 @@ document.getElementById("remove-coins-btn").onclick = () => {
 let caseDataList = [];
 let caseData;
 
-fetch("cases.json?v=" + Date.now())
+fetch("data/cases.json")
   .then(r => r.json())
   .then(d => {
     caseDataList = d.cases;
@@ -94,24 +79,28 @@ fetch("cases.json?v=" + Date.now())
 function populateCaseSelect() {
   const select = document.getElementById("case-select");
   select.innerHTML = "";
+
   caseDataList.forEach(c => {
     const o = document.createElement("option");
     o.value = c.id;
     o.textContent = c.name;
     select.appendChild(o);
   });
-  select.addEventListener("change", () => selectCase(select.value));
-  document.getElementById("show-select-btn").onclick = () => {
-    select.classList.toggle("hidden");
-  };
+
+  select.onchange = () => selectCase(select.value);
+
+  document.getElementById("show-select-btn").onclick =
+    () => select.classList.toggle("hidden");
 }
 
 function selectCase(id) {
   caseData = caseDataList.find(c => c.id === id);
+  if (!caseData) return;
+
   document.getElementById("case-name").textContent = caseData.name;
   document.getElementById("case-image").src = caseData.image;
   document.getElementById("open-btn").textContent =
-    `Open for ${caseData.price.toFixed(2)} coins`;
+    `Open for ${caseData.price} coins`;
 
   caseData.items.forEach(i => new Image().src = i.image);
 }
@@ -120,41 +109,57 @@ function selectCase(id) {
 function weightedRandom(items) {
   let total = items.reduce((s, i) => s + i.weight, 0);
   let r = Math.random() * total;
+
   for (let i of items) {
     if (r < i.weight) return i;
     r -= i.weight;
   }
 }
 
+// ================= UTIL =================
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 // ================= SPINNER =================
 let lastWonDiv = null;
-
-function shuffleArray(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
+const SPIN_TIME = 7000; // ms (slower feel, shorter duration)
 
 function buildSpinner(win) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
-  let pool = [];
-  for (let i = 0; i < 10; i++) {
-    pool.push(...caseData.items);
-  }
+  // Build visual pool (weighted but NOT ordered)
+  const visualPool = [];
+  caseData.items.forEach(i => {
+    const count = Math.max(1, Math.floor(i.weight / 100));
+    for (let x = 0; x < count; x++) visualPool.push(i);
+  });
 
-  pool = shuffleArray(pool);
-  const winIndex = pool.length - 8;
-  pool[winIndex] = win;
+  shuffle(visualPool);
 
-  pool.forEach(i => {
+  // Repeat pool to make long strip
+  let arr = [];
+  for (let i = 0; i < 10; i++) arr = arr.concat(visualPool);
+
+  // Choose landing index
+  const winIndex = arr.length - 12;
+  arr[winIndex] = win;
+
+  arr.forEach(i => {
     const div = document.createElement("div");
     div.className = `spinner-item ${i.rarity.toLowerCase()}`;
     div.innerHTML = `<img src="${i.image}">`;
     strip.appendChild(div);
   });
 
-  const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20;
-  const distance = itemWidth * (winIndex - 1);
+  const itemWidth =
+    strip.querySelector(".spinner-item").offsetWidth + 20;
+  const dist = itemWidth * winIndex;
 
   if (lastWonDiv) lastWonDiv.classList.remove("highlight-won");
 
@@ -163,8 +168,9 @@ function buildSpinner(win) {
   strip.offsetHeight;
 
   requestAnimationFrame(() => {
-    strip.style.transition = "transform 6s cubic-bezier(.22,.61,.36,1)";
-    strip.style.transform = `translateX(-${distance}px)`;
+    strip.style.transition =
+      `transform ${SPIN_TIME}ms cubic-bezier(.22,.61,.36,1)`;
+    strip.style.transform = `translateX(-${dist}px)`;
   });
 
   setTimeout(() => {
@@ -173,12 +179,13 @@ function buildSpinner(win) {
       d.classList.add("highlight-won");
       lastWonDiv = d;
     }
-  }, 6000);
+  }, SPIN_TIME);
 }
 
 // ================= OPEN BUTTON =================
 document.getElementById("open-btn").onclick = () => {
   if (!caseData) return;
+
   if (coins < caseData.price) {
     const c = document.getElementById("coins");
     c.style.color = "red";
@@ -193,10 +200,11 @@ document.getElementById("open-btn").onclick = () => {
   buildSpinner(won);
 
   setTimeout(() => {
-    document.getElementById("winner-name").textContent = `You won: ${won.name}`;
+    document.getElementById("winner-name").textContent =
+      `You won: ${won.name}`;
     addToInventory(won);
     addRecentDrop(won);
-  }, 6000);
+  }, SPIN_TIME);
 };
 
 // ================= TOP DROPS =================
@@ -210,6 +218,7 @@ function addRecentDrop(i) {
 function renderTopDrops() {
   const c = document.getElementById("top-drops");
   c.innerHTML = "";
+
   [...recentDrops]
     .sort((a, b) => b.price - a.price)
     .slice(0, 8)
@@ -219,7 +228,7 @@ function renderTopDrops() {
       d.innerHTML = `
         <img src="${i.image}">
         <p>${i.name}</p>
-        <strong>${i.price.toFixed(2)} coins</strong>
+        <strong>${i.price} coins</strong>
       `;
       c.appendChild(d);
     });
