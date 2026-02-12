@@ -32,6 +32,7 @@
         { "name": "Unusual Spectral Shackles Taunt: Bad Pipes", "rarity": "mythical", "price": 6.57, "weight": 1100, "image": "images/items/badpipespec.png" },
         { "name": "Strange Killstreak Big Earner", "rarity": "strange", "price": 4.01, "weight": 1400, "image": "images/items/stbigks.png" },
         { "name": "Smoking Jacket", "rarity": "common", "price": 3.61, "weight": 450, "image": "images/items/smokingjacket.png" },
+        { "name": "Unusual Sunbeams", "rarity": "collector", "price": 98.61, "weight": 120, "image": "images/items/sunkiller.png" },
         { "name": "Haunted Holy Hunter", "rarity": "haunted", "price": 4.16, "weight": 1900, "image": "images/items/holyhunter.png" },
         { "name": "Strange Dapper Dickens", "rarity": "strange", "price": 8.99, "weight": 900, "image": "images/items/dapdickens.png" },
         { "name": "Strange L'Etranger", "rarity": "strange", "price": 3.40, "weight": 1200, "image": "images/items/letranger.png" },
