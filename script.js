@@ -55,12 +55,12 @@ document.getElementById("toggle-inv-btn").onclick =
   () => document.getElementById("inventory").classList.toggle("hidden");
 
 document.getElementById("add-coins-btn").onclick = () => {
-  coins += 50;
+  coins += 0.01;
   updateCoins();
 };
 
 document.getElementById("remove-coins-btn").onclick = () => {
-  coins = Math.max(0, coins - 50);
+  coins = Math.max(0, coins - 0.01);
   updateCoins();
 };
 
