@@ -90,7 +90,18 @@ fetch("data/cases.json")
     document.getElementById("case-name").textContent = caseData.name;
     document.getElementById("open-btn").textContent =
       `Open for ${caseData.price} coins`;
+
+    // Preload all case images on page load
+    preloadAllCaseImages();
   });
+
+// ================= PRELOAD CASE IMAGES =================
+function preloadAllCaseImages() {
+  caseData.items.forEach(item => {
+    const img = new Image();
+    img.src = item.image;
+  });
+}
 
 // ================= RNG =================
 function weightedRandom(items) {
@@ -116,27 +127,39 @@ function buildSpinner(winItem) {
     const random = caseData.items[Math.floor(Math.random() * caseData.items.length)];
     randomItems.push(random);
   }
-  randomItems[winIndex] = winItem; // place winner in center
+  randomItems[winIndex] = winItem;
 
-  randomItems.forEach(item => {
-    const div = document.createElement("div");
-    div.className = `spinner-item ${item.rarity.toLowerCase()}`;
-    div.innerHTML = `<img src="${item.image}">`;
-    strip.appendChild(div);
+  // Preload all spinner images before animation
+  const imagePromises = randomItems.map(item => {
+    return new Promise(resolve => {
+      const img = new Image();
+      img.src = item.image;
+      img.onload = resolve;
+      img.onerror = resolve; // continue even if error
+    });
   });
 
-  // dynamically calculate scroll distance
-  const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20; // includes margin
-  const distance = winIndex * itemWidth * -1 + strip.parentElement.offsetWidth / 2 - itemWidth / 2;
+  Promise.all(imagePromises).then(() => {
+    randomItems.forEach(item => {
+      const div = document.createElement("div");
+      div.className = `spinner-item ${item.rarity.toLowerCase()}`;
+      div.innerHTML = `<img src="${item.image}">`;
+      strip.appendChild(div);
+    });
 
-  // reset position
-  strip.style.transition = "none";
-  strip.style.left = "0px";
-  strip.offsetHeight; // force reflow
+    // calculate dynamic distance to center winning item
+    const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20; // margin
+    const distance = winIndex * itemWidth * -1 + strip.parentElement.offsetWidth / 2 - itemWidth / 2;
 
-  // animate with easing
-  strip.style.transition = "left 8s cubic-bezier(.1,.7,0,1)";
-  strip.style.left = `${distance}px`;
+    // reset position
+    strip.style.transition = "none";
+    strip.style.left = "0px";
+    strip.offsetHeight; // force reflow
+
+    // animate
+    strip.style.transition = "left 8s cubic-bezier(.1,.7,0,1)";
+    strip.style.left = `${distance}px`;
+  });
 }
 
 // ================= OPEN BUTTON =================
@@ -195,5 +218,4 @@ function renderTopDrops() {
 }
 
 renderTopDrops();
-
 
