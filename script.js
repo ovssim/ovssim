@@ -55,14 +55,15 @@ document.getElementById("toggle-inv-btn").onclick =
   () => document.getElementById("inventory").classList.toggle("hidden");
 
 document.getElementById("add-coins-btn").onclick = () => {
-  coins += 0.01;
+  coins = +(coins + 0.01).toFixed(2);
   updateCoins();
 };
 
 document.getElementById("remove-coins-btn").onclick = () => {
-  coins = Math.max(0, coins - 0.01);
+  coins = Math.max(0, +(coins - 0.01).toFixed(2));
   updateCoins();
 };
+
 
 // ================= CASE DATA =================
 let caseDataList = [];
