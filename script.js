@@ -110,6 +110,8 @@ function weightedRandom(items) {
 }
 
 // ================= SPINNER =================
+let lastWonItemDiv = null; // store reference to the last highlighted item
+
 function buildSpinner(winItem) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
@@ -118,25 +120,19 @@ function buildSpinner(winItem) {
   const winIndex = Math.floor(totalItems / 2);
   const randomItems = [];
 
-  // Fill spinner with random items
   for (let i = 0; i < totalItems; i++) {
     const random = caseData.items[Math.floor(Math.random() * caseData.items.length)];
     randomItems.push(random);
   }
-  randomItems[winIndex] = winItem; // Force the winning item
+  randomItems[winIndex] = winItem;
 
-  // Preload images
-  const imagePromises = randomItems.map(item => {
-    return new Promise(resolve => {
-      const img = new Image();
-      img.src = item.image;
-      img.onload = resolve;
-      img.onerror = resolve;
-    });
-  });
+  const imagePromises = randomItems.map(item => new Promise(resolve => {
+    const img = new Image();
+    img.src = item.image;
+    img.onload = resolve; img.onerror = resolve;
+  }));
 
   Promise.all(imagePromises).then(() => {
-    // Create spinner items
     randomItems.forEach(item => {
       const div = document.createElement("div");
       div.className = `spinner-item ${item.rarity.toLowerCase()}`;
@@ -145,25 +141,23 @@ function buildSpinner(winItem) {
     });
 
     const itemWidth = strip.querySelector(".spinner-item").offsetWidth + 20;
-
-    // Total distance to scroll (faster with extra spins)
     const extraSpins = 3;
     const distance = -(winIndex * itemWidth + totalItems * itemWidth * extraSpins);
 
-    // Reset and start transition
     strip.style.transition = "none";
     strip.style.left = "0px";
-    strip.offsetHeight; // force reflow
+    strip.offsetHeight;
 
     strip.style.transition = "left 11s cubic-bezier(.25,.1,.25,1)";
     strip.style.left = `${distance}px`;
 
-    // Highlight winning item after spin
+    if (lastWonItemDiv) lastWonItemDiv.classList.remove("highlight-won");
+
     setTimeout(() => {
       const wonItemDiv = strip.children[winIndex];
       if (wonItemDiv) {
         wonItemDiv.classList.add("highlight-won");
-        setTimeout(() => wonItemDiv.classList.remove("highlight-won"), 3000);
+        lastWonItemDiv = wonItemDiv;
       }
     }, 11000);
   });
@@ -171,18 +165,26 @@ function buildSpinner(winItem) {
 
 // ================= OPEN BUTTON =================
 document.getElementById("open-btn").addEventListener("click", () => {
-  if(!caseData) return;
-  if(coins < caseData.price){
-    const coinsEl=document.getElementById("coins"); coinsEl.style.color="red";
-    setTimeout(()=>coinsEl.style.color="white",1000); return;
+  if (!caseData) return;
+  if (coins < caseData.price) {
+    const coinsEl = document.getElementById("coins");
+    coinsEl.style.color = "red";
+    setTimeout(() => coinsEl.style.color = "white", 1000);
+    return;
   }
-  coins -= caseData.price; updateCoins(); saveData();
+
+  coins -= caseData.price;
+  updateCoins();
+  saveData();
+
   const winItem = weightedRandom(caseData.items);
   buildSpinner(winItem);
-  setTimeout(()=>{
+
+  setTimeout(() => {
     document.getElementById("winner-name").textContent = `You won: ${winItem.name}`;
-    addToInventory(winItem); addRecentDrop(winItem);
-  },11000);
+    addToInventory(winItem);
+    addRecentDrop(winItem);
+  }, 11000);
 });
 
 // ================= TOP DROPS =================
@@ -199,4 +201,3 @@ function renderTopDrops(){
   });
 }
 renderTopDrops();
-
