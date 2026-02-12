@@ -29,7 +29,7 @@
       "items": [
         { "name": "Unusual Magenta Monstrum Vaudville Visor", "rarity": "mythical", "price": 43.30, "weight": 190, "image": "images/items/magentavaudville.png" },
         { "name": "Unusual Flavorsome Sunset Reel Fly Hat", "rarity": "mythical", "price": 54.25, "weight": 150, "image": "images/items/flavorsomereel.png" },
-        { "name": "Unusual Spectral Shackles Taunt: Yeti Smash", "rarity": "mythical", "price": 6.57, "weight": 1100, "image": "images/items/spectyeti.png" },
+        { "name": "Unusual Spectral Shackles Taunt: Bad Pipes", "rarity": "mythical", "price": 6.57, "weight": 1100, "image": "images/items/badpipespec.png" },
         { "name": "Strange Killstreak Big Earner", "rarity": "strange", "price": 4.01, "weight": 1400, "image": "images/items/stbigks.png" },
         { "name": "Smoking Jacket", "rarity": "common", "price": 3.61, "weight": 450, "image": "images/items/smokingjacket.png" },
         { "name": "Haunted Holy Hunter", "rarity": "haunted", "price": 4.16, "weight": 1900, "image": "images/items/holyhunter.png" },
