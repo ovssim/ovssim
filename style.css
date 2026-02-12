@@ -117,7 +117,7 @@ h1 {
 }
 
 #spinner-container {
-  height: 160px; /* increased to prevent cutting off */
+  height: 160px;
   overflow: hidden;
   background: #111;
   border-radius: 15px;
@@ -150,7 +150,7 @@ h1 {
   display: block;
 }
 
-/* Highlight the won item continuously */
+/* Highlight the won item continuously with rarity glow */
 .highlight-won {
   animation: glowScale 1.5s ease-in-out infinite alternate;
   z-index: 10;
@@ -158,18 +158,9 @@ h1 {
 }
 
 @keyframes glowScale {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 15px gold;
-  }
-  50% {
-    transform: scale(1.3);
-    box-shadow: 0 0 35px gold;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 15px gold;
-  }
+  0% { transform: scale(1); box-shadow: 0 0 15px currentColor; }
+  50% { transform: scale(1.3); box-shadow: 0 0 35px currentColor; }
+  100% { transform: scale(1); box-shadow: 0 0 15px currentColor; }
 }
 
 /* ================= INVENTORY ================= */
@@ -181,9 +172,7 @@ h1 {
   transition: 0.3s;
 }
 
-#inventory.hidden {
-  display: none;
-}
+#inventory.hidden { display: none; }
 
 .inv-item {
   width: 130px;
@@ -230,15 +219,10 @@ h1 {
   object-fit: contain;
 }
 
-/* ================= RARITY GLOWS ================= */
-.common { box-shadow: 0 0 10px gray; }
-.rare { box-shadow: 0 0 12px blue; }
-.strange { box-shadow: 0 0 14px orange; }
-.unusual { box-shadow: 0 0 16px purple; animation: pulse 1.5s infinite alternate; }
-.legendary { box-shadow: 0 0 20px gold; animation: pulse 1.5s infinite alternate; }
-.mythical { box-shadow: 0 0 25px violet; animation: pulse 1.5s infinite alternate; }
-
-@keyframes pulse {
-  from { transform: scale(1); box-shadow: 0 0 20px currentColor; }
-  to { transform: scale(1.05); box-shadow: 0 0 30px currentColor; }
-}
+/* ================= RARITY COLORS ================= */
+.common { color: gray; box-shadow: 0 0 10px gray; }
+.rare { color: blue; box-shadow: 0 0 12px blue; }
+.strange { color: orange; box-shadow: 0 0 14px orange; }
+.unusual { color: purple; box-shadow: 0 0 16px purple; }
+.legendary { color: gold; box-shadow: 0 0 20px gold; }
+.mythical { color: violet; box-shadow: 0 0 25px violet; }
