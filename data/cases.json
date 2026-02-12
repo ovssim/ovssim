@@ -19,28 +19,35 @@
         { "name": "Unusual Circling Peace Sign Head Warmer", "rarity": "unusual", "price": 27.99, "weight": 100, "image": "images/items/unusual1.png" },
         { "name": "Unusual Aurora Polaris Taunt: Kazotsky Kick", "rarity": "unusual", "price": 130.00, "weight": 5, "image": "images/items/kazopolaris.png" }
       ]
-  { "id": "aussie", "name": "AUSTRALIUM", "price": 45.00, "image": "images/cases/aussie.png",
     },
-    "items": [
-  { "name": "Australium Rocket Launcher", "rarity": "Legendary", "price": 110.00, "weight": 150, "image": "images/items/aussierocket.png" },
-  { "name": "Australium Minigun", "rarity": "Legendary", "price": 56.00, "weight": 185, "image": "images/items/aussiemini.png" },
-  { "name": "Australium Knife", "rarity": "Legendary", "price": 47.00, "weight": 195, "image": "images/items/aussieknife.png" },
-  { "name": "Australium Scattergun", "rarity": "Legendary", "price": 76.00, "weight": 160, "image": "images/items/aussiescatt.png" },
-  { "name": "Australium Force-a-Nature", "rarity": "Legendary", "price": 26.00, "weight": 205, "image": "images/items/aussiefan.png" },
-  { "name": "Australium Black Box", "rarity": "Legendary", "price": 43.00, "weight": 200, "image": "images/items/aussieblack.png" },
-  { "name": "Australium Flame Thrower", "rarity": "Legendary", "price": 72.00, "weight": 160, "image": "images/items/aussieflame.png" },
-  { "name": "Australium Axtinguisher", "rarity": "Legendary", "price": 13.00, "weight": 220, "image": "images/items/aussieaxt.png" },
-  { "name": "Australium Grenade Launcher", "rarity": "Legendary", "price": 54.00, "weight": 190, "image": "images/items/aussiegrenade.png" },
-  { "name": "Australium Eyelander", "rarity": "Legendary", "price": 112.00, "weight": 300, "image": "images/items/aussieeye.png" },
-  { "name": "Australium Tomislav", "rarity": "Legendary", "price": 62.00, "weight": 170, "image": "images/items/aussietomy.png" },
-  { "name": "Australium Frontier Justice", "rarity": "Legendary", "price": 43.00, "weight": 200, "image": "images/items/aussiefront.png" },
-  { "name": "Australium Wrench", "rarity": "Legendary", "price": 55.00, "weight": 185, "image": "images/items/aussiewrench.png" },
-  { "name": "Australium Blutsauger", "rarity": "Legendary", "price": 11.00, "weight": 225, "image": "images/items/aussieblut.png" },
-  { "name": "Australium Medigun", "rarity": "Legendary", "price": 100.00, "weight": 140, "image": "images/items/aussiemedi.png" },
-  { "name": "Australium Sniper Rifle", "rarity": "Legendary", "price": 75.00, "weight": 180, "image": "images/items/aussiesniper.png" },
-  { "name": "Australium SMG", "rarity": "Legendary", "price": 21.00, "weight": 215, "image": "images/items/aussiesmg.png" },
-  { "name": "Scrap Metal", "rarity": "Common", "price": 0.01, "weight": 4000, "image": "images/items/scrap.png" },
-  { "name": "Australium Ambassador", "rarity": "Legendary", "price": 24.00, "weight": 210, "image": "images/items/aussieamby.png" },
-  { "name": "Unusual Community Sparkle Festivized Golden Frying Pan", "rarity": "Mythical", "price": 11000.00, "weight": 10, "image": "images/items/aussiefrying.png" },
-  { "name": "Australium Sticky Bomb Launcher", "rarity": "Legendary", "price": 64.00, "weight": 195, "image": "images/items/aussiesticky.png" }
-]
+    {
+      "id": "aussie",
+      "name": "AUSTRALIUM",
+      "price": 45.00,
+      "image": "images/cases/aussie.png",
+      "items": [
+        { "name": "Australium Rocket Launcher", "rarity": "legendary", "price": 110.00, "weight": 150, "image": "images/items/aussierocket.png" },
+        { "name": "Australium Minigun", "rarity": "legendary", "price": 56.00, "weight": 185, "image": "images/items/aussiemini.png" },
+        { "name": "Australium Knife", "rarity": "legendary", "price": 47.00, "weight": 195, "image": "images/items/aussieknife.png" },
+        { "name": "Australium Scattergun", "rarity": "legendary", "price": 76.00, "weight": 160, "image": "images/items/aussiescatt.png" },
+        { "name": "Australium Force-a-Nature", "rarity": "legendary", "price": 26.00, "weight": 205, "image": "images/items/aussiefan.png" },
+        { "name": "Australium Black Box", "rarity": "legendary", "price": 43.00, "weight": 200, "image": "images/items/aussieblack.png" },
+        { "name": "Australium Flame Thrower", "rarity": "legendary", "price": 72.00, "weight": 160, "image": "images/items/aussieflame.png" },
+        { "name": "Australium Axtinguisher", "rarity": "legendary", "price": 13.00, "weight": 220, "image": "images/items/aussieaxt.png" },
+        { "name": "Australium Grenade Launcher", "rarity": "legendary", "price": 54.00, "weight": 190, "image": "images/items/aussiegrenade.png" },
+        { "name": "Australium Eyelander", "rarity": "legendary", "price": 112.00, "weight": 300, "image": "images/items/aussieeye.png" },
+        { "name": "Australium Tomislav", "rarity": "legendary", "price": 62.00, "weight": 170, "image": "images/items/aussietomy.png" },
+        { "name": "Australium Frontier Justice", "rarity": "legendary", "price": 43.00, "weight": 200, "image": "images/items/aussiefront.png" },
+        { "name": "Australium Wrench", "rarity": "legendary", "price": 55.00, "weight": 185, "image": "images/items/aussiewrench.png" },
+        { "name": "Australium Blutsauger", "rarity": "legendary", "price": 11.00, "weight": 225, "image": "images/items/aussieblut.png" },
+        { "name": "Australium Medigun", "rarity": "legendary", "price": 100.00, "weight": 140, "image": "images/items/aussiemedi.png" },
+        { "name": "Australium Sniper Rifle", "rarity": "legendary", "price": 75.00, "weight": 180, "image": "images/items/aussiesniper.png" },
+        { "name": "Australium SMG", "rarity": "legendary", "price": 21.00, "weight": 215, "image": "images/items/aussiesmg.png" },
+        { "name": "Scrap Metal", "rarity": "common", "price": 0.01, "weight": 4000, "image": "images/items/scrap.png" },
+        { "name": "Australium Ambassador", "rarity": "legendary", "price": 24.00, "weight": 210, "image": "images/items/aussieamby.png" },
+        { "name": "Unusual Community Sparkle Festivized Golden Frying Pan", "rarity": "mythical", "price": 11000.00, "weight": 10, "image": "images/items/aussiefrying.png" },
+        { "name": "Australium Sticky Bomb Launcher", "rarity": "legendary", "price": 64.00, "weight": 195, "image": "images/items/aussiesticky.png" }
+      ]
+    }
+  ]
+}
