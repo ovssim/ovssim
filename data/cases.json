@@ -19,7 +19,10 @@
         { "name": "Unusual Circling Peace Sign Head Warmer", "rarity": "mythical", "price": 27.99, "weight": 100, "image": "images/items/unusual1.png" },
         { "name": "Unusual Aurora Polaris Taunt: Kazotsky Kick", "rarity": "mythical", "price": 130.00, "weight": 5, "image": "images/items/kazopolaris.png" }
       ]
-            "id": "sanctuary",
+    },
+
+    {
+      "id": "sanctuary",
       "name": "Silent Sanctuary",
       "price": 15.00,
       "image": "images/cases/sanctuary.png",
@@ -34,8 +37,8 @@
         { "name": "Strange L'Etranger", "rarity": "strange", "price": 3.40, "weight": 1200, "image": "images/items/letranger.png" },
         { "name": "Vintage Vintage Merryweather", "rarity": "vintage", "price": 3.00, "weight": 1900, "image": "images/items/merryweather.png" },
         { "name": "Templar's Spirit", "rarity": "common", "price": 18.38, "weight": 1600, "image": "images/items/tempspirit.png" },
-        { "name": "Haunted Fallen Angel", "rarity": "common", "price": 1.89, "weight": 1000, "image": "images/items/fallenangel.png" },
-        { "name": "Genuine Tomb Readers", "rarity": "genuine", "price": 6.97, "weight": 1700, "image": "images/items/tombread.png" }
+        { "name": "Haunted Fallen Angel", "rarity": "haunted", "price": 1.89, "weight": 1000, "image": "images/items/fallenangel.png" },
+        { "name": "Genuine Tomb Readers", "rarity": "genuine", "price": 6.97, "weight": 1700, "image": "images/items/tombread.png" },
         { "name": "Genuine Professional Killstreak Sharp Dresser", "rarity": "genuine", "price": 23.42, "weight": 1000, "image": "images/items/sharpdress.png" },
         { "name": "Unusual Stellar Ascent Ludicrously Lunatic Lunon Fedora", "rarity": "mythical", "price": 62.00, "weight": 140, "image": "images/items/ascentfedora.png" },
         { "name": "Unusual Green Energy Professional's Panama", "rarity": "mythical", "price": 91.45, "weight": 100, "image": "images/items/greenpanama.png" },
@@ -47,9 +50,10 @@
         { "name": "Plutonidome", "rarity": "common", "price": 0.71, "weight": 350, "image": "images/items/pluto.png" },
         { "name": "Unusual Starstorm Slumber Cranial Carcharodon", "rarity": "mythical", "price": 90.00, "weight": 90, "image": "images/items/starcranial.png" },
         { "name": "Genuine Doublecross-Comm", "rarity": "genuine", "price": 5.99, "weight": 500, "image": "images/items/doublecomm.png" },
-        { "name": "Unusual Dead Presidents Tundra Top", "rarity": "mythical", "price": 60.00, "weight": 220, "image": "images/items/deadtundra.png" },
+        { "name": "Unusual Dead Presidents Tundra Top", "rarity": "mythical", "price": 60.00, "weight": 220, "image": "images/items/deadtundra.png" }
       ]
     },
+
     {
       "id": "aussie",
       "name": "AUSTRALIUM",
