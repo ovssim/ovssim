@@ -7,31 +7,49 @@
 </head>
 <body>
 
-<h1>OVFF's TF2 Cases</h1>
+<h1>OVFF's Cases</h1>
 
-<div id="coins">Coins: 100.00</div>
+<div id="coins"></div>
 
 <div id="controls">
-  <button id="inventory-btn">Inventory</button>
-  <button id="case-items">Case Items</button>
-  <button id="open-case">Open Case</button>
+  <button class="theme-btn" id="toggle-inv-btn">Toggle Inventory</button>
+  <button class="theme-btn" id="add-coins-btn">+0.10 Coins</button>
+  <button class="theme-btn" id="remove-coins-btn">-0.04 Coins</button>
 </div>
 
+<!-- Case selection -->
+<div id="case-select-wrapper">
+  <select id="case-select"></select>
+</div>
+
+<!-- Case section -->
 <div id="case-section">
-  <img id="selected-case-image" src="" alt="Case Image" class="case-image">
+  <div class="case-left">
+    <img id="case-image" src="" alt="Case Image">
+  </div>
+  <div class="case-right">
+    <h2 id="case-name"></h2>
+    <button class="theme-btn" id="open-btn"></button>
+    <button class="theme-btn" id="show-case-items-btn">Show Case Items</button>
+    <div id="case-items-list"></div>
+  </div>
 </div>
 
-<div id="spinner-container"></div>
+<div id="winner-name"></div>
+
+<!-- Spinner -->
+<div id="spinner-wrapper">
+  <div id="spinner-container">
+    <div id="spinner-strip"></div>
+  </div>
+</div>
 
 <h2>Inventory</h2>
-<div id="inventory-container"></div>
+<div id="inventory" class="hidden"></div>
 
-<h2>Case Selector</h2>
-<div id="case-selector"></div>
+<h2 class="top-title">• Last TOP Drops</h2>
+<div id="top-drops"></div>
 
-<div id="case-items-container"></div>
-
-<script src="cases.json"></script>
 <script src="script.js"></script>
 </body>
 </html>
