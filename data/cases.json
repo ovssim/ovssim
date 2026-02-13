@@ -75,7 +75,7 @@
         { "name": "Unusual Tesla Coil Bananades", "rarity": "mythical", "price": 110.76, "weight": 900, "image": "images/items/teslabananades.png" },
         { "name": "Unusual Cold Cosmos Idiot Box", "rarity": "mythical", "price": 162.84, "weight": 700, "image": "images/items/coldidiot.png" },
         { "name": "Unusual Fragmented Photons Running Man", "rarity": "mythical", "price": 49.99, "weight": 4500, "image": "images/items/runningfrags.png" },
-        { "name": "Unusual Halcyon Halo Robotler 2000", "rarity": "collector", "price": 34000.00, "weight": 1, "image": "images/items/halobotler.png" },
+        { "name": "Unusual Halcyon Halo Robotler 2000", "rarity": "collector", "price": 34000.00, "weight": 2, "image": "images/items/halobotler.png" },
         { "name": "Unusual Sapped Glitched Circuit Board", "rarity": "mythical", "price": 173.19, "weight": 750, "image": "images/items/circuitsap.png" },
         { "name": "Unusual Resonation Robro 3000", "rarity": "mythical", "price": 76.00, "weight": 4600, "image": "images/items/robrou.png" },
         { "name": "Haunted Unusual Voltaic Hat Protector Teufort Kight", "rarity": "haunted", "price": 80.11, "weight": 5500, "image": "images/items/tkv.png" },
