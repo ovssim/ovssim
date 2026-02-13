@@ -1,101 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>OVFFs Sim</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>OVFF's Sim</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>OVFFs Sim</h1>
-<h3 id="coins-display">Coins: 1000</h3>
+<h1>OVFF's Sim</h1>
 
-<!-- ================= GAME MODE SWITCH ================= -->
-<div id="gamemode-switch">
-  <button class="theme-btn active-mode" id="cases-mode-btn">Cases</button>
-  <button class="theme-btn" id="coinflip-mode-btn">Coinflip</button>
+<div id="coins"></div>
+
+<div id="controls">
+  <button class="theme-btn" id="toggle-inv-btn">Toggle Inventory</button>
+  <button class="theme-btn" id="add-coins-btn">+10.00 Coins</button>
+  <button class="theme-btn" id="remove-coins-btn">-0.04 Coins</button>
 </div>
 
-<!-- ================= CASES MODE ================= -->
-<div id="cases-mode">
-
-  <h2>Select Case</h2>
+<!-- Case selection -->
+<div id="case-select-wrapper">
   <select id="case-select"></select>
-  <button class="theme-btn" id="open-case-btn">Open Case</button>
+</div>
 
+<!-- Case section -->
+<div id="case-section">
+  <div class="case-left">
+    <img id="case-image" src="" alt="Case Image">
+  </div>
+  <div class="case-right">
+    <h2 id="case-name"></h2>
+    <button class="theme-btn" id="open-btn"></button>
+    <button class="theme-btn" id="show-case-items-btn">Show Case Items</button>
+    <div id="case-items-list"></div>
+  </div>
+</div>
+
+<div id="winner-name"></div>
+
+<!-- Spinner -->
+<div id="spinner-wrapper">
   <div id="spinner-container">
-    <div id="spinner"></div>
+    <div id="spinner-strip"></div>
   </div>
-
-  <div id="winner-display"></div>
-
 </div>
 
-<!-- ================= COINFLIP MODE ================= -->
-<div id="coinflip-mode" class="hidden">
+<h2>Inventory</h2>
+<div id="inventory" class="hidden"></div>
 
-  <h2>Coinflip</h2>
-
-  <div id="coinflip-selected"></div>
-
-  <h3>Possible Win</h3>
-  <div id="coinflip-preview"></div>
-
-  <div id="coin">
-    <div class="coin-inner">
-      <div class="coin-face heads">WIN</div>
-      <div class="coin-face tails">LOSE</div>
-    </div>
-  </div>
-
-  <button class="theme-btn" id="coinflip-btn" disabled>Flip Coin</button>
-  <div id="coinflip-result"></div>
-
-</div>
-
-<!-- ================= INVENTORY ================= -->
-<h2>Your Inventory</h2>
-<div id="inventory"></div>
-
-<!-- ================= EMBED CASES JSON ================= -->
-<script>
-window.cases = {
-  "cases": [
-    {
-      "id": "new_hire",
-      "name": "New Hire",
-      "price": 2.49,
-      "image": "images/cases/newhires.png",
-      "items": [
-        { "name": "Syringe Gun", "rarity": "common", "price": 0.07, "weight": 900, "image": "images/items/syringe_gun.png" },
-        { "name": "Stock Shotgun", "rarity": "common", "price": 0.10, "weight": 800, "image": "images/items/shotgun.png" },
-        { "name": "Stock Scattergun", "rarity": "common", "price": 0.06, "weight": 700, "image": "images/items/stockscatt.png" },
-        { "name": "Diamondback", "rarity": "common", "price": 0.01, "weight": 1000, "image": "images/items/diaback.png" },
-        { "name": "Strange Frontier Justice", "rarity": "strange", "price": 3.27, "weight": 450, "image": "images/items/frontjust.png" },
-        { "name": "Übersaw", "rarity": "common", "price": 0.01, "weight": 700, "image": "images/items/ubersaw.png" },
-        { "name": "Bill's Hat", "rarity": "strange", "price": 8.99, "weight": 350, "image": "images/items/billhat.png" },
-        { "name": "Ghost Town Claidheamh Mor", "rarity": "rare", "price": 5.75, "weight": 320, "image": "images/items/spooky.png" },
-        { "name": "Helldiver Black Box", "rarity": "rare", "price": 20.19, "weight": 220, "image": "images/items/hellblackbox.png" },
-        { "name": "Strange Pistol", "rarity": "strange", "price": 0.89, "weight": 450, "image": "images/items/pistol.png" },
-        { "name": "Unusual Hellfire Well-Rounded Rifleman", "rarity": "collector", "price": 2700.99, "weight": 1, "image": "images/items/unusual1.png" },
-        { "name": "Unusual Aurora Polaris Taunt: Kazotsky Kick", "rarity": "mythical", "price": 130.00, "weight": 50, "image": "images/items/kazopolaris.png" }
-      ]
-    },
-    {
-      "id": "sanctuary",
-      "name": "Silent Sanctuary",
-      "price": 15.00,
-      "image": "images/cases/sanctuary.png",
-      "items": [
-        { "name": "Unusual Magenta Monstrum Vaudville Visor", "rarity": "mythical", "price": 43.30, "weight": 190, "image": "images/items/magmonstrum.png" },
-        { "name": "Unusual Flavorsome Sunset Reel Fly Hat", "rarity": "mythical", "price": 54.25, "weight": 150, "image": "images/items/sunreel.png" },
-        { "name": "Unusual Spectral Shackles Taunt: Bad Pipes", "rarity": "mythical", "price": 6.57, "weight": 1100, "image": "images/items/badpipespec.png" }
-        /* truncated for brevity, include all items here exactly as in your cases.json */
-      ]
-    }
-  ]
-};
-</script>
+<h2 class="top-title">• Last TOP Drops</h2>
+<div id="top-drops"></div>
 
 <script src="script.js"></script>
 </body>
