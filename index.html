@@ -1,75 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>OVFF's TF2 Cases</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>OVFFs Sim</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>OVFF's Cases</h1>
+<h1>OVFFs Sim</h1>
+<h3 id="coins-display">Coins: 1000</h3>
 
-<div id="coins"></div>
-
-<div id="controls">
-  <button class="theme-btn" id="toggle-inv-btn">Toggle Inventory</button>
-  <button class="theme-btn" id="add-coins-btn">+10.00 Coins</button>
-  <button class="theme-btn" id="remove-coins-btn">-0.04 Coins</button>
+<!-- ================= GAME MODE SWITCH ================= -->
+<div id="gamemode-switch">
+  <button class="theme-btn active-mode" id="cases-mode-btn">Cases</button>
+  <button class="theme-btn" id="coinflip-mode-btn">Coinflip</button>
 </div>
 
-<div id="case-select-wrapper">
+<!-- ================= CASES MODE ================= -->
+<div id="cases-mode">
+
+  <h2>Select Case</h2>
   <select id="case-select"></select>
-</div>
+  <button class="theme-btn" id="open-case-btn">Open Case</button>
 
-<div id="case-section">
-  <div class="case-left">
-    <img id="case-image" src="">
-  </div>
-  <div class="case-right">
-    <h2 id="case-name"></h2>
-    <button class="theme-btn" id="open-btn"></button>
-    <button class="theme-btn" id="show-case-items-btn">Show Case Items</button>
-    <div id="case-items-list"></div>
-  </div>
-</div>
-
-<div id="winner-name"></div>
-
-<div id="spinner-wrapper">
   <div id="spinner-container">
-    <div id="spinner-strip"></div>
-  </div>
-</div>
-
-<h2>Inventory</h2>
-<div id="inventory" class="hidden"></div>
-
-<h2>Coinflip</h2>
-<div id="coinflip-section">
-
-  <div id="coinflip-selected"></div>
-
-  <div id="coin">
-    <div class="coin-inner">
-      <div class="coin-face heads">WIN</div>
-      <div class="coin-face tails">LOSE</div>
-    </div>
+    <div id="spinner"></div>
   </div>
 
-  <button class="theme-btn" id="coinflip-btn" disabled>Flip Coin (2x)</button>
-  <div id="coinflip-result"></div>
+  <div id="winner-display"></div>
 
 </div>
 
-<h2 class="top-title">• Last TOP Drops</h2>
-<div id="top-drops"></div>
+<!-- ================= COINFLIP MODE ================= -->
+<div id="coinflip-mode" class="hidden">
 
-<script src="script.js"></script>
-</body>
-</html>
-
-<h2>Coinflip</h2>
-<div id="coinflip-section">
+  <h2>Coinflip</h2>
 
   <div id="coinflip-selected"></div>
 
@@ -87,3 +52,11 @@
   <div id="coinflip-result"></div>
 
 </div>
+
+<!-- ================= INVENTORY ================= -->
+<h2>Your Inventory</h2>
+<div id="inventory"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
