@@ -14,16 +14,14 @@
 <div id="controls">
   <button id="toggle-inv-btn">Toggle Inventory</button>
   <button id="add-coins-btn">+0.10 Coins</button>
-  <button id="remove-coins-btn">-more than 3 Coins</button>
+  <button id="remove-coins-btn">-0.04 Coins</button>
 </div>
 
-<!-- Case selection -->
 <div id="case-select-wrapper">
   <button id="show-select-btn">Select Case</button>
   <select id="case-select" class="hidden"></select>
 </div>
 
-<!-- Case section -->
 <div id="case-section">
   <div class="case-left">
     <img id="case-image" src="" alt="Case Image">
@@ -31,12 +29,12 @@
   <div class="case-right">
     <h2 id="case-name"></h2>
     <button id="open-btn"></button>
+    <button id="view-items-btn">View Case Items</button>
   </div>
 </div>
 
 <div id="winner-name"></div>
 
-<!-- Spinner -->
 <div id="spinner-wrapper">
   <div id="spinner-container">
     <div id="spinner-strip"></div>
@@ -48,6 +46,15 @@
 
 <h2 class="top-title">• Last TOP Drops</h2>
 <div id="top-drops"></div>
+
+<!-- Case Items Modal -->
+<div id="case-items-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Case Items</h2>
+    <div id="case-items-list"></div>
+    <button id="close-modal-btn">Close</button>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
