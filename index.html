@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>OVFFs Sim</title>
+  <title>TF2Easy</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>OVFFs Sim</h1>
+<h1>TF2Easy</h1>
 <h3 id="coins-display">Coins: 1000</h3>
 
 <!-- ================= GAME MODE SWITCH ================= -->
@@ -57,7 +57,46 @@
 <h2>Your Inventory</h2>
 <div id="inventory"></div>
 
-<script src="cases.json"></script>
+<!-- ================= EMBED CASES JSON ================= -->
+<script>
+window.cases = {
+  "cases": [
+    {
+      "id": "new_hire",
+      "name": "New Hire",
+      "price": 2.49,
+      "image": "images/cases/newhires.png",
+      "items": [
+        { "name": "Syringe Gun", "rarity": "common", "price": 0.07, "weight": 900, "image": "images/items/syringe_gun.png" },
+        { "name": "Stock Shotgun", "rarity": "common", "price": 0.10, "weight": 800, "image": "images/items/shotgun.png" },
+        { "name": "Stock Scattergun", "rarity": "common", "price": 0.06, "weight": 700, "image": "images/items/stockscatt.png" },
+        { "name": "Diamondback", "rarity": "common", "price": 0.01, "weight": 1000, "image": "images/items/diaback.png" },
+        { "name": "Strange Frontier Justice", "rarity": "strange", "price": 3.27, "weight": 450, "image": "images/items/frontjust.png" },
+        { "name": "Übersaw", "rarity": "common", "price": 0.01, "weight": 700, "image": "images/items/ubersaw.png" },
+        { "name": "Bill's Hat", "rarity": "strange", "price": 8.99, "weight": 350, "image": "images/items/billhat.png" },
+        { "name": "Ghost Town Claidheamh Mor", "rarity": "rare", "price": 5.75, "weight": 320, "image": "images/items/spooky.png" },
+        { "name": "Helldiver Black Box", "rarity": "rare", "price": 20.19, "weight": 220, "image": "images/items/hellblackbox.png" },
+        { "name": "Strange Pistol", "rarity": "strange", "price": 0.89, "weight": 450, "image": "images/items/pistol.png" },
+        { "name": "Unusual Hellfire Well-Rounded Rifleman", "rarity": "collector", "price": 2700.99, "weight": 1, "image": "images/items/unusual1.png" },
+        { "name": "Unusual Aurora Polaris Taunt: Kazotsky Kick", "rarity": "mythical", "price": 130.00, "weight": 50, "image": "images/items/kazopolaris.png" }
+      ]
+    },
+    {
+      "id": "sanctuary",
+      "name": "Silent Sanctuary",
+      "price": 15.00,
+      "image": "images/cases/sanctuary.png",
+      "items": [
+        { "name": "Unusual Magenta Monstrum Vaudville Visor", "rarity": "mythical", "price": 43.30, "weight": 190, "image": "images/items/magmonstrum.png" },
+        { "name": "Unusual Flavorsome Sunset Reel Fly Hat", "rarity": "mythical", "price": 54.25, "weight": 150, "image": "images/items/sunreel.png" },
+        { "name": "Unusual Spectral Shackles Taunt: Bad Pipes", "rarity": "mythical", "price": 6.57, "weight": 1100, "image": "images/items/badpipespec.png" }
+        /* truncated for brevity, include all items here exactly as in your cases.json */
+      ]
+    }
+  ]
+};
+</script>
+
 <script src="script.js"></script>
 </body>
 </html>
