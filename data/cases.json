@@ -44,7 +44,7 @@
         { "name": "Strange L'Etranger", "rarity": "strange", "price": 3.40, "weight": 1200, "image": "images/items/letranger.png" },
         { "name": "Unusual Cosmic Constellations Bruisers Bandanna", "rarity": "mythical", "price": 239.00, "weight": 100, "image": "images/items/cosbruis.png" },
         { "name": "Vintage Vintage Merryweather", "rarity": "vintage", "price": 3.00, "weight": 1600, "image": "images/items/merryweather.png" },
-        { "name": "Unusual Baron's Cherished Chaplet Templar's Spirit", "rarity": "mythical", "price": 64.38, "weight": 1000, "image": "images/items/tempspirit.png" },
+        { "name": "Unusual Baron's Cherished Chaplet Templar's Spirit", "rarity": "mythical", "price": 64.38, "weight": 750, "image": "images/items/tempspirit.png" },
         { "name": "Haunted Fallen Angel", "rarity": "haunted", "price": 1.89, "weight": 1900, "image": "images/items/fallenangel.png" },
         { "name": "Genuine Tomb Readers", "rarity": "genuine", "price": 6.97, "weight": 1400, "image": "images/items/tombread.png" },
         { "name": "Genuine Professional Killstreak Sharp Dresser", "rarity": "genuine", "price": 23.42, "weight": 1300, "image": "images/items/sharpdress.png" },
