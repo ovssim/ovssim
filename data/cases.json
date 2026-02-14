@@ -131,6 +131,23 @@
       ]
     },
     {
+      "id": "five",
+      "name": "5% Jackpot",
+      "price": 60,
+      "image": "images/cases/fivejackpot.png",
+      "items": [
+        { "name": "Unusual Piercing Headache Propaniac", "rarity": "mythical", "price": 400.00, "weight": 10, "image": "images/items/php1.png" },
+        { "name": "Unusual Darkblaze Colonel Kringle", "rarity": "collector", "price": 10000.00, "weight": 1, "image": "images/items/dbcc1.png" },
+        { "name": "Unusual Cold Cosmos Brimmed Bootlegger", "rarity": "mythical", "price": 555.00, "weight": 9, "image": "images/items/bbcc.png" },
+        { "name": "Unusual Flourishing Passion Mean Captain", "rarity": "mythical", "price": 800.00, "weight": 5, "image": "images/items/mcfp.png" },
+        { "name": "Unusual Verdatica Scot Bonnet", "rarity": "mythical", "price": 760.00, "weight": 5, "image": "images/items/vsb.png" },
+        { "name": "Unusual Phantom Crown Towering Pillar of Summer Shades", "rarity": "mythical", "price": 500.00, "weight": 10, "image": "images/items/pcpss.png" },
+        { "name": "Unusual Serenus Lumen Mann of the Seven Sees", "rarity": "mythical", "price": 440.00, "weight": 10, "image": "images/items/motss.png" },
+        { "name": "Refined Metal", "rarity": "mythical", "price": 0.03, "weight": 950, "image": "images/items/refined.png" },
+       
+      ]
+     },
+    {
       "id": "aussie",
       "name": "AUSTRALIUM",
       "price": 45.00,
