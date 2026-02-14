@@ -23,7 +23,7 @@
         { "name": "Unusual Terror-Watt Capo's Capper", "rarity": "mythical", "price": 60.99, "weight": 30, "image": "images/items/regrets.png" },
         { "name": "Strange Pistol", "rarity": "strange", "price": 0.89, "weight": 450, "image": "images/items/pistol.png" },
         { "name": "Unusual Miami Nights B-ANKH!", "rarity": "mythical", "price": 111.99, "weight": 15, "image": "images/items/miab.png" },
-        { "name": "Unusual Hellfire Well-Rounded Rifleman", "rarity": "collector", "price": 2700.99, "weight": 1, "image": "images/items/unusual1.png" },
+        { "name": "Unusual Hellfire Well-Rounded Rifleman", "rarity": "collector", "price": 2700.99, "weight": 10001, "image": "images/items/unusual1.png" },
         { "name": "Unusual The Dark Doorway Heavy Artillery Officer's Cap", "rarity": "mythical", "price": 130.00, "weight": 10, "image": "images/items/tddh.png" }
       ]
     },
@@ -57,7 +57,7 @@
         { "name": "The Exorcizor", "rarity": "common", "price": 0.03, "weight": 2000, "image": "images/items/exoc.png" },
         { "name": "The Ghastlierest Gibus", "rarity": "common", "price": 1.88, "weight": 1000, "image": "images/items/ggibus.png" },
         { "name": "Strange Professional Killstreak Solemn Vow", "rarity": "strange", "price": 5.99, "weight": 1300, "image": "images/items/solemn.png" },
-        { "name": "Professional Killstreak Black Rose", "rarity": "collector", "price": 999.99, "weight": 10, "image": "images/items/blackrose.png" },
+        { "name": "Professional Killstreak Black Rose", "rarity": "collector", "price": 999.99, "weight": 10010, "image": "images/items/blackrose.png" },
         { "name": "The Plutonidome", "rarity": "common", "price": 0.71, "weight": 350, "image": "images/items/pluto.png" },
         { "name": "Unusual Starstorm Slumber Cranial Carcharodon", "rarity": "mythical", "price": 90.00, "weight": 270, "image": "images/items/starcran.png" },
         { "name": "Genuine Doublecross-Comm", "rarity": "genuine", "price": 5.99, "weight": 500, "image": "images/items/doublecomm.png" },
@@ -100,7 +100,7 @@
       "price": 120,
       "image": "images/cases/peak.png",
       "items": [
-        { "name": "Collectors Flapjack", "rarity": "collector", "price": 7642.00, "weight": 10, "image": "images/items/flapjack.png" },
+        { "name": "Collectors Flapjack", "rarity": "collector", "price": 7642.00, "weight": 10010, "image": "images/items/flapjack.png" },
         { "name": "Unusual Crystal Crown Breach and Bomb", "rarity": "mythical", "price": 250.00, "weight": 200, "image": "images/items/crybomb.png" },
         { "name": "Unusual Playful Aurora Fuel Injector", "rarity": "mythical", "price": 179.99, "weight": 200, "image": "images/items/pafi.png" },
         { "name": "Unusual Ghosts of Smissmas Time Alcoholic Automoton", "rarity": "mythical", "price": 375.00, "weight": 200, "image": "images/items/gostaa.png" },
@@ -137,7 +137,7 @@
       "image": "images/cases/fivejackpot.png",
       "items": [
         { "name": "Unusual Piercing Headache Propaniac", "rarity": "mythical", "price": 400.00, "weight": 1000, "image": "images/items/php1.png" },
-        { "name": "Unusual Darkblaze Colonel Kringle", "rarity": "collector", "price": 10000.00, "weight": 100, "image": "images/items/dbcc1.png" },
+        { "name": "Unusual Darkblaze Colonel Kringle", "rarity": "collector", "price": 10000.00, "weight": 1000100, "image": "images/items/dbcc1.png" },
         { "name": "Unusual Cold Cosmos Brimmed Bootlegger", "rarity": "mythical", "price": 555.00, "weight": 900, "image": "images/items/bbcc.png" },
         { "name": "Unusual Flourishing Passion Mean Captain", "rarity": "mythical", "price": 800.00, "weight": 500, "image": "images/items/mcfp.png" },
         { "name": "Unusual Verdatica Scot Bonnet", "rarity": "mythical", "price": 760.00, "weight": 500, "image": "images/items/vsb.png" },
