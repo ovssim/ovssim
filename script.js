@@ -220,3 +220,36 @@ document.getElementById("open-btn").addEventListener("click",()=>{
   const winningItem=getRandomItem(currentCase.items);
   spinToItem(winningItem);
 });
+// ---------------- SELL ALL ----------------
+const sellAllBtn = document.getElementById("sell-all-btn");
+
+if (sellAllBtn) {
+    sellAllBtn.addEventListener("click", () => {
+
+        if (inventory.length === 0) {
+            alert("No items to sell.");
+            return;
+        }
+
+        let totalValue = 0;
+
+        inventory.forEach(item => {
+            totalValue += item.price;
+        });
+
+        coins += totalValue;
+        inventory = [];
+
+        saveInventory();
+        updateCoins();
+        renderInventory();
+
+        alert(`Sold all items for $${totalValue.toFixed(2)}`);
+    });
+}
+let inventory = [];
+let coins = 0;
+
+function saveInventory() { ... }
+function updateCoins() { ... }
+function renderInventory() { ... }
