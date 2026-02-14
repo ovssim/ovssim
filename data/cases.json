@@ -133,7 +133,7 @@
     {
       "id": "five",
       "name": "5% Jackpot🎰",
-      "price": 60,
+      "price": 85,
       "image": "images/cases/fivejackpot.png",
       "items": [
         { "name": "Unusual Piercing Headache Propaniac", "rarity": "mythical", "price": 400.00, "weight": 1000, "image": "images/items/php1.png" },
