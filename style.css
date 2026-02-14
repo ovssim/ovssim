@@ -150,6 +150,29 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   font-size: 13px;
 }
 
+.inventory-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+#sell-all-btn {
+  background: linear-gradient(135deg, #ffb347, #ff9500);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#sell-all-btn:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 15px orange;
+}
+
 /* ================= TOP DROPS ================= */
 #top-drops {
   display: flex;
