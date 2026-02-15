@@ -126,166 +126,132 @@ document.getElementById("open-btn").onclick=()=>{
   addToInventory({...item});
 };
 
-// ===================== COINFLIP STATE =====================
+/* ===============================
+   COINFLIP SYSTEM (FULL VERSION)
+   =============================== */
+
 let selectedBet = null;
 let betType = null; // "coins" or "item"
+let betItem = null;
 
-// ===================== COINFLIP INIT =====================
-document.addEventListener("DOMContentLoaded", () => {
-  const flipBtn = document.getElementById("flip-btn");
-  if (flipBtn) flipBtn.onclick = startCoinflip;
+/* ===============================
+   OPEN / CLOSE
+   =============================== */
 
+function openCoinflip() {
+  document.getElementById("coinflipSection").style.display = "block";
   renderBetOptions();
-});
+  updatePoolDisplay();
+}
 
-// ===================== RENDER BET OPTIONS =====================
+function closeCoinflip() {
+  document.getElementById("coinflipSection").style.display = "none";
+  clearSelection();
+}
+
+/* ===============================
+   RENDER BET OPTIONS
+   =============================== */
+
 function renderBetOptions() {
-  const container = document.getElementById("coinflip-options");
-  if (!container) return;
-
+  const container = document.getElementById("betOptions");
   container.innerHTML = "";
 
-  // ---- COIN OPTION ----
-  const coinDiv = document.createElement("div");
-  coinDiv.className = "bet-item coin-option";
-  coinDiv.innerHTML = `
-    <div class="coin-icon">🪙</div>
-    <div>Coins</div>
+  // Coins option
+  const coinCard = document.createElement("div");
+  coinCard.className = "inventory-card";
+  coinCard.innerHTML = `
+    <div class="item-name">Coins</div>
+    <div class="item-price">$${coins.toFixed(2)}</div>
   `;
 
-  coinDiv.onclick = () => {
-    if (selectedBet === "coins") {
-      selectedBet = null;
-      betType = null;
-      coinDiv.classList.remove("selected");
-      updatePoolDisplay();
-      return;
-    }
+  if (betType === "coins") coinCard.classList.add("selected");
 
-    selectedBet = "coins";
+  coinCard.onclick = () => {
     betType = "coins";
-    document.querySelectorAll(".bet-item").forEach(e => e.classList.remove("selected"));
-    coinDiv.classList.add("selected");
+    selectedBet = "coins";
+    betItem = null;
+    renderBetOptions();
     updatePoolDisplay();
   };
 
-  container.appendChild(coinDiv);
+  container.appendChild(coinCard);
 
-  // ---- ITEM OPTIONS ----
+  // Inventory items
   inventory.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.className = `bet-item ${item.rarity}`;
+    const card = document.createElement("div");
+    card.className = `inventory-card rarity-${item.rarity}`;
+    if (betType === "item" && selectedBet === index) {
+      card.classList.add("selected");
+    }
 
-    div.innerHTML = `
-      <img src="${item.image}">
-      <div>${item.name}</div>
-      ${item.amount > 1 ? `<div>x${item.amount}</div>` : ""}
+    card.innerHTML = `
+      <img src="${item.image}" />
+      <div class="item-name">${item.name}</div>
+      <div class="item-price">$${item.price.toFixed(2)}</div>
     `;
 
-    div.onclick = () => {
+    card.onclick = () => {
       if (selectedBet === index) {
-        selectedBet = null;
-        betType = null;
-        div.classList.remove("selected");
-        updatePoolDisplay();
-        return;
+        clearSelection();
+      } else {
+        betType = "item";
+        selectedBet = index;
+        betItem = item;
       }
-
-      selectedBet = index;
-      betType = "item";
-
-      document.querySelectorAll(".bet-item").forEach(e => e.classList.remove("selected"));
-      div.classList.add("selected");
+      renderBetOptions();
       updatePoolDisplay();
     };
 
-    container.appendChild(div);
+    container.appendChild(card);
   });
 }
 
-// ===================== UPDATE POOL DISPLAY =====================
-function updatePoolDisplay() {
-  const wager = document.getElementById("wager-display");
-  const possible = document.getElementById("possible-win-display");
+/* ===============================
+   CLEAR SELECTION
+   =============================== */
 
-  if (!wager || !possible) return;
-
-  wager.innerHTML = "";
-  possible.innerHTML = "";
-
-  if (selectedBet === null) return;
-
-  if (betType === "coins") {
-    wager.innerHTML = `<div class="coin-pool">🪙 ${coins.toFixed(2)}</div>`;
-
-    const equalItems = inventory.filter(i => i.price <= coins);
-
-    equalItems.forEach(i => {
-      const div = document.createElement("div");
-      div.className = `pool-item ${i.rarity}`;
-      div.innerHTML = `
-        <img src="${i.image}">
-        <div>${i.name}</div>
-      `;
-      possible.appendChild(div);
-    });
-  }
-
-  if (betType === "item") {
-    const item = inventory[selectedBet];
-
-    const wagerDiv = document.createElement("div");
-    wagerDiv.className = `pool-item ${item.rarity}`;
-    wagerDiv.innerHTML = `
-      <img src="${item.image}">
-      <div>${item.name}</div>
-    `;
-    wager.appendChild(wagerDiv);
-
-    const equalItems = inventory.filter(i => i.price <= item.price);
-
-    equalItems.forEach(i => {
-      const div = document.createElement("div");
-      div.className = `pool-item ${i.rarity}`;
-      div.innerHTML = `
-        <img src="${i.image}">
-        <div>${i.name}</div>
-      `;
-      possible.appendChild(div);
-    });
-  }
+function clearSelection() {
+  selectedBet = null;
+  betType = null;
+  betItem = null;
+  renderBetOptions();
+  updatePoolDisplay();
 }
 
-// ===================== START COINFLIP =====================
+/* ===============================
+   START FLIP
+   =============================== */
+
 function startCoinflip() {
   if (selectedBet === null) {
     alert("Select coins or an item first!");
     return;
   }
 
-  const result = Math.random() < 0.5; // 50/50
+  // Remove item immediately
+  if (betType === "item") {
+    betItem = inventory[selectedBet];
+    inventory.splice(selectedBet, 1);
+    saveInventory();
+    renderInventory();
+  }
 
+  if (betType === "coins") {
+    if (coins <= 0) {
+      alert("No coins to bet!");
+      return;
+    }
+  }
+
+  const result = Math.random() < 0.5;
   animateCoin(result);
 }
 
-// ===================== COIN ANIMATION =====================
-function animateCoin(win) {
-  const coin = document.getElementById("coin-animation");
-  if (!coin) return;
+/* ===============================
+   WIN / LOSS
+   =============================== */
 
-  coin.classList.remove("win", "lose");
-  coin.classList.add("flipping");
-
-  setTimeout(() => {
-    coin.classList.remove("flipping");
-    coin.classList.add(win ? "win" : "lose");
-
-    if (win) handleWin();
-    else handleLoss();
-  }, 2000);
-}
-
-// ===================== WIN =====================
 function handleWin() {
   if (betType === "coins") {
     coins *= 2;
@@ -293,31 +259,74 @@ function handleWin() {
   }
 
   if (betType === "item") {
-    const item = inventory[selectedBet];
-
-    // give duplicate of same item
-    addToInventory({ ...item });
+    addToInventory({ ...betItem });
+    addToInventory({ ...betItem });
   }
 
   saveInventory();
   renderInventory();
-  renderBetOptions();
-  updatePoolDisplay();
+  clearSelection();
 }
 
-// ===================== LOSS =====================
 function handleLoss() {
   if (betType === "coins") {
     coins = 0;
     updateCoins();
   }
 
-  if (betType === "item") {
-    inventory.splice(selectedBet, 1);
-  }
-
   saveInventory();
   renderInventory();
-  renderBetOptions();
-  updatePoolDisplay();
+  clearSelection();
+}
+
+/* ===============================
+   COIN ANIMATION
+   =============================== */
+
+function animateCoin(win) {
+  const coin = document.getElementById("coin");
+  coin.classList.remove("flip");
+
+  void coin.offsetWidth;
+
+  coin.classList.add("flip");
+
+  setTimeout(() => {
+    if (win) {
+      coin.innerText = "🟡 WIN";
+      handleWin();
+    } else {
+      coin.innerText = "⚫ LOSE";
+      handleLoss();
+    }
+
+    setTimeout(() => {
+      coin.innerText = "🪙";
+      coin.classList.remove("flip");
+    }, 1500);
+
+  }, 2000);
+}
+
+/* ===============================
+   POOL DISPLAY
+   =============================== */
+
+function updatePoolDisplay() {
+  const pool = document.getElementById("coinflipPool");
+  pool.innerHTML = "";
+
+  if (betType === "coins") {
+    pool.innerHTML = `
+      <div class="pool-item">Bet: $${coins.toFixed(2)}</div>
+      <div class="pool-item">Possible Win: $${(coins * 2).toFixed(2)}</div>
+    `;
+  }
+
+  if (betType === "item" && betItem) {
+    pool.innerHTML = `
+      <div class="pool-item">${betItem.name}</div>
+      <div class="pool-item">${betItem.name}</div>
+    `;
+  }
 }
