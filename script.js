@@ -127,56 +127,89 @@ document.getElementById("open-btn").onclick=()=>{
 };
 
 // ===================== COINFLIP =====================
-// ===================== COINFLIP =====================
 let selectedBet = null;
 let betType = null;
 let selectedElement = null;
 
+const coin = document.getElementById("coin");
+const wagerDisplay = document.getElementById("wager-display");
+const winDisplay = document.getElementById("win-display");
+
 function renderBetOptions() {
   const betSelection = document.getElementById("bet-selection");
-  if (!betSelection) return;
-
   betSelection.innerHTML = "";
 
-  // --- Coin Bets ---
+  // COIN OPTIONS
   [10, 50].forEach(amount => {
     const div = document.createElement("div");
     div.className = "bet-item";
     div.textContent = `${amount} Coins`;
 
-    div.onclick = () => {
-      clearSelection();
-      selectedBet = amount;
-      betType = "coins";
-      selectedElement = div;
-      div.classList.add("selected");
-    };
+    div.onclick = () => handleSelection(div, amount, "coins");
 
     betSelection.appendChild(div);
   });
 
-  // --- Item Bets ---
+  // ITEM OPTIONS
   inventory.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "bet-item";
     div.innerHTML = `<img src="${item.image}">${item.name} x${item.amount || 1}`;
 
-    div.onclick = () => {
-      clearSelection();
-      selectedBet = index;
-      betType = "item";
-      selectedElement = div;
-      div.classList.add("selected");
-    };
+    div.onclick = () => handleSelection(div, index, "item");
 
     betSelection.appendChild(div);
   });
+}
+
+function handleSelection(element, value, type) {
+  // deselect if clicking same
+  if (selectedElement === element) {
+    clearSelection();
+    return;
+  }
+
+  clearSelection();
+
+  selectedBet = value;
+  betType = type;
+  selectedElement = element;
+  element.classList.add("selected");
+
+  updatePoolDisplay();
 }
 
 function clearSelection() {
   document.querySelectorAll(".bet-item").forEach(el =>
     el.classList.remove("selected")
   );
+
+  selectedBet = null;
+  betType = null;
+  selectedElement = null;
+
+  wagerDisplay.innerHTML = "";
+  winDisplay.innerHTML = "";
+}
+
+function updatePoolDisplay() {
+  wagerDisplay.innerHTML = "";
+  winDisplay.innerHTML = "";
+
+  if (!betType) return;
+
+  if (betType === "coins") {
+    wagerDisplay.innerHTML = `<p>${selectedBet} Coins</p>`;
+    winDisplay.innerHTML = `<p>${selectedBet * 2} Coins</p>`;
+  }
+
+  if (betType === "item") {
+    const item = inventory[selectedBet];
+    if (!item) return;
+
+    wagerDisplay.innerHTML = `<img src="${item.image}"><p>${item.name}</p>`;
+    winDisplay.innerHTML = `<img src="${item.image}"><p>${item.name} x2</p>`;
+  }
 }
 
 document.getElementById("flip-btn").onclick = () => {
@@ -184,6 +217,10 @@ document.getElementById("flip-btn").onclick = () => {
     alert("Select a bet first");
     return;
   }
+
+  coin.classList.remove("coin-flip");
+  void coin.offsetWidth; // restart animation
+  coin.classList.add("coin-flip");
 
   const resultText = document.getElementById("flip-result");
   resultText.textContent = "Flipping...";
@@ -213,8 +250,7 @@ document.getElementById("flip-btn").onclick = () => {
     }
 
     if (betType === "item") {
-      let item = inventory[selectedBet];
-
+      const item = inventory[selectedBet];
       if (!item) return;
 
       if (win) {
@@ -233,10 +269,8 @@ document.getElementById("flip-btn").onclick = () => {
       renderInventory();
     }
 
-    selectedBet = null;
-    betType = null;
     clearSelection();
     renderBetOptions();
 
-  }, 1000); // 1 second animation delay
+  }, 1500);
 };
