@@ -127,62 +127,116 @@ document.getElementById("open-btn").onclick=()=>{
 };
 
 // ===================== COINFLIP =====================
-let selectedBet=null;
-let betType=null;
+// ===================== COINFLIP =====================
+let selectedBet = null;
+let betType = null;
+let selectedElement = null;
 
-function renderBetOptions(){
-  const betSelection=document.getElementById("bet-selection");
-  if(!betSelection)return;
-  betSelection.innerHTML="";
+function renderBetOptions() {
+  const betSelection = document.getElementById("bet-selection");
+  if (!betSelection) return;
 
-  // coin bet
-  [10,50].forEach(amount=>{
-    const div=document.createElement("div");
-    div.className="bet-item";
-    div.textContent=`${amount} Coins`;
-    div.onclick=()=>{
-      selectedBet=amount;
-      betType="coins";
+  betSelection.innerHTML = "";
+
+  // --- Coin Bets ---
+  [10, 50].forEach(amount => {
+    const div = document.createElement("div");
+    div.className = "bet-item";
+    div.textContent = `${amount} Coins`;
+
+    div.onclick = () => {
+      clearSelection();
+      selectedBet = amount;
+      betType = "coins";
+      selectedElement = div;
+      div.classList.add("selected");
     };
+
     betSelection.appendChild(div);
   });
 
-  // item bet
-  inventory.forEach((item,index)=>{
-    const div=document.createElement("div");
-    div.className="bet-item";
-    div.innerHTML=`<img src="${item.image}">${item.name} x${item.amount||1}`;
-    div.onclick=()=>{
-      selectedBet=index;
-      betType="item";
+  // --- Item Bets ---
+  inventory.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "bet-item";
+    div.innerHTML = `<img src="${item.image}">${item.name} x${item.amount || 1}`;
+
+    div.onclick = () => {
+      clearSelection();
+      selectedBet = index;
+      betType = "item";
+      selectedElement = div;
+      div.classList.add("selected");
     };
+
     betSelection.appendChild(div);
   });
 }
 
-document.getElementById("flip-btn").onclick=()=>{
-  if(!betType){alert("Select bet first");return;}
+function clearSelection() {
+  document.querySelectorAll(".bet-item").forEach(el =>
+    el.classList.remove("selected")
+  );
+}
 
-  const win=Math.random()<0.5;
-
-  if(betType==="coins"){
-    if(coins<selectedBet){alert("Not enough coins");return;}
-    coins-=selectedBet;
-    if(win) coins+=selectedBet*2;
-    updateCoins();
+document.getElementById("flip-btn").onclick = () => {
+  if (!betType) {
+    alert("Select a bet first");
+    return;
   }
 
-  if(betType==="item"){
-    let item=inventory[selectedBet];
-    if(win){
-      item.amount++;
-    }else{
-      if(item.amount>1)item.amount--;
-      else inventory.splice(selectedBet,1);
+  const resultText = document.getElementById("flip-result");
+  resultText.textContent = "Flipping...";
+  resultText.style.color = "white";
+
+  setTimeout(() => {
+    const win = Math.random() < 0.5;
+
+    if (betType === "coins") {
+      if (coins < selectedBet) {
+        alert("Not enough coins");
+        return;
+      }
+
+      coins -= selectedBet;
+
+      if (win) {
+        coins += selectedBet * 2;
+        resultText.textContent = "YOU WIN!";
+        resultText.style.color = "gold";
+      } else {
+        resultText.textContent = "YOU LOSE!";
+        resultText.style.color = "red";
+      }
+
+      updateCoins();
     }
-    saveInventory();
-    renderInventory();
-  }
 
-  renderBetOptions();
+    if (betType === "item") {
+      let item = inventory[selectedBet];
+
+      if (!item) return;
+
+      if (win) {
+        item.amount++;
+        resultText.textContent = "YOU WIN!";
+        resultText.style.color = "gold";
+      } else {
+        if (item.amount > 1) item.amount--;
+        else inventory.splice(selectedBet, 1);
+
+        resultText.textContent = "YOU LOSE!";
+        resultText.style.color = "red";
+      }
+
+      saveInventory();
+      renderInventory();
+    }
+
+    selectedBet = null;
+    betType = null;
+    clearSelection();
+    renderBetOptions();
+
+  }, 1000); // 1 second animation delay
 };
