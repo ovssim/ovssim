@@ -1,73 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>OVFF's Sim</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>OVFFs Sim</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <h1>OVFFs Sim </h1>
+  <div id="coins">Coins: 0</div>
 
-<h1>OVFF's Sim</h1>
-
-<div id="coins"></div>
-
-<div id="controls">
-  <button class="theme-btn" id="toggle-inv-btn">Inventory</button>
-  <button class="theme-btn" id="add-coins-btn">+10.01 Coins</button>
-  <button class="theme-btn" id="remove-coins-btn">-5.00 Coins</button>
-</div>
-
-<!-- Case selection -->
-<div id="case-select-wrapper">
-  <select id="case-select"></select>
-</div>
-
-<!-- Case section -->
-<div id="case-section">
-  <div class="case-left">
-    <img id="case-image" src="" alt="Case Image">
+  <!-- ================= CASE SECTION ================= -->
+  <div id="case-section">
+    <div class="case-left">
+      <img id="case-image" src="">
+    </div>
+    <div class="case-right">
+      <h2 id="case-name"></h2>
+      <select id="case-select"></select>
+      <button id="open-btn" class="theme-btn">Open</button>
+      <button id="show-case-items-btn" class="theme-btn">Show Case Items</button>
+      <div id="case-items-list" style="display:none;"></div>
+    </div>
   </div>
-  <div class="case-right">
-    <h2 id="case-name"></h2>
-    <button class="theme-btn" id="open-btn"></button>
-    <button class="theme-btn" id="show-case-items-btn">Show Case Items</button>
-    <div id="case-items-list"></div>
+
+  <!-- ================= SPINNER ================= -->
+  <div id="spinner-wrapper">
+    <div id="spinner-container">
+      <div id="spinner-strip"></div>
+    </div>
+    <div id="winner-name"></div>
   </div>
-</div>
 
-<div id="winner-name"></div>
-
-<!-- Spinner -->
-<div id="spinner-wrapper">
-  <div id="spinner-container">
-    <div id="spinner-strip"></div>
+  <!-- ================= INVENTORY ================= -->
+  <div class="inventory-header">
+    <button id="toggle-inv-btn" class="theme-btn">Toggle Inventory</button>
+    <button id="sell-all-btn">Sell All</button>
+    <button id="add-coins-btn">+1 Coin</button>
+    <button id="remove-coins-btn">-5 Coins</button>
   </div>
-</div>
+  <div id="inventory"></div>
 
-<!-- Inventory Section -->
-<div class="inventory-header">
-  <h2>Inventory</h2>
-  <button id="sell-all-btn" class="theme-btn">Sell All</button>
-</div>
+  <!-- ================= TOP DROPS ================= -->
+  <h2>Top Drops</h2>
+  <div id="top-drops"></div>
 
-<div id="inventory" class="hidden"></div>
-
-<h2 class="top-title">• Last TOP Drops</h2>
-<div id="top-drops"></div>
-
-<script src="script.js"></script>
-</body>
-</html>
-
-<div id="coinflip-section" style="margin-top:30px;">
+  <!-- ================= COINFLIP ================= -->
+  <hr>
   <h2>Coinflip 🎲</h2>
-  <input type="number" id="bet-amount" placeholder="Bet amount" style="width:100px; padding:5px;">
-  <select id="bet-choice" style="padding:5px;">
+  <input type="number" id="bet-amount" placeholder="Bet coins" min="0" step="0.01">
+  <select id="bet-choice">
     <option value="heads">Heads</option>
     <option value="tails">Tails</option>
   </select>
   <button id="coinflip-btn" class="theme-btn">Flip Coin</button>
-  <div id="coinflip-result" style="margin-top:15px; font-weight:bold;"></div>
-  <div id="coinflip-animation" style="margin-top:10px; height:100px;"></div>
-</div>
+  <div id="coinflip-result"></div>
+  <h3>Select items to bet:</h3>
+  <div id="bet-items"></div>
 
+  <script src="script.js"></script>
+</body>
+</html>
