@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("inventory").classList.toggle("hidden");
 
   document.getElementById("add-coins-btn").onclick = () => {
-    coins += 1.00;
+    coins += 10.00;
     updateCoins();
   };
 
