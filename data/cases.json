@@ -168,10 +168,10 @@
       "items": [
         { "name": "Unusual Piercing Headache Propaniac", "rarity": "mythical", "price": 750.00, "weight": 1000, "image": "images/items/php1.png" },
         { "name": "Unusual Darkblaze Colonel Kringle", "rarity": "collector", "price": 10000.00, "weight": 100, "image": "images/items/dbcc1.png" },
-        { "name": "Unusual Cold Cosmos Brimmed Bootlegger", "rarity": "mythical", "price": 660.00, "weight": 900, "image": "images/items/bbcc.png" },
+        { "name": "Unusual Cold Cosmos Brimmed Bootlegger", "rarity": "mythical", "price": 660.00, "weight": 1100, "image": "images/items/bbcc.png" },
         { "name": "Unusual Flourishing Passion Mean Captain", "rarity": "mythical", "price": 875.00, "weight": 500, "image": "images/items/mcfp.png" },
         { "name": "Unusual Verdatica Scot Bonnet", "rarity": "mythical", "price": 996.00, "weight": 500, "image": "images/items/vsb.png" },
-        { "name": "Unusual Phantom Crown Towering Pillar of Summer Shades", "rarity": "mythical", "price": 1950.00, "weight": 1000, "image": "images/items/pcpss.png" },
+        { "name": "Unusual Phantom Crown Towering Pillar of Summer Shades", "rarity": "mythical", "price": 1950.00, "weight": 800, "image": "images/items/pcpss.png" },
         { "name": "Unusual Serenus Lumen Mann of the Seven Sees", "rarity": "mythical", "price": 842.00, "weight": 1000, "image": "images/items/motss.png" },
         { "name": "Refined Metal", "rarity": "common", "price": 0.03, "weight": 95000, "image": "images/items/refined.png" }
        
