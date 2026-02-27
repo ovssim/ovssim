@@ -210,8 +210,8 @@
      },
         {
       "id": "f",
-      "name": "f",
-      "price": 10000000.00,
+      "name": "filler(testingonly)",
+      "price": 33726482.00,
       "image": "images/cases/f.png",
       "items": [
         { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
