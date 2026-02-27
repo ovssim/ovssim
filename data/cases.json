@@ -100,9 +100,9 @@
       "price": 10.00,
       "image": "images/cases/theheavy1.png",
       "items": [
-        { "name": "filler", "rarity": "collector", "price": 700.00, "weight": 400, "image": "images/items/gunslinger.png" },
-        { "name": "filler", "rarity": "collector", "price": 350.00, "weight": 550, "image": "images/items/manmelter.png" },
-        { "name": "filler", "rarity": "mythical", "price": 8.65, "weight": 6000, "image": "images/items/nutdrill.png" },
+        { "name": "Strange Sandvich", "rarity": "strange", "price": 21.93, "weight": 1000, "image": "images/items/sandvich.png" },
+        { "name": "Chicken Kiev", "rarity": "legendary", "price": 63.72, "weight": 400, "image": "images/items/manmelter.png" },
+        { "name": "Strange ", "rarity": "mythical", "price": 8.65, "weight": 6000, "image": "images/items/nutdrill.png" },
         { "name": "filler", "rarity": "mythical", "price": 1750.00, "weight": 170, "image": "images/items/spellbolt.png" },
         { "name": "filler", "rarity": "mythical", "price": 292.00, "weight": 500, "image": "images/items/warpslug.png" },
         { "name": "filler", "rarity": "mythical", "price": 200.00, "weight": 750, "image": "images/items/teslahat.png" },
