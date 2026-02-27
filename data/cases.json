@@ -57,7 +57,7 @@
         { "name": "The Exorcizor", "rarity": "common", "price": 0.03, "weight": 2000, "image": "images/items/exoc.png" },
         { "name": "The Ghastlierest Gibus", "rarity": "common", "price": 1.88, "weight": 1000, "image": "images/items/ggibus.png" },
         { "name": "Strange Professional Killstreak Solemn Vow", "rarity": "strange", "price": 5.99, "weight": 1300, "image": "images/items/solemn.png" },
-        { "name": "Professional Killstreak Black Rose", "rarity": "collector", "price": 999.99, "weight": 10, "image": "images/items/blackrose.png" },
+        { "name": "Professional Killstreak Black Rose", "rarity": "collector", "price": 999.99, "weight": 3, "image": "images/items/blackrose.png" },
         { "name": "The Plutonidome", "rarity": "common", "price": 0.71, "weight": 350, "image": "images/items/pluto.png" },
         { "name": "Unusual Starstorm Slumber Cranial Carcharodon", "rarity": "mythical", "price": 90.00, "weight": 270, "image": "images/items/starcran.png" },
         { "name": "Genuine Doublecross-Comm", "rarity": "genuine", "price": 5.99, "weight": 500, "image": "images/items/doublecomm.png" },
