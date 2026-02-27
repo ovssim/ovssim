@@ -95,10 +95,10 @@
       ]
      },
     {
-      "id": "filler",
-      "name": "filler",
-      "price": filler,
-      "image": "images/cases/filler.png",
+      "id": "heavy",
+      "name": "Heavy Weapons",
+      "price": 10.00,
+      "image": "images/cases/theheavy1.png",
       "items": [
         { "name": "filler", "rarity": "collector", "price": 700.00, "weight": 400, "image": "images/items/gunslinger.png" },
         { "name": "filler", "rarity": "collector", "price": 350.00, "weight": 550, "image": "images/items/manmelter.png" },
