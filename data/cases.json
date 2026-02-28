@@ -178,31 +178,6 @@
         { "name": "Refined Metal", "rarity": "legendary", "price": 0.03, "weight": 95000, "image": "images/items/refined.png" }
       ]
      },
-        {
-      "id": "f",
-      "name": "filler(testingonly)",
-      "price": 33726482.00,
-      "image": "images/cases/f.png",
-      "items": [
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" },
-        { "name": "f", "rarity": "common", "price": 1.00, "weight": 10, "image": "images/items/f.png" }
-      ]
-    },
     {
       "id": "aussie",
       "name": "AUSTRALIUM🪙",
