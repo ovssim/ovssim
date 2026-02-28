@@ -96,7 +96,7 @@
      },
     {
       "id": "heavy",
-      "name": "Heavy Weapons",
+      "name": "Heavy",
       "price": 10.00,
       "image": "images/cases/theheavy1.png",
       "items": [
