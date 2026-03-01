@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===================== COINS =====================
 function updateCoins() {
-  document.getElementById("coins").textContent = `Coins: ${coins.toFixed(2)}`;
+  document.getElementById("coins").textContent = `Balance: ${coins.toFixed(2)}`;
   localStorage.setItem("coins", coins);
 }
 
