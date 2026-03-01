@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (caseItemsList.style.display === "block") {
       caseItemsList.style.display = "none";
-      caseItemsBtn.textContent = "Show Case Items";
+      caseItemsBtn.textContent = "Show Potential Items";
     } else {
       renderCaseItems();
       caseItemsList.style.display = "block";
@@ -255,7 +255,7 @@ function spinToItem(winningItem) {
 function showWinner(item) {
   const nameBox = document.getElementById("winner-name");
   if (nameBox) {
-    nameBox.textContent = `You won: ${item.name}`;
+    nameBox.textContent = ` ${item.name}`;
     nameBox.className = item.rarity.toLowerCase();
   }
 
