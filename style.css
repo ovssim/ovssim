@@ -251,3 +251,55 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   background: black;
   transform: rotateY(180deg) translateZ(10px);
 }
+
+/* -------------------- COIN CONTAINER -------------------- */
+#coin-container {
+  perspective: 1000px;
+  width: 80px;
+  height: 80px;
+  margin: 10px auto;
+}
+
+#coin {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ff0000, #880000);
+  border: 3px solid #000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  transform-style: preserve-3d;
+  transition: transform 2s ease-out;
+  position: relative;
+}
+
+/* Coin sides */
+#coin::before,
+#coin::after {
+  content: '';
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  backface-visibility: hidden;
+}
+
+#coin.heads::before {
+  background: radial-gradient(circle at 30% 30%, #ff0000, #880000);
+  border: 2px solid #000;
+}
+
+#coin.tails::after {
+  background: radial-gradient(circle at 30% 30%, #000000, #330000);
+  border: 2px solid #000;
+  transform: rotateY(180deg);
+}
+
+/* Optional highlight/glow for win */
+#coin.heads {
+  box-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+}
+
+/* Optional darker glow for tails */
+#coin.tails {
+  box-shadow: 0 0 20px #000, 0 0 40px #330000;
+}
