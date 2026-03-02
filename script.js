@@ -198,6 +198,9 @@ document.getElementById("open-btn").addEventListener("click",()=>{
 });
 
 // ===================== COINFLIP =====================
+let coinflipSelectedItem = null;
+let coinflipChoice = "Heads"; // Default choice
+
 function loadCoinflipInventory() {
   const select = document.getElementById("coinflip-item-select");
   select.innerHTML = "";
@@ -216,40 +219,72 @@ function loadCoinflipInventory() {
     coinflipSelectedItem = inventory[0];
     updateCoinflipPreview();
   }
+  // Add choice selector
+  let choiceDiv = document.getElementById("coinflip-choice");
+  if(!choiceDiv){
+    choiceDiv = document.createElement("div");
+    choiceDiv.id = "coinflip-choice";
+    choiceDiv.style.marginBottom = "10px";
+    const headsBtn = document.createElement("button");
+    headsBtn.className = "theme-btn";
+    headsBtn.textContent = "Choose Heads";
+    headsBtn.onclick = ()=> { coinflipChoice="Heads"; updateCoinflipPreview(); };
+    const tailsBtn = document.createElement("button");
+    tailsBtn.className = "theme-btn";
+    tailsBtn.textContent = "Choose Tails";
+    tailsBtn.onclick = ()=> { coinflipChoice="Tails"; updateCoinflipPreview(); };
+    choiceDiv.appendChild(headsBtn);
+    choiceDiv.appendChild(tailsBtn);
+    document.getElementById("coinflip-section").prepend(choiceDiv);
+  }
 }
 
 function updateCoinflipPreview() {
   const preview = document.getElementById("coinflip-preview");
   preview.innerHTML = "";
   if(!coinflipSelectedItem) return;
-  // Show Heads: same item
+  // Show Heads: full item
   const headDiv = document.createElement("div");
   headDiv.className = "coin-preview";
-  headDiv.innerHTML = `<img src="${coinflipSelectedItem.image}" style="width:50px;height:50px;"><br>${coinflipSelectedItem.name}`;
+  headDiv.innerHTML = `<img src="${coinflipSelectedItem.image}" style="width:50px;height:50px;"><br>${coinflipSelectedItem.name}<br>Heads`;
+  if(coinflipChoice==="Heads") headDiv.style.border="2px solid gold";
   preview.appendChild(headDiv);
-  // Show Tails: random smaller items
+  // Show Tails: "lose item" preview
   const tailDiv = document.createElement("div");
   tailDiv.className = "coin-preview";
-  tailDiv.innerHTML = "Random items (tails)";
+  tailDiv.innerHTML = `<img src="${coinflipSelectedItem.image}" style="width:50px;height:50px;filter: grayscale(80%)"><br>Lose item<br>Tails`;
+  if(coinflipChoice==="Tails") tailDiv.style.border="2px solid gold";
   preview.appendChild(tailDiv);
 }
 
+// Coinflip action
 document.getElementById("coinflip-btn").addEventListener("click",()=>{
   if(!coinflipSelectedItem) return;
+
   // Animate coin
   const coinInner = document.querySelector(".coin-inner");
-  const flip = Math.random()<0.5 ? 180 : 0;
-  coinInner.style.transform = `rotateY(${flip}deg)`;
+  const flipResult = Math.random()<0.5 ? "Heads" : "Tails";
+  const flipDeg = flipResult==="Heads" ? 0 : 180;
+  coinInner.style.transform = `rotateY(${flipDeg}deg)`;
+
   setTimeout(()=>{
-    const result = flip===0 ? "Heads" : "Tails";
     const resultDiv = document.getElementById("coinflip-result");
-    resultDiv.textContent = `Result: ${result}`;
-    if(result==="Heads"){
+    resultDiv.textContent = `Result: ${flipResult}`;
+
+    // Check if player chose correctly
+    if(coinflipChoice===flipResult){
+      resultDiv.textContent += " → You won the item!";
       addToInventory(coinflipSelectedItem);
     } else {
-      // Tails: give random smaller items equal to price
-      // TODO: implement logic to split price into smaller items
-      resultDiv.textContent += " (random smaller items awarded)";
+      resultDiv.textContent += " → You lost the item!";
+      // Remove item from inventory
+      const idx = inventory.indexOf(coinflipSelectedItem);
+      if(idx>-1) inventory.splice(idx,1);
+      saveInventory();
+      renderInventory();
     }
+
+    // Refresh coinflip select & preview
+    loadCoinflipInventory();
   },1500);
 });
