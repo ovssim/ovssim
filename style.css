@@ -7,6 +7,7 @@ body {
   color: white;
   text-align: center;
 }
+
 h1 { margin-bottom: 10px; font-weight: 600; }
 #coins { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
 
@@ -41,16 +42,32 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   margin: 0 auto 30px auto;
   box-shadow: 0 0 40px rgba(0,0,0,0.6);
 }
-.case-left img { width: 220px; border-radius: 15px; }
+
+.case-left img {
+  width: 220px;
+  border-radius: 15px;
+}
+
 .case-right h2 { margin-bottom: 15px; }
-#case-items-list { margin-top: 10px; max-height: 300px; overflow-y: auto; }
-.hidden { display: none; }
+
+#case-items-list {
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
 
 /* ================= OPEN BUTTON ================= */
-#open-btn { margin-top: 10px; display: inline-block; }
+#open-btn {
+  margin-top: 10px;
+  display: inline-block;
+}
 
 /* ================= WINNER NAME ================= */
-#winner-name { font-size: 22px; font-weight: bold; margin: 20px 0; }
+#winner-name {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 20px 0;
+}
 
 /* ================= SPINNER ================= */
 #spinner-wrapper { width: 1000px; max-width: 95%; margin: 20px auto; }
@@ -66,7 +83,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 #spinner-strip {
   display: flex;
   align-items: center;
-  transition: transform 3.2s cubic-bezier(.25,.85,.35,1);
+  transition: transform 6s cubic-bezier(.08,.6,0,1);
 }
 #spinner-container::after {
   content: "";
@@ -105,7 +122,13 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 }
 
 /* ================= INVENTORY ================= */
-#inventory { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 20px; }
+#inventory {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
 .inv-item {
   width: 140px;
   padding: 15px;
@@ -127,8 +150,37 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   font-size: 13px;
 }
 
+.inventory-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+#sell-all-btn {
+  background: linear-gradient(135deg, #ffb347, #ff9500);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#sell-all-btn:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 15px orange;
+}
+
 /* ================= TOP DROPS ================= */
-#top-drops { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 30px; }
+#top-drops {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 30px;
+}
 .top-drop {
   width: 170px;
   padding: 15px;
@@ -138,7 +190,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 }
 .top-drop img { width: 75px; height: 75px; object-fit: contain; }
 
-/* ================= RARITY ================= */
+/* ================= RARITY SYSTEM ================= */
 .common     { border: 2px solid #777; box-shadow: 0 0 10px #777; color: #bbb; }
 .rare       { border: 2px solid #4aa3ff; box-shadow: 0 0 14px #4aa3ff; color: #4aa3ff; }
 .strange    { border: 2px solid orange; box-shadow: 0 0 16px orange; color: orange; }
@@ -149,3 +201,14 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 .vintage    { border: 2px solid #476291; box-shadow: 0 0 16px #476291; color: #476291; }
 .collector  { border: 2px solid #AA0000; box-shadow: 0 0 22px #AA0000; color: #AA0000; }
 .haunted    { border: 2px solid #38F3AB; box-shadow: 0 0 18px #38F3AB; color: #38F3AB; }
+
+/* Unusual animated glow */
+.unusual img {
+  animation: unusualGlow 0s infinite linear;
+  filter: drop-shadow(0 0 20px purple);
+}
+@keyframes unusualGlow {
+  from { filter: hue-rotate(0deg) drop-shadow(0 0 20px purple); }
+  to   { filter: hue-rotate(360deg) drop-shadow(0 0 20px purple); }
+}
+
