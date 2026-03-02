@@ -133,3 +133,83 @@ h2 { margin-top: 25px; margin-bottom: 10px; }
 .tails { transform: rotateY(180deg); background: crimson; box-shadow: 0 0 20px red; }
 #coinflip-result { font-size: 18px; font-weight: bold; margin-top: 15px; }
 .hidden { display: none; }
+
+/* ================= COINFLIP ================= */
+#coinflip-section {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(25,25,30,0.8);
+  border-radius: 15px;
+  text-align: center;
+}
+
+#coinflip-item-select {
+  padding: 8px 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+#coinflip-preview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.coin-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  background: rgba(50,50,60,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+#coin {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  perspective: 1000px;
+}
+
+.coin-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.5s ease-in-out;
+}
+
+.coin-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  backface-visibility: hidden;
+  font-size: 18px;
+}
+
+.heads {
+  background: gold;
+  box-shadow: 0 0 20px gold;
+}
+
+.tails {
+  transform: rotateY(180deg);
+  background: crimson;
+  box-shadow: 0 0 20px red;
+}
+
+#coinflip-result {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 15px;
+}
