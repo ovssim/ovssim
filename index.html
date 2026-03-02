@@ -9,6 +9,22 @@
 
 <h1>OVFF's Sim</h1>
 
+  function coinflipItem(index) {
+  const item = inventory[index];
+
+  spinCoin(win => {
+    if (win) {
+      inventory.push({...item});
+      alert(`You WON! ${item.name} has been duplicated.`);
+    } else {
+      inventory.splice(index, 1);
+      alert(`You LOSE! ${item.name} has been removed.`);
+    }
+    saveInventory();
+    renderInventory();
+    addCoinflipButtons();
+  });
+}
 <div id="coin-container">
   <div id="coin" class="heads"></div>
 </div>
