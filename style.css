@@ -211,4 +211,51 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   from { filter: hue-rotate(0deg) drop-shadow(0 0 20px purple); }
   to   { filter: hue-rotate(360deg) drop-shadow(0 0 20px purple); }
 }
+/* ================= COINFLIP ================= */
 
+#coinflip-section {
+  background: rgba(25,25,30,0.8);
+  backdrop-filter: blur(8px);
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 900px;
+  margin: 0 auto 30px auto;
+}
+
+#coinflip-inventory {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.cf-item {
+  width: 120px;
+  padding: 10px;
+  background: rgba(30,30,35,0.9);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cf-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.cf-item:hover {
+  transform: scale(1.05);
+}
+
+.cf-selected {
+  outline: 3px solid gold;
+  box-shadow: 0 0 20px gold;
+}
+
+#coinflip-result {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
