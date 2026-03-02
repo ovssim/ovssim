@@ -236,72 +236,82 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   to   { filter: hue-rotate(360deg) drop-shadow(0 0 20px purple); }
 }
 
-/* ================= COINFLIP MODE ================= */
+/* ================= COINFLIP MODE ================= *//* ================= COINFLIP ================= */
 #coinflip-section {
-  background: rgba(25,25,30,0.85);
-  backdrop-filter: blur(8px);
-  padding: 30px;
-  margin: 40px auto;
-  border-radius: 20px;
-  max-width: 700px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(25,25,30,0.8);
+  border-radius: 15px;
+  text-align: center;
 }
 
-#coinflip-toggle-btn {
-  background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
-  border: none;
-  padding: 8px 18px;
+#coinflip-item-select {
+  padding: 8px 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+#coinflip-preview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.coin-preview {
+  width: 60px;
+  height: 60px;
   border-radius: 10px;
+  background: rgba(50,50,60,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+#coin {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  perspective: 1000px;
+}
+
+.coin-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.5s ease-in-out;
+}
+
+.coin-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
-  cursor: pointer;
-  color: white;
-  transition: all 0.2s ease;
-  margin-bottom: 20px;
-}
-
-#coinflip-toggle-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px red;
-}
-
-#coinflip-panel {
-  display: none;
-  gap: 20px;
-}
-
-.coinflip-item {
-  display: inline-block;
-  padding: 10px;
-  margin: 5px;
-  background: rgba(35,35,40,0.9);
-  border-radius: 12px;
-  cursor: pointer;
-  border: 2px solid #777;
-  transition: all 0.2s ease;
-}
-
-.coinflip-item.selected {
-  border-color: gold;
-  box-shadow: 0 0 20px gold;
-}
-
-#flip-result {
-  margin-top: 20px;
-  font-weight: bold;
+  backface-visibility: hidden;
   font-size: 18px;
 }
 
-/* ================= POKER CHIP ================= */
-.poker-chip {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: repeating-conic-gradient(red 0 15deg, black 0 30deg);
-  margin: 20px auto;
-  animation: spinChip 2s linear infinite;
+.heads {
+  background: gold;
+  box-shadow: 0 0 20px gold;
 }
 
-@keyframes spinChip {
-  from { transform: rotateY(0deg); }
-  to { transform: rotateY(360deg); }
+.tails {
+  transform: rotateY(180deg);
+  background: crimson;
+  box-shadow: 0 0 20px red;
+}
+
+#coinflip-result {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 15px;
 }
