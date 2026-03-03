@@ -17,15 +17,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 0.10; updateCoins(); };
-  document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 5.00); updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => {
+    coins += 50.00;
+    updateCoins();
+  };
+  document.getElementById("remove-coins-btn").onclick = () => {
+    coins = Math.max(0, coins - 5.00);
+    updateCoins();
+  };
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
   document.getElementById("open-btn").onclick = openCase;
-  document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
 
 // ===================== COINS =====================
@@ -79,8 +84,8 @@ function sellAllItems() {
   alert(`Sold everything for ${total.toFixed(2)} coins.`);
 }
 
-// ===================== SHOW CASE ITEMS =====================
-function toggleCaseItems() {
+// ===================== SHOW / HIDE CASE ITEMS + ODDS =====================
+document.getElementById("show-case-items-btn").onclick = () => {
   const list = document.getElementById("case-items-list");
   if (!currentCase) return;
 
@@ -107,7 +112,7 @@ function toggleCaseItems() {
     `;
     list.appendChild(div);
   });
-}
+};
 
 // ===================== TOP DROPS =====================
 function renderTopDrops() {
@@ -156,20 +161,27 @@ function coinflipItem(index) {
   flipBtn.disabled = true;
 
   const win = Math.random() < 0.5;
-  const finalClass = win ? "head" : "tail";
 
   let flips = 0;
   const totalFlips = 10;
 
   const flipInterval = setInterval(() => {
-    coin.classList.toggle("head");
-    coin.classList.toggle("tail");
+    coin.classList.toggle("flipped");
     flips++;
 
     if (flips > totalFlips) {
       clearInterval(flipInterval);
-      coin.classList.remove("head", "tail");
-      coin.classList.add(finalClass);
+
+      // Show the final coin face
+      const headImg = coin.querySelector(".head");
+      const tailImg = coin.querySelector(".tail");
+      if (win) {
+        headImg.style.display = "block";
+        tailImg.style.display = "none";
+      } else {
+        headImg.style.display = "none";
+        tailImg.style.display = "block";
+      }
 
       if (win) {
         inventory.push({ ...item });
@@ -193,6 +205,7 @@ function loadCases() {
     .then(res => res.json())
     .then(data => {
       cases = data.cases;
+
       const display = document.getElementById("case-select-display");
       const options = document.getElementById("case-select-options");
       options.innerHTML = "";
@@ -232,7 +245,6 @@ function selectCase(id) {
   document.getElementById("case-name").textContent = currentCase.name;
   document.getElementById("open-btn").textContent = ` ${currentCase.price} Coins`;
 
-  // Update dropdown display
   const display = document.getElementById("case-select-display");
   display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price} coins)</span>`;
 }
