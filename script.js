@@ -1,9 +1,10 @@
 // ================= GLOBAL STATE =================
-let coins = 10.00;
+let coins = 10.0;
 let inventory = [];
 let cases = [];
 let currentCase = null;
 
+// ================= DOM ELEMENTS =================
 const coinsDisplay = document.getElementById("coins");
 const caseSelect = document.getElementById("case-select");
 const caseImage = document.getElementById("case-image");
@@ -20,38 +21,54 @@ const coinflipSelect = document.getElementById("coinflip-select");
 const coinflipBtn = document.getElementById("coinflip-btn");
 const coin = document.getElementById("coin");
 
+// ================= UTILITY FUNCTIONS =================
+function safeSetText(el, text) {
+  if (el) el.textContent = text;
+}
+
+function safeSetHTML(el, html) {
+  if (el) el.innerHTML = html;
+}
+
+function safeAddEvent(el, event, fn) {
+  if (el) el.addEventListener(event, fn);
+}
+
 // ================= COINS =================
 function updateCoins() {
-  coinsDisplay.textContent = `Coins: ${coins.toFixed(2)}`;
+  safeSetText(coinsDisplay, `Coins: ${coins.toFixed(2)}`);
 }
 
 // ================= LOAD CASES =================
 fetch("cases.json")
   .then(res => res.json())
   .then(data => {
-    cases = data.cases;
-    cases.forEach(c => {
-      const option = document.createElement("option");
-      option.value = c.id;
-      option.textContent = c.name;
-      caseSelect.appendChild(option);
-    });
-    loadCase(cases[0].id);
-  });
+    cases = data.cases || [];
+    if (caseSelect) {
+      cases.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.id;
+        option.textContent = c.name;
+        caseSelect.appendChild(option);
+      });
+    }
+    if (cases.length) loadCase(cases[0].id);
+  })
+  .catch(err => console.error("Failed to load cases.json:", err));
 
 function loadCase(id) {
   currentCase = cases.find(c => c.id === id);
-  caseImage.src = currentCase.image;
-  caseName.textContent = currentCase.name;
-  openBtn.textContent = `Open Case (${currentCase.price} coins)`;
+  if (!currentCase) return;
+  if (caseImage) caseImage.src = currentCase.image;
+  safeSetText(caseName, currentCase.name);
+  safeSetText(openBtn, `Open Case (${currentCase.price} coins)`);
 }
 
-caseSelect.addEventListener("change", e => {
-  loadCase(e.target.value);
-});
+safeAddEvent(caseSelect, "change", e => loadCase(e.target.value));
 
 // ================= WEIGHTED RANDOM =================
 function getRandomItem(caseData) {
+  if (!caseData || !caseData.items) return null;
   const totalWeight = caseData.items.reduce((sum, item) => sum + item.weight, 0);
   let random = Math.random() * totalWeight;
 
@@ -59,14 +76,15 @@ function getRandomItem(caseData) {
     if (random < item.weight) return item;
     random -= item.weight;
   }
+  return null;
 }
 
 // ================= SPINNER =================
 function spinToItem(winningItem) {
-  spinnerStrip.innerHTML = "";
+  if (!spinnerStrip || !winningItem) return;
 
-  const itemWidth = 140; // MUST match CSS (110 width + 30 margin)
-
+  safeSetHTML(spinnerStrip, "");
+  const itemWidth = 140; // match CSS
   const totalSpins = 60;
   const randomItems = [];
 
@@ -87,25 +105,24 @@ function spinToItem(winningItem) {
 
   const offset =
     winningIndex * itemWidth -
-    (spinnerStrip.parentElement.offsetWidth / 2 - itemWidth / 2);
+    (spinnerStrip.parentElement ? spinnerStrip.parentElement.offsetWidth / 2 - itemWidth / 2 : 0);
 
   spinnerStrip.style.transition = "none";
   spinnerStrip.style.transform = "translateX(0px)";
 
   setTimeout(() => {
-    spinnerStrip.style.transition =
-      "transform 3.2s cubic-bezier(.25,.85,.35,1)";
+    spinnerStrip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
     spinnerStrip.style.transform = `translateX(-${offset}px)`;
   }, 50);
 
   setTimeout(() => {
-    winnerName.textContent = `You won: ${winningItem.name}`;
+    safeSetText(winnerName, `You won: ${winningItem.name}`);
     addToInventory(winningItem);
   }, 3300);
 }
 
 // ================= OPEN CASE =================
-openBtn.addEventListener("click", () => {
+safeAddEvent(openBtn, "click", () => {
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins!");
 
@@ -118,13 +135,15 @@ openBtn.addEventListener("click", () => {
 
 // ================= INVENTORY =================
 function addToInventory(item) {
+  if (!item) return;
   inventory.push(item);
   renderInventory();
   updateCoinflipDropdown();
 }
 
 function renderInventory() {
-  inventoryDiv.innerHTML = "";
+  if (!inventoryDiv) return;
+  safeSetHTML(inventoryDiv, "");
 
   inventory.forEach((item, index) => {
     const div = document.createElement("div");
@@ -136,7 +155,8 @@ function renderInventory() {
       <button class="sell-btn">Sell</button>
     `;
 
-    div.querySelector(".sell-btn").addEventListener("click", () => {
+    const sellBtn = div.querySelector(".sell-btn");
+    safeAddEvent(sellBtn, "click", () => {
       coins += item.price;
       inventory.splice(index, 1);
       renderInventory();
@@ -149,7 +169,7 @@ function renderInventory() {
 }
 
 // ================= SELL ALL =================
-sellAllBtn.addEventListener("click", () => {
+safeAddEvent(sellAllBtn, "click", () => {
   inventory.forEach(item => (coins += item.price));
   inventory = [];
   renderInventory();
@@ -158,44 +178,35 @@ sellAllBtn.addEventListener("click", () => {
 });
 
 // ================= SHOW POTENTIAL ITEMS + ODDS =================
-showCaseItemsBtn.addEventListener("click", () => {
-  if (!currentCase) return;
+safeAddEvent(showCaseItemsBtn, "click", () => {
+  if (!currentCase || !caseItemsList) return;
 
-  caseItemsList.innerHTML = "";
+  const totalWeight = currentCase.items.reduce((sum, item) => sum + item.weight, 0);
+  const sortedItems = [...currentCase.items].sort((a, b) => b.price - a.price);
 
-  const totalWeight = currentCase.items.reduce(
-    (sum, item) => sum + item.weight,
-    0
-  );
-
-  const sortedItems = [...currentCase.items].sort(
-    (a, b) => b.price - a.price
-  );
-
+  safeSetHTML(caseItemsList, "");
   sortedItems.forEach(item => {
     const dropRate = ((item.weight / totalWeight) * 100).toFixed(2);
-
     const div = document.createElement("div");
     div.className = `inv-item ${item.rarity}`;
     div.innerHTML = `
       <img src="${item.image}">
       <div>${item.name}</div>
       <div>💰 ${item.price.toFixed(2)} coins</div>
-      <div style="font-size:14px; margin-top:5px;">
-        🎯 ${dropRate}% chance
-      </div>
+      <div style="font-size:14px; margin-top:5px;">🎯 ${dropRate}% chance</div>
     `;
-
     caseItemsList.appendChild(div);
   });
 
+  // Toggle display
   caseItemsList.style.display =
-    caseItemsList.style.display === "none" ? "block" : "none";
+    getComputedStyle(caseItemsList).display === "none" ? "block" : "none";
 });
 
 // ================= COINFLIP =================
 function updateCoinflipDropdown() {
-  coinflipSelect.innerHTML = "";
+  if (!coinflipSelect) return;
+  safeSetHTML(coinflipSelect, "");
 
   inventory.forEach((item, index) => {
     const option = document.createElement("option");
@@ -205,33 +216,36 @@ function updateCoinflipDropdown() {
   });
 }
 
-coinflipBtn.addEventListener("click", () => {
+safeAddEvent(coinflipBtn, "click", () => {
+  if (!coinflipSelect || !coin) return;
   const index = coinflipSelect.value;
   if (index === "" || inventory.length === 0) return;
 
   const selectedItem = inventory[index];
+  if (!selectedItem) return;
 
-  const win = Math.random() < 0.5; // TRUE 50/50
+  const win = Math.random() < 0.5;
 
   coin.classList.remove("head", "tail");
-
   setTimeout(() => {
     coin.classList.add(win ? "head" : "tail");
   }, 100);
 
   setTimeout(() => {
     if (win) {
-      inventory.push(selectedItem);
+      inventory.push({ ...selectedItem }); // duplicate safely
       alert("You won the flip! Item duplicated!");
     } else {
       inventory.splice(index, 1);
       alert("You lost the flip! Item removed!");
     }
-
     renderInventory();
     updateCoinflipDropdown();
   }, 700);
 });
 
 // ================= INIT =================
-updateCoins();
+window.onload = () => {
+  updateCoins();
+  if (caseItemsList) caseItemsList.style.display = "none";
+};
