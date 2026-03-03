@@ -33,7 +33,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 
 /* ================= BUTTON THEME ================= */
 .theme-btn {
-  background: linear-gradient(135deg, #00c2b8, #32e0d3); /* Teal gradient */
+  background: linear-gradient(135deg, #00c8c8, #33e0e0);
   border: none;
   padding: 10px 22px;
   font-size: 16px;
@@ -41,12 +41,12 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   cursor: pointer;
   font-weight: bold;
   margin: 5px;
+  color: black;
   transition: all 0.2s ease;
-  color: black; /* Black text for teal buttons */
 }
 .theme-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 15px #00c2b8;
+  box-shadow: 0 0 15px #00c8c8;
 }
 
 /* ================= CASE SECTION ================= */
@@ -139,11 +139,11 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 #open-btn { margin-top: 10px; display: inline-block; }
 
 /* ================= WINNER NAME ================= */
-#winner-name { font-size: 22px; font-weight: bold; margin: 20px 0; }
+#winner-name, #battle-winner-name { font-size: 22px; font-weight: bold; margin: 20px 0; }
 
 /* ================= SPINNER ================= */
 #spinner-wrapper { width: 1000px; max-width: 95%; margin: 20px auto; }
-#spinner-container {
+#spinner-container, .battle-spinner-container {
   height: 170px;
   overflow: hidden;
   background: rgba(20,20,25,0.9);
@@ -152,8 +152,12 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   border: 2px solid #333;
   position: relative;
 }
-#spinner-strip { display: flex; align-items: center; transition: transform 6s cubic-bezier(.08,.6,0,1); }
-#spinner-container::after {
+#spinner-strip, #battle-spinner-player-strip, #battle-spinner-bot-strip {
+  display: flex;
+  align-items: center;
+  transition: transform 6s cubic-bezier(.08,.6,0,1);
+}
+#spinner-container::after, .battle-spinner-container::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -166,7 +170,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   box-shadow: 0 0 15px gold, 0 0 35px orange;
   z-index: 10;
 }
-.spinner-item {
+.spinner-item, .battle-spinner-item {
   flex: 0 0 auto;
   width: 110px;
   height: 140px;
@@ -178,7 +182,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   justify-content: center;
   transition: transform 0.2s;
 }
-.spinner-item img { width: 70px; height: 70px; object-fit: contain; }
+.spinner-item img, .battle-spinner-item img { width: 70px; height: 70px; object-fit: contain; }
 .highlight-won { animation: glowScale 1.5s ease-in-out infinite alternate; z-index: 20; }
 @keyframes glowScale {
   0% { transform: scale(1); box-shadow: 0 0 15px currentColor; }
@@ -207,10 +211,10 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 .sell-btn {
   margin-top: 8px;
   padding: 6px;
-  background: #00c2b8; /* teal button */
+  background: #00c8c8;
   border: none;
   border-radius: 6px;
-  color: black; /* black text */
+  color: black;
   cursor: pointer;
   font-size: 13px;
 }
@@ -222,7 +226,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   margin-top: 30px;
 }
 #sell-all-btn {
-  background: linear-gradient(135deg, #32e0d3, #00c2b8); /* teal gradient */
+  background: linear-gradient(135deg, #33e0e0, #00c8c8);
   border: none;
   padding: 8px 18px;
   border-radius: 10px;
@@ -233,7 +237,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 }
 #sell-all-btn:hover {
   transform: scale(1.07);
-  box-shadow: 0 0 15px #00c2b8;
+  box-shadow: 0 0 15px #00c8c8;
 }
 
 /* ================= TOP DROPS ================= */
@@ -305,20 +309,6 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   border: 4px solid white;
   overflow: hidden;
 }
-#coin.head, #coin.tail {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  backface-visibility: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#coin.head { background: red; transform: rotateY(0deg); }
-#coin.tail { background: teal; transform: rotateY(180deg); }
-
-/* Coin images */
 #coin img {
   width: 100%;
   height: 100%;
