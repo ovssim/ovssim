@@ -84,16 +84,25 @@ function sellAllItems() {
   alert(`Sold everything for ${total.toFixed(2)} coins.`);
 }
 
-// ===================== SHOW CASE ITEMS =====================
+/// ===================== SHOW / HIDE CASE ITEMS =====================
 document.getElementById("show-case-items-btn").onclick = () => {
   const list = document.getElementById("case-items-list");
   if (!currentCase) return;
 
-  // Clear previous list
+  // Toggle visibility
+  if (list.style.display === "block") {
+    list.style.display = "none";
+    return;
+  }
+
+  // Show the list
+  list.style.display = "block";
   list.innerHTML = "";
 
-  // Add each item in the current case
-  currentCase.items.forEach(item => {
+  // Sort items by price descending
+  const sortedItems = [...currentCase.items].sort((a, b) => b.price - a.price);
+
+  sortedItems.forEach(item => {
     const div = document.createElement("div");
     div.className = `inv-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `
@@ -104,7 +113,6 @@ document.getElementById("show-case-items-btn").onclick = () => {
     list.appendChild(div);
   });
 };
-
 // ===================== TOP DROPS =====================
 function renderTopDrops() {
   const container = document.getElementById("top-drops");
