@@ -2,101 +2,93 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>OVFF's Sim</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Simulator</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>OVFF's Sim</h1>
+<h1 id="neon-banner">Case Simulator</h1>
+<div id="coins">Balance: 0</div>
+<button id="switch-mode-btn" class="theme-btn">Switch to Battle Mode</button>
 
-<!-- Neon New Banner -->
-<div id="neon-banner">New: COINFLIP & BATTLES</div>
-
-<!-- Coins Display -->
-<div id="coins"></div>
-
-<!-- Controls -->
-<div id="controls">
-  <button class="theme-btn" id="toggle-inv-btn">devving</button>
-  <button class="theme-btn" id="add-coins-btn">+50 Coins</button>
-  <button class="theme-btn" id="remove-coins-btn">Donate To Charity</button>
-  <button class="theme-btn" id="switch-mode-btn">Switch to Case Battle</button>
-</div>
-
-<!-- Normal Cases / Coinflip -->
+<!-- NORMAL CASE + COINFLIP SECTION -->
 <div id="normal-section">
-  <!-- Coinflip Section -->
-  <div id="coinflip-section">
-    <h2>Coinflip</h2>
-    <select id="coinflip-select"></select>
-    <button id="coinflip-btn" class="theme-btn">Flip Coin</button>
-    <div id="coin-container">
-      <div id="coin">
-        <div class="head"></div>
-        <div class="tail"></div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Case selection -->
-  <div id="case-select-wrapper" class="custom-dropdown">
-    <div id="case-select-display"></div>
-    <div id="case-select-options"></div>
-  </div>
-
-  <!-- Case section -->
+  <!-- CASE SECTION -->
   <div id="case-section">
     <div class="case-left">
-      <img id="case-image" src="" alt="Case Image">
+      <img id="case-image" src="">
     </div>
     <div class="case-right">
       <h2 id="case-name"></h2>
-      <button class="theme-btn" id="open-btn"></button>
-      <button class="theme-btn" id="show-case-items-btn">Show Potential Items</button>
+      <div class="custom-dropdown">
+        <div id="case-select-display"></div>
+        <div id="case-select-options"></div>
+      </div>
+      <button id="show-case-items-btn" class="theme-btn">Show Items</button>
       <div id="case-items-list"></div>
+      <button id="open-btn" class="theme-btn"></button>
     </div>
   </div>
 
-  <!-- Winner Name -->
-  <div id="winner-name"></div>
+  <!-- SPINNER -->
+  <div id="spinner-wrapper">
+    <div id="spinner-container">
+      <div id="spinner-strip"></div>
+    </div>
+    <div id="winner-name"></div>
+  </div>
+
+  <!-- COINFLIP SECTION -->
+  <div id="coinflip-section">
+    <select id="coinflip-select"></select><br>
+    <button id="coinflip-btn" class="theme-btn">Flip Coin</button>
+    <div id="coin-container">
+      <div id="coin"></div>
+    </div>
+    <button id="add-coins-btn" class="theme-btn">Add 50 Coins</button>
+    <button id="remove-coins-btn" class="theme-btn">Remove 5 Coins</button>
+  </div>
+
+  <!-- INVENTORY -->
+  <div class="inventory-header">
+    <h2>Inventory</h2>
+    <button id="sell-all-btn" class="theme-btn">Sell All</button>
+  </div>
+  <div id="inventory"></div>
+
+  <!-- TOP DROPS -->
+  <h2>Top Drops</h2>
+  <div id="top-drops"></div>
+
 </div>
 
-<!-- Case Battle Section -->
+<!-- CASE BATTLE SECTION -->
 <div id="battle-section" style="display:none;">
   <h2>Case Battle</h2>
-  <div class="battle-controls">
+  <div class="custom-dropdown">
     <select id="battle-case-select"></select>
-    <button class="theme-btn" id="battle-start-btn"></button>
   </div>
-  <div id="battle-spinners">
+  <button id="battle-start-btn" class="theme-btn"></button>
+  
+  <div style="display:flex; justify-content:center; gap:40px; margin-top:20px;">
     <div>
       <h3>Player</h3>
-      <div id="battle-spinner-player-wrapper">
-        <div id="battle-spinner-player-strip"></div>
+      <div id="battle-spinner-player" style="width:400px; overflow:hidden;">
+        <div id="battle-spinner-player-strip" style="display:flex;"></div>
       </div>
     </div>
     <div>
       <h3>Bot</h3>
-      <div id="battle-spinner-bot-wrapper">
-        <div id="battle-spinner-bot-strip"></div>
+      <div id="battle-spinner-bot" style="width:400px; overflow:hidden;">
+        <div id="battle-spinner-bot-strip" style="display:flex;"></div>
       </div>
     </div>
   </div>
-  <div id="battle-winner" style="margin-top:20px;font-size:20px;font-weight:bold;"></div>
+  <div id="battle-winner" style="margin-top:20px; font-weight:bold;"></div>
 </div>
 
-<!-- Inventory Section -->
-<div class="inventory-header">
-  <h2>Inventory</h2>
-  <button id="sell-all-btn" class="theme-btn">Sell All</button>
-</div>
-<div id="inventory"></div>
-
-<!-- Top Drops -->
-<h2 class="top-title">• Last TOP Drops</h2>
-<div id="top-drops"></div>
-
-<!-- JS -->
 <script src="script.js"></script>
 </body>
 </html>
