@@ -68,6 +68,71 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 
 #case-items-list { margin-top: 10px; max-height: 300px; overflow-y: auto; }
 
+/* Custom case dropdown */
+.custom-dropdown {
+  position: relative;
+  width: 250px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+#case-select-display {
+  padding: 6px 10px;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #222;
+  color: #fff;
+}
+
+#case-select-display img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+#case-select-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  background-color: #222;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10;
+}
+
+#case-select-options div {
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+#case-select-options div:hover {
+  background-color: #444;
+}
+
+#case-select-options img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Show odds inside case items nicely */
+#case-items-list .inv-item small {
+  display: block;
+  font-size: 13px;
+  color: #f0f0f0;
+}
 /* ================= OPEN BUTTON ================= */
 #open-btn { margin-top: 10px; display: inline-block; }
 
