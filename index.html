@@ -10,20 +10,24 @@
 <h1>OVFF's Sim</h1>
 
 <!-- Neon New Banner -->
-<div id="neon-banner">New: COINFLIP / Case Battle</div>
+<div id="neon-banner">New: COINFLIP & CASE BATTLE</div>
 
 <!-- Coins Display -->
 <div id="coins"></div>
 
-<!-- Controls -->
-<div id="controls">
-  <button class="theme-btn" id="toggle-mode-btn">Switch to Case Battle</button>
-  <button class="theme-btn" id="add-coins-btn">+0.10 Coins</button>
-  <button class="theme-btn" id="remove-coins-btn">Donate To Charity</button>
-</div>
+<!-- Mode Toggle Button -->
+<button id="toggle-mode-btn" class="theme-btn">Switch to Case Battle Mode</button>
 
-<!-- Normal Game Section (Coinflip + Cases) -->
-<div id="normal-section">
+<!-- ================= NORMAL MODE ================= -->
+<div id="normal-mode">
+
+  <!-- Controls -->
+  <div id="controls">
+    <button class="theme-btn" id="toggle-inv-btn">devving</button>
+    <button class="theme-btn" id="add-coins-btn">+0.10 Coins</button>
+    <button class="theme-btn" id="remove-coins-btn">Donate To Charity</button>
+  </div>
+
   <!-- Coinflip Section -->
   <div id="coinflip-section">
     <h2>Coinflip</h2>
@@ -38,9 +42,11 @@
   </div>
 
   <!-- Case selection -->
-  <div id="case-select-wrapper" class="custom-dropdown">
-    <div id="case-select-display"></div>
-    <div id="case-select-options"></div>
+  <div id="case-select-wrapper">
+    <div class="custom-dropdown">
+      <div id="case-select-display"></div>
+      <div id="case-select-options"></div>
+    </div>
   </div>
 
   <!-- Case section -->
@@ -55,27 +61,48 @@
       <div id="case-items-list"></div>
     </div>
   </div>
+
+  <!-- Winner Name -->
+  <div id="winner-name"></div>
+
+  <!-- Spinner -->
+  <div id="spinner-wrapper">
+    <div id="spinner-container">
+      <div id="spinner-strip"></div>
+    </div>
+  </div>
+
 </div>
 
-<!-- Case Battle Section (Initially Hidden) -->
-<div id="casebattle-section" style="display:none;">
-  <h2>Case Battle Mode</h2>
-  <div id="casebattle-select-wrapper" class="custom-dropdown">
-    <div id="casebattle-select-display"></div>
-    <div id="casebattle-select-options"></div>
-  </div>
-  <button class="theme-btn" id="start-battle-btn">Start Battle</button>
-  <div id="battle-result"></div>
-</div>
+<!-- ================= CASE BATTLE MODE ================= -->
+<div id="battle-mode" style="display:none;">
 
-<!-- Winner Name -->
-<div id="winner-name"></div>
-
-<!-- Spinner -->
-<div id="spinner-wrapper">
-  <div id="spinner-container">
-    <div id="spinner-strip"></div>
+  <h2>Case Battle</h2>
+  <div id="battle-select-wrapper">
+    <div class="custom-dropdown">
+      <div id="battle-case-display"></div>
+      <div id="battle-case-options"></div>
+    </div>
   </div>
+
+  <button id="battle-start-btn" class="theme-btn">Start Battle</button>
+
+  <div id="battle-spinners">
+    <div class="battle-spinner-wrapper">
+      <h3>Player</h3>
+      <div class="battle-spinner-container">
+        <div class="battle-spinner-strip" id="player-spinner"></div>
+      </div>
+    </div>
+    <div class="battle-spinner-wrapper">
+      <h3>Bot</h3>
+      <div class="battle-spinner-container">
+        <div class="battle-spinner-strip" id="bot-spinner"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="battle-winner-name"></div>
 </div>
 
 <!-- Inventory Section -->
