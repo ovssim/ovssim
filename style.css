@@ -263,3 +263,77 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   50% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
   100% { text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
 }
+
+.neon-banner {
+  display: inline-block;
+  margin: 10px 0 30px 0;
+  padding: 10px 25px;
+  font-size: 28px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ff0000;
+  text-align: center;
+  letter-spacing: 2px;
+
+  border: 2px solid #ff0000;
+  border-radius: 12px;
+
+  /* Neon glow */
+  text-shadow:
+    0 0 5px #ff0000,
+    0 0 10px #ff0000,
+    0 0 20px #ff0000,
+    0 0 40px #ff4c4c,
+    0 0 80px #ff4c4c;
+  box-shadow:
+    0 0 10px #ff0000,
+    0 0 20px #ff4c4c,
+    0 0 30px #ff6c6c,
+    0 0 50px #ff6c6c;
+
+  /* Animation */
+  animation: neon-pulse 1.5s infinite alternate;
+}
+
+/* Pulse animation */
+@keyframes neon-pulse {
+  0% {
+    text-shadow:
+      0 0 5px #ff0000,
+      0 0 10px #ff0000,
+      0 0 20px #ff0000,
+      0 0 40px #ff4c4c,
+      0 0 80px #ff4c4c;
+    box-shadow:
+      0 0 10px #ff0000,
+      0 0 20px #ff4c4c,
+      0 0 30px #ff6c6c,
+      0 0 50px #ff6c6c;
+  }
+  50% {
+    text-shadow:
+      0 0 10px #ff0000,
+      0 0 20px #ff4c4c,
+      0 0 30px #ff6c6c,
+      0 0 50px #ff8c8c,
+      0 0 100px #ff8c8c;
+    box-shadow:
+      0 0 15px #ff0000,
+      0 0 30px #ff4c4c,
+      0 0 40px #ff6c6c,
+      0 0 60px #ff8c8c;
+  }
+  100% {
+    text-shadow:
+      0 0 5px #ff0000,
+      0 0 10px #ff0000,
+      0 0 20px #ff0000,
+      0 0 40px #ff4c4c,
+      0 0 80px #ff4c4c;
+    box-shadow:
+      0 0 10px #ff0000,
+      0 0 20px #ff4c4c,
+      0 0 30px #ff6c6c,
+      0 0 50px #ff6c6c;
+  }
+}
