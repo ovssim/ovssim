@@ -8,36 +8,20 @@ body {
   text-align: center;
 }
 
-h1 { 
-  margin-bottom: 10px; 
-  font-weight: 600; 
-  position: relative;
-}
+h1 { margin-bottom: 10px; font-weight: 600; }
+#coins { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
 
-#coins {
-  font-size: 18px; 
-  font-weight: bold; 
-  margin-bottom: 20px;
-}
-
-/* ================= NEON BANNER ================= */
+/* ================= NEW NEON BANNER ================= */
 #neon-banner {
-  display: inline-block;
-  margin: 10px 0 20px 0;
-  padding: 5px 20px;
+  font-size: 24px;
   font-weight: bold;
-  font-size: 22px;
   color: #ff0000;
   text-shadow:
-    0 0 5px #ff0000,
-    0 0 10px #ff0000,
-    0 0 20px #ff0000,
-    0 0 30px #ff1a1a,
-    0 0 40px #ff1a1a,
-    0 0 50px #ff1a1a;
-  border-radius: 6px;
-  border: 1px solid #ff1a1a;
-  background: rgba(30,0,0,0.2);
+     0 0 5px #ff0000,
+     0 0 10px #ff0000,
+     0 0 20px #ff0000,
+     0 0 40px #ff4d4d;
+  margin-bottom: 20px;
 }
 
 /* ================= BUTTON THEME ================= */
@@ -74,13 +58,8 @@ h1 {
 
 .case-left img { width: 220px; border-radius: 15px; }
 .case-right h2 { margin-bottom: 15px; }
-
 #case-items-list { margin-top: 10px; max-height: 300px; overflow-y: auto; }
-
-/* ================= OPEN BUTTON ================= */
 #open-btn { margin-top: 10px; display: inline-block; }
-
-/* ================= WINNER NAME ================= */
 #winner-name { font-size: 22px; font-weight: bold; margin: 20px 0; }
 
 /* ================= SPINNER ================= */
@@ -172,10 +151,7 @@ h1 {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-#sell-all-btn:hover {
-  transform: scale(1.07);
-  box-shadow: 0 0 15px orange;
-}
+#sell-all-btn:hover { transform: scale(1.07); box-shadow: 0 0 15px orange; }
 
 /* ================= TOP DROPS ================= */
 #top-drops {
@@ -200,11 +176,11 @@ h1 {
 .strange    { border: 2px solid orange; box-shadow: 0 0 16px orange; color: orange; }
 .unusual    { border: 2px solid purple; box-shadow: 0 0 18px purple; color: purple; }
 .legendary  { border: 2px solid gold; box-shadow: 0 0 22px gold; color: gold; }
-.mythical   { border:2px solid violet; box-shadow:0 0 24px violet;color:violet;}
-.genuine    { border:2px solid #4D7455;box-shadow:0 0 16px #4D7455;color:#4D7455;}
-.vintage    { border:2px solid #476291;box-shadow:0 0 16px #476291;color:#476291;}
-.collector  { border:2px solid #AA0000;box-shadow:0 0 22px #AA0000;color:#AA0000;}
-.haunted    { border:2px solid #38F3AB;box-shadow:0 0 18px #38F3AB;color:#38F3AB;}
+.mythical   { border: 2px solid violet; box-shadow: 0 0 24px violet; color: violet; }
+.genuine    { border: 2px solid #4D7455; box-shadow: 0 0 16px #4D7455; color: #4D7455; }
+.vintage    { border: 2px solid #476291; box-shadow: 0 0 16px #476291; color: #476291; }
+.collector  { border: 2px solid #AA0000; box-shadow: 0 0 22px #AA0000; color: #AA0000; }
+.haunted    { border: 2px solid #38F3AB; box-shadow: 0 0 18px #38F3AB; color: #38F3AB; }
 
 /* ================= COINFLIP SECTION ================= */
 #coinflip-section {
@@ -217,7 +193,6 @@ h1 {
   text-align: center;
   box-shadow: 0 0 25px rgba(0,0,0,0.6);
 }
-
 #coinflip-select {
   width: 90%;
   padding: 8px;
@@ -230,52 +205,38 @@ h1 {
   cursor: pointer;
 }
 
-/* ================= COIN / POKER CHIP ================= */
+/* ================= POKER CHIP COIN ================= */
 #coin-container {
   perspective: 1000px;
   width: 100px;
   height: 100px;
   margin: 15px auto;
 }
-
 #coin {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: repeating-conic-gradient(
-    red 0% 12.5%, white 12.5% 25%,
-    black 25% 37.5%, white 37.5% 50%
-  );
-  box-shadow: 0 0 15px red, 0 0 25px red, 0 0 40px white;
+  background: radial-gradient(circle at 30% 30%, #ff0000, #880000);
+  border: 6px solid white;
+  box-shadow:
+    0 0 5px white,
+    0 0 15px #ff0000,
+    0 0 30px #ff4d4d;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 2s ease-out;
+  transition: transform 2s ease-out, background-color 0.1s linear;
 }
-
-#coin.red-win { box-shadow: 0 0 15px red, 0 0 25px red, 0 0 40px white; }
-#coin.black-lose { box-shadow: 0 0 15px black, 0 0 25px black, 0 0 40px white; }
-
-/* Front/back sides */
-#coin::before,
-#coin::after {
-  content: "";
+#coin::before, #coin::after {
+  content: '';
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   backface-visibility: hidden;
 }
+#coin .head { background: red; transform: rotateY(0deg); }
+#coin .tail { background: black; transform: rotateY(180deg); }
 
-#coin::before { background: red; }
-#coin::after { background: black; }
-
-/* Animate flipping */
-#coin.flipping {
-  animation: flipColor 2s ease-in-out;
-}
-
-@keyframes flipColor {
-  0% { transform: rotateY(0deg); }
-  50% { transform: rotateY(720deg); }
-  100% { transform: rotateY(1440deg); }
-}
+/* Optional neon glow */
+#coin.head { box-shadow: 0 0 15px #ff0000, 0 0 25px #ff4d4d; }
+#coin.tail { box-shadow: 0 0 15px #000, 0 0 25px #333; }
