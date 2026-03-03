@@ -129,17 +129,16 @@ function coinflipItem(index) {
   const item = inventory[index];
   const coin = document.getElementById("coin");
   const flipBtn = document.getElementById("coinflip-btn");
+
   flipBtn.disabled = true;
 
-  // Red = win, black = lose
-  const win = true;
+  const win = true; // Red = win
+  const totalFlips = 8; // Number of alternating flips
+  let currentFlip = 0;
 
-  let flips = 0;
-  const totalFlips = 8;
-
-  const interval = setInterval(() => {
-    // Alternate colors
-    if (flips % 2 === 0) {
+  const flipInterval = setInterval(() => {
+    // Alternate colors: red = win, black = lose
+    if (currentFlip % 2 === 0) {
       coin.classList.add("head");
       coin.classList.remove("tail");
     } else {
@@ -147,11 +146,12 @@ function coinflipItem(index) {
       coin.classList.remove("head");
     }
 
-    flips++;
+    currentFlip++;
 
-    // End flipping
-    if (flips > totalFlips) {
-      clearInterval(interval);
+    if (currentFlip > totalFlips) {
+      clearInterval(flipInterval);
+
+      // Land on final result
       if (win) {
         coin.classList.add("head");
         coin.classList.remove("tail");
@@ -169,7 +169,7 @@ function coinflipItem(index) {
       populateCoinflipDropdown();
       flipBtn.disabled = false;
     }
-  }, 150); // 150ms per flip for smooth animation
+  }, 200);
 }
 
 // ===================== CASE SYSTEM =====================
@@ -214,6 +214,7 @@ function openCase() {
 function getRandomItem(items) {
   const total = items.reduce((sum, i) => sum + i.weight, 0);
   let roll = Math.random() * total;
+
   for (let item of items) {
     if (roll < item.weight) return item;
     roll -= item.weight;
