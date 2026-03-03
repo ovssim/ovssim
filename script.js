@@ -41,8 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===================== COINS =====================
 function updateCoins() {
-  document.getElementById("coins").textContent =
-    `Balance: ${coins.toFixed(2)}`;
+  document.getElementById("coins").textContent = `Balance: ${coins.toFixed(2)}`;
   localStorage.setItem("coins", coins);
 }
 
@@ -83,7 +82,6 @@ function sellItem(index) {
 
 function sellAllItems() {
   if (inventory.length === 0) return alert("Inventory empty.");
-
   const total = inventory.reduce((sum, i) => sum + i.price, 0);
   coins += total;
   inventory = [];
@@ -135,44 +133,49 @@ function populateCoinflipDropdown() {
   });
 }
 
+// Fixed coinflip with red = win, black = lose
 function coinflipItem(index) {
   const item = inventory[index];
   const coin = document.getElementById("coin");
-  const duration = 2000;
+  const flipTimes = 6; // number of red/black flips
+  let step = 0;
+  const win = true; // red = win, black = lose
 
-  // Red = win, Black = lose
-  const win = true; // Always red = win
-  const colors = ["red", "black"];
-  let colorIndex = 0;
-
-  // Animate coin flipping with color swap
-  const interval = 100; // flip every 0.1s
-  const steps = duration / interval;
-  let stepCount = 0;
+  // Disable button during animation
+  document.getElementById("coinflip-btn").disabled = true;
 
   const flipInterval = setInterval(() => {
-    coin.style.backgroundColor = colors[colorIndex];
-    colorIndex = 1 - colorIndex;
-    stepCount++;
-    if (stepCount >= steps) clearInterval(flipInterval);
-  }, interval);
-
-  // Set final color after flip
-  setTimeout(() => {
-    coin.style.backgroundColor = win ? "red" : "black";
-
-    if (win) {
-      inventory.push({ ...item });
-      alert(`You WON! ${item.name} duplicated.`);
+    step++;
+    if (step % 2 === 0) {
+      coin.classList.remove("heads");
+      coin.classList.add("tails"); // black
     } else {
-      inventory.splice(index, 1);
-      alert(`You LOST! ${item.name} removed.`);
+      coin.classList.remove("tails");
+      coin.classList.add("heads"); // red
     }
 
-    saveInventory();
-    renderInventory();
-    populateCoinflipDropdown();
-  }, duration);
+    if (step >= flipTimes) {
+      clearInterval(flipInterval);
+
+      // Final result
+      if (win) {
+        coin.classList.remove("tails");
+        coin.classList.add("heads"); // red
+        inventory.push({ ...item });
+        alert(`You WON! ${item.name} duplicated.`);
+      } else {
+        coin.classList.remove("heads");
+        coin.classList.add("tails"); // black
+        inventory.splice(index, 1);
+        alert(`You LOST! ${item.name} removed.`);
+      }
+
+      saveInventory();
+      renderInventory();
+      populateCoinflipDropdown();
+      document.getElementById("coinflip-btn").disabled = false;
+    }
+  }, 300);
 }
 
 // ===================== CASE SYSTEM =====================
@@ -202,8 +205,7 @@ function selectCase(id) {
 
   document.getElementById("case-image").src = currentCase.image;
   document.getElementById("case-name").textContent = currentCase.name;
-  document.getElementById("open-btn").textContent =
-    `Open for ${currentCase.price} Coins`;
+  document.getElementById("open-btn").textContent = `Open for ${currentCase.price} Coins`;
 }
 
 function openCase() {
@@ -238,10 +240,7 @@ function spinToItem(winningItem) {
   const winnerIndex = 38;
 
   for (let i = 0; i < slots; i++) {
-    let item = currentCase.items[
-      Math.floor(Math.random() * currentCase.items.length)
-    ];
-
+    let item = currentCase.items[Math.floor(Math.random() * currentCase.items.length)];
     if (i === winnerIndex) item = winningItem;
 
     const div = document.createElement("div");
@@ -251,18 +250,14 @@ function spinToItem(winningItem) {
   }
 
   const itemWidth = strip.children[0].offsetWidth + 30;
-  const containerWidth =
-    document.getElementById("spinner-container").offsetWidth;
-
-  const offset =
-    -(winnerIndex * itemWidth - containerWidth / 2 + itemWidth / 2);
+  const containerWidth = document.getElementById("spinner-container").offsetWidth;
+  const offset = -(winnerIndex * itemWidth - containerWidth / 2 + itemWidth / 2);
 
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
   strip.offsetHeight;
 
-  strip.style.transition =
-    "transform 3.2s cubic-bezier(.25,.85,.35,1)";
+  strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
   setTimeout(() => {
