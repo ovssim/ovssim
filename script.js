@@ -84,6 +84,27 @@ function sellAllItems() {
   alert(`Sold everything for ${total.toFixed(2)} coins.`);
 }
 
+// ===================== SHOW CASE ITEMS =====================
+document.getElementById("show-case-items-btn").onclick = () => {
+  const list = document.getElementById("case-items-list");
+  if (!currentCase) return;
+
+  // Clear previous list
+  list.innerHTML = "";
+
+  // Add each item in the current case
+  currentCase.items.forEach(item => {
+    const div = document.createElement("div");
+    div.className = `inv-item ${item.rarity.toLowerCase()}`;
+    div.innerHTML = `
+      <img src="${item.image}">
+      <p>${item.name}</p>
+      <small>${item.price} coins</small>
+    `;
+    list.appendChild(div);
+  });
+};
+
 // ===================== TOP DROPS =====================
 function renderTopDrops() {
   const container = document.getElementById("top-drops");
