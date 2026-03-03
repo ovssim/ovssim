@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTopDrops();
   loadCases();
   populateCoinflipDropdown();
+  setupBattleToggle();
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isNaN(index)) coinflipItem(index);
   };
   document.getElementById("open-btn").onclick = openCase;
+  document.getElementById("start-battle-btn").onclick = startCaseBattle;
 });
 
 // ===================== COINS =====================
@@ -84,7 +86,7 @@ function sellAllItems() {
   alert(`Sold everything for ${total.toFixed(2)} coins.`);
 }
 
-// ===================== SHOW / HIDE CASE ITEMS + ODDS =====================
+// ===================== SHOW / HIDE CASE ITEMS =====================
 document.getElementById("show-case-items-btn").onclick = () => {
   const list = document.getElementById("case-items-list");
   if (!currentCase) return;
@@ -161,27 +163,20 @@ function coinflipItem(index) {
   flipBtn.disabled = true;
 
   const win = Math.random() < 0.5;
+  const finalClass = win ? "head" : "tail";
 
   let flips = 0;
   const totalFlips = 10;
 
   const flipInterval = setInterval(() => {
-    coin.classList.toggle("flipped");
+    coin.classList.toggle("head");
+    coin.classList.toggle("tail");
     flips++;
 
     if (flips > totalFlips) {
       clearInterval(flipInterval);
-
-      // Show the final coin face
-      const headImg = coin.querySelector(".head");
-      const tailImg = coin.querySelector(".tail");
-      if (win) {
-        headImg.style.display = "block";
-        tailImg.style.display = "none";
-      } else {
-        headImg.style.display = "none";
-        tailImg.style.display = "block";
-      }
+      coin.classList.remove("head", "tail");
+      coin.classList.add(finalClass);
 
       if (win) {
         inventory.push({ ...item });
@@ -205,7 +200,6 @@ function loadCases() {
     .then(res => res.json())
     .then(data => {
       cases = data.cases;
-
       const display = document.getElementById("case-select-display");
       const options = document.getElementById("case-select-options");
       options.innerHTML = "";
@@ -220,15 +214,12 @@ function loadCases() {
         options.appendChild(div);
       });
 
-      // Initial selection
       selectCase(cases[0].id);
 
-      // Toggle dropdown
       display.onclick = () => {
         options.style.display = options.style.display === "block" ? "none" : "block";
       };
 
-      // Close dropdown if clicked outside
       document.addEventListener("click", (e) => {
         if (!display.contains(e.target) && !options.contains(e.target)) {
           options.style.display = "none";
@@ -246,7 +237,7 @@ function selectCase(id) {
   document.getElementById("open-btn").textContent = ` ${currentCase.price} Coins`;
 
   const display = document.getElementById("case-select-display");
-  display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price} coins)</span>`;
+  if(display) display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price} coins)</span>`;
 }
 
 function openCase() {
@@ -271,8 +262,8 @@ function getRandomItem(items) {
 }
 
 // ===================== SPINNER =====================
-function spinToItem(winningItem) {
-  const strip = document.getElementById("spinner-strip");
+function spinToItem(winningItem, stripId="spinner-strip", callback=null) {
+  const strip = document.getElementById(stripId);
   strip.innerHTML = "";
 
   const slots = 50;
@@ -289,7 +280,7 @@ function spinToItem(winningItem) {
   }
 
   const itemWidth = strip.children[0].offsetWidth + 30;
-  const containerWidth = document.getElementById("spinner-container").offsetWidth;
+  const containerWidth = strip.parentElement.offsetWidth;
   const offset = -(winnerIndex * itemWidth - containerWidth / 2 + itemWidth / 2);
 
   strip.style.transition = "none";
@@ -300,7 +291,8 @@ function spinToItem(winningItem) {
   strip.style.transform = `translateX(${offset}px)`;
 
   setTimeout(() => {
-    showWinner(winningItem);
+    if(callback) callback();
+    else showWinner(winningItem);
   }, 3200);
 }
 
@@ -319,4 +311,73 @@ function showWinner(item) {
     winnerBox.textContent = item.name;
     winnerBox.className = item.rarity.toLowerCase();
   }
+}
+
+// ===================== CASE BATTLE MODE =====================
+function setupBattleToggle() {
+  const toggle = document.getElementById("toggle-battle-btn");
+  const mainSection = document.getElementById("main-section");
+  const battleSection = document.getElementById("battle-section");
+
+  toggle.onclick = () => {
+    if(mainSection.style.display !== "none"){
+      mainSection.style.display = "none";
+      battleSection.style.display = "block";
+    } else {
+      mainSection.style.display = "block";
+      battleSection.style.display = "none";
+    }
+  };
+}
+
+function startCaseBattle() {
+  if(!currentCase) return alert("No case selected!");
+  if(coins < currentCase.price) return alert("Not enough coins.");
+
+  coins -= currentCase.price;
+  updateCoins();
+
+  let playerItem, botItem;
+
+  function battleRound() {
+    playerItem = getRandomItem(currentCase.items);
+    botItem = getRandomItem(currentCase.items);
+
+    if(playerItem.price === botItem.price){
+      // tie, redo
+      battleRound();
+      return;
+    }
+
+    // spin player
+    spinToItem(playerItem,"battle-player-strip",()=>{});
+    // spin bot
+    spinToItem(botItem,"battle-bot-strip",()=>{});
+
+    setTimeout(() => {
+      let winnerItem;
+      if(playerItem.price > botItem.price){
+        winnerItem = playerItem;
+        inventory.push(playerItem, botItem);
+        alert(`You win! You got both items!`);
+      } else {
+        winnerItem = botItem;
+        alert(`Bot wins! Better luck next time.`);
+      }
+
+      const playerStrip = document.getElementById("battle-player-strip");
+      const botStrip = document.getElementById("battle-bot-strip");
+
+      // outline winner item
+      const winnerRarity = winnerItem.rarity.toLowerCase();
+      if(playerItem.price > botItem.price) playerStrip.children[38].classList.add("highlight-won");
+      else botStrip.children[38].classList.add("highlight-won");
+
+      saveInventory();
+      renderInventory();
+      renderTopDrops();
+    }, 3400);
+  }
+
+  battleRound();
 }
