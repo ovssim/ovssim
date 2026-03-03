@@ -17,19 +17,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
+
   document.getElementById("add-coins-btn").onclick = () => {
     coins += 0.10;
     updateCoins();
   };
+
   document.getElementById("remove-coins-btn").onclick = () => {
     coins = Math.max(0, coins - 5);
     updateCoins();
   };
+
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
+
   document.getElementById("open-btn").onclick = openCase;
 });
 
@@ -132,12 +136,16 @@ function coinflipItem(index) {
 
   flipBtn.disabled = true;
 
-  const win = true; // Red = win
-  const totalFlips = 8; // Alternating flips before final
+  // Red = win, Black = lose
+  const win = true; // Always win = red
+  const totalFlips = 8; // Number of alternating flips
   let currentFlip = 0;
 
+  // Reset classes
+  coin.classList.remove("head", "tail");
+
   const flipInterval = setInterval(() => {
-    // Alternate colors
+    // Alternate red/black
     if (currentFlip % 2 === 0) {
       coin.classList.add("head");
       coin.classList.remove("tail");
