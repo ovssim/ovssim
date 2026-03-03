@@ -237,3 +237,29 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   50% { transform: rotateY(1080deg) scale(1.1); }
   100% { transform: rotateY(2160deg) scale(1); }
 }
+
+.neon-banner {
+  display: inline-block;
+  margin: 10px 0 30px 0;
+  padding: 8px 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff0000;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 5px #ff0000,
+    0 0 10px #ff0000,
+    0 0 20px #ff0000,
+    0 0 40px #ff0000,
+    0 0 80px #ff0000;
+  border: 2px solid #ff0000;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+  animation: neon-flicker 1.5s infinite alternate;
+}
+
+@keyframes neon-flicker {
+  0% { text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
+  50% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+  100% { text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
+}
