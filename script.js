@@ -17,25 +17,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-
   document.getElementById("add-coins-btn").onclick = () => {
     coins += 0.10;
     updateCoins();
   };
-
   document.getElementById("remove-coins-btn").onclick = () => {
     coins = Math.max(0, coins - 5);
     updateCoins();
   };
-
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
     const index = parseInt(select.value);
-    if (!isNaN(index)) {
-      coinflipItem(index);
-    }
+    if (!isNaN(index)) coinflipItem(index);
   };
-
   document.getElementById("open-btn").onclick = openCase;
 });
 
@@ -58,14 +52,12 @@ function renderInventory() {
   inventory.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = `inv-item ${item.rarity.toLowerCase()}`;
-
     div.innerHTML = `
       <img src="${item.image}">
       <p>${item.name}</p>
       <small>${item.price} coins</small>
       <button class="sell-btn theme-btn">Sell</button>
     `;
-
     div.querySelector(".sell-btn").onclick = () => sellItem(index);
     container.appendChild(div);
   });
@@ -133,39 +125,40 @@ function populateCoinflipDropdown() {
   });
 }
 
-// Fixed coinflip with red = win, black = lose
 function coinflipItem(index) {
   const item = inventory[index];
   const coin = document.getElementById("coin");
-  const flipTimes = 6; // number of red/black flips
-  let step = 0;
-  const win = true; // red = win, black = lose
+  const flipBtn = document.getElementById("coinflip-btn");
 
-  // Disable button during animation
-  document.getElementById("coinflip-btn").disabled = true;
+  flipBtn.disabled = true;
+
+  const win = true; // Red = win
+  const totalFlips = 8; // Alternating flips before final
+  let currentFlip = 0;
 
   const flipInterval = setInterval(() => {
-    step++;
-    if (step % 2 === 0) {
-      coin.classList.remove("heads");
-      coin.classList.add("tails"); // black
+    // Alternate colors
+    if (currentFlip % 2 === 0) {
+      coin.classList.add("head");
+      coin.classList.remove("tail");
     } else {
-      coin.classList.remove("tails");
-      coin.classList.add("heads"); // red
+      coin.classList.add("tail");
+      coin.classList.remove("head");
     }
+    currentFlip++;
 
-    if (step >= flipTimes) {
+    // Final landing
+    if (currentFlip > totalFlips) {
       clearInterval(flipInterval);
 
-      // Final result
       if (win) {
-        coin.classList.remove("tails");
-        coin.classList.add("heads"); // red
+        coin.classList.add("head");
+        coin.classList.remove("tail");
         inventory.push({ ...item });
         alert(`You WON! ${item.name} duplicated.`);
       } else {
-        coin.classList.remove("heads");
-        coin.classList.add("tails"); // black
+        coin.classList.add("tail");
+        coin.classList.remove("head");
         inventory.splice(index, 1);
         alert(`You LOST! ${item.name} removed.`);
       }
@@ -173,9 +166,9 @@ function coinflipItem(index) {
       saveInventory();
       renderInventory();
       populateCoinflipDropdown();
-      document.getElementById("coinflip-btn").disabled = false;
+      flipBtn.disabled = false;
     }
-  }, 300);
+  }, 200); // 200ms per flip
 }
 
 // ===================== CASE SYSTEM =====================
@@ -186,14 +179,12 @@ function loadCases() {
       cases = data.cases;
       const select = document.getElementById("case-select");
       select.innerHTML = "";
-
       cases.forEach(c => {
         const option = document.createElement("option");
         option.value = c.id;
         option.textContent = `${c.name} (${c.price} coins)`;
         select.appendChild(option);
       });
-
       select.onchange = () => selectCase(select.value);
       selectCase(cases[0].id);
     });
@@ -227,7 +218,6 @@ function getRandomItem(items) {
     if (roll < item.weight) return item;
     roll -= item.weight;
   }
-
   return items[0];
 }
 
