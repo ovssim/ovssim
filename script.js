@@ -129,34 +129,37 @@ function coinflipItem(index) {
   const item = inventory[index];
   const coin = document.getElementById("coin");
   const flipBtn = document.getElementById("coinflip-btn");
-
   flipBtn.disabled = true;
 
-  const win = Math.random() < 0.5; // 50/50 chance
-  const totalFlips = 8; // alternating red/black
-  let currentFlip = 0;
+  // Red = win, black = lose
+  const win = true;
 
-  const flipInterval = setInterval(() => {
-    if (currentFlip % 2 === 0) {
-      coin.classList.add("red");
-      coin.classList.remove("black");
+  let flips = 0;
+  const totalFlips = 8;
+
+  const interval = setInterval(() => {
+    // Alternate colors
+    if (flips % 2 === 0) {
+      coin.classList.add("head");
+      coin.classList.remove("tail");
     } else {
-      coin.classList.add("black");
-      coin.classList.remove("red");
+      coin.classList.add("tail");
+      coin.classList.remove("head");
     }
-    currentFlip++;
 
-    if (currentFlip > totalFlips) {
-      clearInterval(flipInterval);
+    flips++;
 
+    // End flipping
+    if (flips > totalFlips) {
+      clearInterval(interval);
       if (win) {
-        coin.classList.add("red"); // red = win
-        coin.classList.remove("black");
+        coin.classList.add("head");
+        coin.classList.remove("tail");
         inventory.push({ ...item });
         alert(`You WON! ${item.name} duplicated.`);
       } else {
-        coin.classList.add("black"); // black = lose
-        coin.classList.remove("red");
+        coin.classList.add("tail");
+        coin.classList.remove("head");
         inventory.splice(index, 1);
         alert(`You LOST! ${item.name} removed.`);
       }
@@ -166,7 +169,7 @@ function coinflipItem(index) {
       populateCoinflipDropdown();
       flipBtn.disabled = false;
     }
-  }, 200);
+  }, 150); // 150ms per flip for smooth animation
 }
 
 // ===================== CASE SYSTEM =====================
@@ -211,7 +214,6 @@ function openCase() {
 function getRandomItem(items) {
   const total = items.reduce((sum, i) => sum + i.weight, 0);
   let roll = Math.random() * total;
-
   for (let item of items) {
     if (roll < item.weight) return item;
     roll -= item.weight;
