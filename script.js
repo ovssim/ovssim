@@ -7,6 +7,58 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
+// ===================== LOAD CASES =====================
+function loadCases() {
+  fetch("data/cases.json")
+    .then(res => res.json())
+    .then(data => {
+      cases = data.cases;
+
+      // Main case dropdown
+      const display = document.getElementById("case-select-display");
+      const options = document.getElementById("case-select-options");
+      options.innerHTML = "";
+      cases.forEach(c => {
+        const div = document.createElement("div");
+        div.innerHTML = `<img src="${c.image}"><span>${c.name} (${c.price} coins)</span>`;
+        div.onclick = () => {
+          selectCase(c.id);
+          options.style.display = "none";
+        };
+        options.appendChild(div);
+      });
+      selectCase(cases[0].id);
+
+      display.onclick = () => {
+        options.style.display = options.style.display === "block" ? "none" : "block";
+      };
+      document.addEventListener("click", (e) => {
+        if (!display.contains(e.target) && !options.contains(e.target)) {
+          options.style.display = "none";
+        }
+      });
+
+      // Battle case dropdown
+      const battleSelect = document.getElementById("battle-case-select");
+      battleSelect.innerHTML = "";
+      cases.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.id;
+        option.textContent = `${c.name} (${c.price} coins)`;
+        battleSelect.appendChild(option);
+      });
+    });
+}
+
+function selectCase(id) {
+  currentCase = cases.find(c => c.id === id);
+  if (!currentCase) return;
+
+  document.getElementById("case-image").src = currentCase.image;
+  document.getElementById("case-name").textContent = currentCase.name;
+  document.getElementById("open-btn").textContent = ` ${currentCase.price} Coins`;
+}
+
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   updateCoins();
@@ -14,25 +66,23 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTopDrops();
   loadCases();
   populateCoinflipDropdown();
-  setupBattleToggle();
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => {
-    coins += 50.00;
-    updateCoins();
-  };
-  document.getElementById("remove-coins-btn").onclick = () => {
-    coins = Math.max(0, coins - 5.00);
-    updateCoins();
-  };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50; updateCoins(); };
+  document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 5); updateCoins(); };
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
   document.getElementById("open-btn").onclick = openCase;
-  document.getElementById("start-battle-btn").onclick = startCaseBattle;
+
+  // Toggle between main and battle mode
+  document.getElementById("toggle-mode-btn").onclick = toggleMode;
+
+  // Start battle button
+  document.getElementById("start-battle-btn").onclick = startBattle;
 });
 
 // ===================== COINS =====================
@@ -86,7 +136,7 @@ function sellAllItems() {
   alert(`Sold everything for ${total.toFixed(2)} coins.`);
 }
 
-// ===================== SHOW / HIDE CASE ITEMS =====================
+// ===================== SHOW / HIDE CASE ITEMS + ODDS =====================
 document.getElementById("show-case-items-btn").onclick = () => {
   const list = document.getElementById("case-items-list");
   if (!currentCase) return;
@@ -159,11 +209,13 @@ function populateCoinflipDropdown() {
 function coinflipItem(index) {
   const item = inventory[index];
   const coin = document.getElementById("coin");
+  const coinImage = document.getElementById("coin-image");
   const flipBtn = document.getElementById("coinflip-btn");
   flipBtn.disabled = true;
 
   const win = Math.random() < 0.5;
   const finalClass = win ? "head" : "tail";
+  coinImage.src = win ? "images/items/coin-head.png" : "images/items/coin-tail.png";
 
   let flips = 0;
   const totalFlips = 10;
@@ -195,51 +247,6 @@ function coinflipItem(index) {
 }
 
 // ===================== CASE SYSTEM =====================
-function loadCases() {
-  fetch("data/cases.json")
-    .then(res => res.json())
-    .then(data => {
-      cases = data.cases;
-      const display = document.getElementById("case-select-display");
-      const options = document.getElementById("case-select-options");
-      options.innerHTML = "";
-
-      cases.forEach(c => {
-        const div = document.createElement("div");
-        div.innerHTML = `<img src="${c.image}"><span>${c.name} (${c.price} coins)</span>`;
-        div.onclick = () => {
-          selectCase(c.id);
-          options.style.display = "none";
-        };
-        options.appendChild(div);
-      });
-
-      selectCase(cases[0].id);
-
-      display.onclick = () => {
-        options.style.display = options.style.display === "block" ? "none" : "block";
-      };
-
-      document.addEventListener("click", (e) => {
-        if (!display.contains(e.target) && !options.contains(e.target)) {
-          options.style.display = "none";
-        }
-      });
-    });
-}
-
-function selectCase(id) {
-  currentCase = cases.find(c => c.id === id);
-  if (!currentCase) return;
-
-  document.getElementById("case-image").src = currentCase.image;
-  document.getElementById("case-name").textContent = currentCase.name;
-  document.getElementById("open-btn").textContent = ` ${currentCase.price} Coins`;
-
-  const display = document.getElementById("case-select-display");
-  if(display) display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price} coins)</span>`;
-}
-
 function openCase() {
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins.");
@@ -261,9 +268,8 @@ function getRandomItem(items) {
   return items[0];
 }
 
-// ===================== SPINNER =====================
-function spinToItem(winningItem, stripId="spinner-strip", callback=null) {
-  const strip = document.getElementById(stripId);
+function spinToItem(winningItem) {
+  const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
   const slots = 50;
@@ -280,7 +286,7 @@ function spinToItem(winningItem, stripId="spinner-strip", callback=null) {
   }
 
   const itemWidth = strip.children[0].offsetWidth + 30;
-  const containerWidth = strip.parentElement.offsetWidth;
+  const containerWidth = document.getElementById("spinner-container").offsetWidth;
   const offset = -(winnerIndex * itemWidth - containerWidth / 2 + itemWidth / 2);
 
   strip.style.transition = "none";
@@ -291,8 +297,7 @@ function spinToItem(winningItem, stripId="spinner-strip", callback=null) {
   strip.style.transform = `translateX(${offset}px)`;
 
   setTimeout(() => {
-    if(callback) callback();
-    else showWinner(winningItem);
+    showWinner(winningItem);
   }, 3200);
 }
 
@@ -313,71 +318,101 @@ function showWinner(item) {
   }
 }
 
-// ===================== CASE BATTLE MODE =====================
-function setupBattleToggle() {
-  const toggle = document.getElementById("toggle-battle-btn");
-  const mainSection = document.getElementById("main-section");
-  const battleSection = document.getElementById("battle-section");
+// ===================== TOGGLE MAIN / BATTLE =====================
+function toggleMode() {
+  const main = document.getElementById("main-section");
+  const battle = document.getElementById("battle-section");
+  const btn = document.getElementById("toggle-mode-btn");
 
-  toggle.onclick = () => {
-    if(mainSection.style.display !== "none"){
-      mainSection.style.display = "none";
-      battleSection.style.display = "block";
-    } else {
-      mainSection.style.display = "block";
-      battleSection.style.display = "none";
-    }
-  };
+  if (battle.style.display === "none") {
+    battle.style.display = "block";
+    main.style.display = "none";
+    btn.textContent = "Switch to Cases/Coinflip";
+  } else {
+    battle.style.display = "none";
+    main.style.display = "block";
+    btn.textContent = "Switch to Battle Mode";
+  }
 }
 
-function startCaseBattle() {
-  if(!currentCase) return alert("No case selected!");
-  if(coins < currentCase.price) return alert("Not enough coins.");
+// ===================== CASE BATTLE =====================
+function startBattle() {
+  const select = document.getElementById("battle-case-select");
+  const battleCase = cases.find(c => c.id === select.value);
+  if (!battleCase) return;
 
-  coins -= currentCase.price;
+  if (coins < battleCase.price) return alert("Not enough coins to battle.");
+  coins -= battleCase.price;
   updateCoins();
 
-  let playerItem, botItem;
+  // Unbox player and bot items
+  let playerItem = getRandomItem(battleCase.items);
+  let botItem = getRandomItem(battleCase.items);
 
-  function battleRound() {
-    playerItem = getRandomItem(currentCase.items);
-    botItem = getRandomItem(currentCase.items);
-
-    if(playerItem.price === botItem.price){
-      // tie, redo
-      battleRound();
-      return;
-    }
-
-    // spin player
-    spinToItem(playerItem,"battle-player-strip",()=>{});
-    // spin bot
-    spinToItem(botItem,"battle-bot-strip",()=>{});
-
-    setTimeout(() => {
-      let winnerItem;
-      if(playerItem.price > botItem.price){
-        winnerItem = playerItem;
-        inventory.push(playerItem, botItem);
-        alert(`You win! You got both items!`);
-      } else {
-        winnerItem = botItem;
-        alert(`Bot wins! Better luck next time.`);
-      }
-
-      const playerStrip = document.getElementById("battle-player-strip");
-      const botStrip = document.getElementById("battle-bot-strip");
-
-      // outline winner item
-      const winnerRarity = winnerItem.rarity.toLowerCase();
-      if(playerItem.price > botItem.price) playerStrip.children[38].classList.add("highlight-won");
-      else botStrip.children[38].classList.add("highlight-won");
-
-      saveInventory();
-      renderInventory();
-      renderTopDrops();
-    }, 3400);
+  // Reroll on tie
+  while (playerItem.price === botItem.price) {
+    playerItem = getRandomItem(battleCase.items);
+    botItem = getRandomItem(battleCase.items);
   }
 
-  battleRound();
+  spinBattle(playerItem, botItem);
+}
+
+function spinBattle(playerItem, botItem) {
+  const playerStrip = document.getElementById("battle-spinner-player-strip");
+  const botStrip = document.getElementById("battle-spinner-bot-strip");
+
+  playerStrip.innerHTML = "";
+  botStrip.innerHTML = "";
+
+  const slots = 30;
+  const winnerIndex = 15;
+
+  for (let i = 0; i < slots; i++) {
+    let pItem = currentCase.items[Math.floor(Math.random() * currentCase.items.length)];
+    let bItem = currentCase.items[Math.floor(Math.random() * currentCase.items.length)];
+    if (i === winnerIndex) { pItem = playerItem; bItem = botItem; }
+
+    const pDiv = document.createElement("div");
+    pDiv.className = `battle-spinner-item ${pItem.rarity.toLowerCase()}`;
+    pDiv.innerHTML = `<img src="${pItem.image}">`;
+    playerStrip.appendChild(pDiv);
+
+    const bDiv = document.createElement("div");
+    bDiv.className = `battle-spinner-item ${bItem.rarity.toLowerCase()}`;
+    bDiv.innerHTML = `<img src="${bItem.image}">`;
+    botStrip.appendChild(bDiv);
+  }
+
+  const itemWidth = playerStrip.children[0].offsetWidth + 30;
+  const containerWidth = document.querySelector(".battle-spinner-container").offsetWidth;
+  const offset = -(winnerIndex * itemWidth - containerWidth / 2 + itemWidth / 2);
+
+  [playerStrip, botStrip].forEach(strip => {
+    strip.style.transition = "none";
+    strip.style.transform = "translateX(0)";
+    strip.offsetHeight;
+    strip.style.transition = "transform 3s cubic-bezier(.25,.85,.35,1)";
+    strip.style.transform = `translateX(${offset}px)`;
+  });
+
+  setTimeout(() => {
+    const winnerBox = document.getElementById("battle-winner-name");
+    let winner;
+    if (playerItem.price > botItem.price) {
+      winner = "PLAYER WINS!";
+      inventory.push(playerItem, botItem);
+      winnerBox.textContent = winner;
+      winnerBox.className = playerItem.rarity.toLowerCase();
+    } else {
+      winner = "BOT WINS!";
+      winnerBox.textContent = winner;
+      winnerBox.className = botItem.rarity.toLowerCase();
+    }
+
+    saveInventory();
+    renderInventory();
+    renderTopDrops();
+    populateCoinflipDropdown();
+  }, 3200);
 }
