@@ -29,16 +29,20 @@
   <button id="coinflip-btn" class="theme-btn">Flip Coin</button>
   <div id="coin-container">
     <div id="coin">
-      <div class="head"></div>
-      <div class="tail"></div>
+      <div class="head">
+        <img src="images/coin-head.png" alt="Heads">
+      </div>
+      <div class="tail">
+        <img src="images/coin-tail.png" alt="Tails">
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Case selection -->
-<div id="case-select-wrapper" class="custom-dropdown">
-  <div id="case-select-display">Select a Case ▼</div>
-  <div id="case-select-options" class="options"></div>
+<!-- Case selection (Custom dropdown) -->
+<div class="custom-dropdown">
+  <div id="case-select-display"></div>
+  <div id="case-select-options"></div>
 </div>
 
 <!-- Case section -->
@@ -66,8 +70,8 @@
 
 <!-- Inventory Section -->
 <div class="inventory-header">
-  <h2>Backpack</h2>
-  <button id="sell-all-btn" class="theme-btn">Scrap Backpack</button>
+  <h2>Inventory</h2>
+  <button id="sell-all-btn" class="theme-btn">Sell All</button>
 </div>
 <div id="inventory"></div>
 
