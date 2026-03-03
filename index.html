@@ -1,46 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>OVFF's Sim</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>OVFF's Sim</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h1>OVFF's Sim</h1>
 
+<!-- Balance -->
 <div id="coins"></div>
 
+<!-- Controls -->
 <div id="controls">
   <button class="theme-btn" id="toggle-inv-btn">Button Of Muck and Malice</button>
   <button class="theme-btn" id="add-coins-btn">+0.10 Coins</button>
   <button class="theme-btn" id="remove-coins-btn">Donate To Charity</button>
 </div>
 
-<!-- Coinflip Section -->
+<!-- ================= COINFLIP SECTION ================= -->
 <div id="coinflip-section">
   <h2>Coinflip</h2>
 
-  <select id="coinflip-select"></select>
+  <!-- Inventory item selection -->
+  <select id="coinflip-select">
+    <option value="">Select an item...</option>
+  </select>
+
+  <!-- Flip button -->
   <button id="coinflip-btn" class="theme-btn">Flip Coin</button>
 
+  <!-- 3D Coin -->
   <div id="coin-container">
-    <div id="coin">
-      <div class="head"></div>
-      <div class="tail"></div>
-    </div>
+    <div id="coin" class="heads"></div>
   </div>
 </div>
-<!-- Case selection -->
+
+<!-- ================= CASE SELECTION ================= -->
 <div id="case-select-wrapper">
   <select id="case-select"></select>
 </div>
 
-<!-- Case section -->
+<!-- ================= CASE OPENING ================= -->
 <div id="case-section">
   <div class="case-left">
     <img id="case-image" src="" alt="Case Image">
   </div>
+
   <div class="case-right">
     <h2 id="case-name"></h2>
     <button class="theme-btn" id="open-btn"></button>
@@ -49,16 +56,17 @@
   </div>
 </div>
 
+<!-- Result -->
 <div id="winner-name"></div>
 
-<!-- Spinner -->
+<!-- ================= SPINNER ================= -->
 <div id="spinner-wrapper">
   <div id="spinner-container">
     <div id="spinner-strip"></div>
   </div>
 </div>
 
-<!-- Inventory Section -->
+<!-- ================= INVENTORY ================= -->
 <div class="inventory-header">
   <h2>Inventory</h2>
   <button id="sell-all-btn" class="theme-btn">Sell All</button>
@@ -66,29 +74,12 @@
 
 <div id="inventory" class="hidden"></div>
 
+<!-- ================= TOP DROPS ================= -->
 <h2 class="top-title">• Last TOP Drops</h2>
 <div id="top-drops"></div>
 
+<!-- Script -->
 <script src="script.js"></script>
+
 </body>
 </html>
-
-<div id="coinflip-section">
-  <h2>Coinflip</h2>
-
-  <!-- Item selection -->
-  <select id="coinflip-select">
-    <option value="">Select an item...</option>
-  </select>
-
-  <!-- Spin button -->
-  <button id="coinflip-btn" class="theme-btn">Flip Coin</button>
-
-  <!-- Coin container -->
-  <div id="coin-container">
-    <div id="coin">
-      <div class="head"></div>
-      <div class="tail"></div>
-    </div>
-  </div>
-</div>
