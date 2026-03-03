@@ -17,23 +17,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-
   document.getElementById("add-coins-btn").onclick = () => {
     coins += 0.10;
     updateCoins();
   };
-
   document.getElementById("remove-coins-btn").onclick = () => {
     coins = Math.max(0, coins - 5);
     updateCoins();
   };
-
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
-
   document.getElementById("open-btn").onclick = openCase;
 });
 
@@ -136,37 +132,31 @@ function coinflipItem(index) {
 
   flipBtn.disabled = true;
 
-  // Red = win, Black = lose
-  const win = true; // Always win = red
-  const totalFlips = 8; // Number of alternating flips
+  const win = Math.random() < 0.5; // 50/50 chance
+  const totalFlips = 8; // alternating red/black
   let currentFlip = 0;
 
-  // Reset classes
-  coin.classList.remove("head", "tail");
-
   const flipInterval = setInterval(() => {
-    // Alternate red/black
     if (currentFlip % 2 === 0) {
-      coin.classList.add("head");
-      coin.classList.remove("tail");
+      coin.classList.add("red");
+      coin.classList.remove("black");
     } else {
-      coin.classList.add("tail");
-      coin.classList.remove("head");
+      coin.classList.add("black");
+      coin.classList.remove("red");
     }
     currentFlip++;
 
-    // Final landing
     if (currentFlip > totalFlips) {
       clearInterval(flipInterval);
 
       if (win) {
-        coin.classList.add("head");
-        coin.classList.remove("tail");
+        coin.classList.add("red"); // red = win
+        coin.classList.remove("black");
         inventory.push({ ...item });
         alert(`You WON! ${item.name} duplicated.`);
       } else {
-        coin.classList.add("tail");
-        coin.classList.remove("head");
+        coin.classList.add("black"); // black = lose
+        coin.classList.remove("red");
         inventory.splice(index, 1);
         alert(`You LOST! ${item.name} removed.`);
       }
@@ -176,7 +166,7 @@ function coinflipItem(index) {
       populateCoinflipDropdown();
       flipBtn.disabled = false;
     }
-  }, 200); // 200ms per flip
+  }, 200);
 }
 
 // ===================== CASE SYSTEM =====================
