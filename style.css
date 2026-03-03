@@ -74,7 +74,8 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 .inv-item:hover { transform: translateY(-6px);}
 .inv-item img { width:70px; height:70px; object-fit:contain;}
 .sell-btn{margin-top:8px; padding:6px; background:#00bfae; border:none; border-radius:6px; color:black; cursor:pointer; font-size:13px;}
-/* RARITY OUTLINES */
+
+/* ================= RARITY OUTLINES ================= */
 .common{border:2px solid #777; box-shadow:0 0 10px #777; color:#bbb;}
 .rare{border:2px solid #4aa3ff; box-shadow:0 0 14px #4aa3ff; color:#4aa3ff;}
 .strange{border:2px solid orange; box-shadow:0 0 16px orange; color:orange;}
