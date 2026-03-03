@@ -152,10 +152,10 @@ function coinflipItem(index) {
 
       if (win) {
         inventory.push({ ...item });
-        alert(`You WON! ${item.name} duplicated.`);
+        alert(`You won another ${item.name} 🎉!`);
       } else {
         inventory.splice(index, 1);
-        alert(`You LOST! ${item.name} removed.`);
+        alert(`You lost, your ${item.name} was evicerated.`);
       }
 
       saveInventory();
