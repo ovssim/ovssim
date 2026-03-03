@@ -31,40 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isNaN(index)) coinflipItem(index);
   };
   document.getElementById("open-btn").onclick = openCase;
-
-  // Show case items button (with odds)
-  document.getElementById("show-case-items-btn").onclick = () => {
-    const list = document.getElementById("case-items-list");
-    if (!currentCase) return;
-
-    // Toggle visibility
-    if (list.style.display === "block") {
-      list.style.display = "none";
-      return;
-    }
-
-    list.style.display = "block";
-    list.innerHTML = "";
-
-    const totalWeight = currentCase.items.reduce((sum, i) => sum + i.weight, 0);
-
-    // Sort items by price descending
-    const sortedItems = [...currentCase.items].sort((a, b) => b.price - a.price);
-
-    sortedItems.forEach(item => {
-      const dropRate = ((item.weight / totalWeight) * 100).toFixed(2);
-
-      const div = document.createElement("div");
-      div.className = `inv-item ${item.rarity.toLowerCase()}`;
-      div.innerHTML = `
-        <img src="${item.image}">
-        <p>${item.name}</p>
-        <small>${item.price} coins</small>
-        <div style="font-size:12px; margin-top:3px;">🎯 ${dropRate}% chance</div>
-      `;
-      list.appendChild(div);
-    });
-  };
 });
 
 // ===================== COINS =====================
@@ -118,6 +84,36 @@ function sellAllItems() {
   alert(`Sold everything for ${total.toFixed(2)} coins.`);
 }
 
+// ===================== SHOW / HIDE CASE ITEMS + ODDS =====================
+document.getElementById("show-case-items-btn").onclick = () => {
+  const list = document.getElementById("case-items-list");
+  if (!currentCase) return;
+
+  if (list.style.display === "block") {
+    list.style.display = "none";
+    return;
+  }
+
+  list.style.display = "block";
+  list.innerHTML = "";
+
+  const totalWeight = currentCase.items.reduce((sum, i) => sum + i.weight, 0);
+  const sortedItems = [...currentCase.items].sort((a, b) => b.price - a.price);
+
+  sortedItems.forEach(item => {
+    const dropRate = ((item.weight / totalWeight) * 100).toFixed(2);
+    const div = document.createElement("div");
+    div.className = `inv-item ${item.rarity.toLowerCase()}`;
+    div.innerHTML = `
+      <img src="${item.image}">
+      <p>${item.name}</p>
+      <small>${item.price} coins</small>
+      <small style="font-size:14px; margin-top:5px;">🎯 ${dropRate}% chance</small>
+    `;
+    list.appendChild(div);
+  });
+};
+
 // ===================== TOP DROPS =====================
 function renderTopDrops() {
   const container = document.getElementById("top-drops");
@@ -150,7 +146,6 @@ function populateCoinflipDropdown() {
   }
 
   select.disabled = false;
-
   inventory.forEach((item, index) => {
     const option = document.createElement("option");
     option.value = index;
@@ -165,12 +160,11 @@ function coinflipItem(index) {
   const flipBtn = document.getElementById("coinflip-btn");
   flipBtn.disabled = true;
 
-  // 50/50 chance
-  const win = Math.random() < 0.5; // true = win, false = lose
-  const finalClass = win ? "head" : "tail"; // head = red, tail = black
+  const win = Math.random() < 0.5;
+  const finalClass = win ? "head" : "tail";
 
   let flips = 0;
-  const totalFlips = 10; // alternating flips before landing
+  const totalFlips = 10;
 
   const flipInterval = setInterval(() => {
     coin.classList.toggle("head");
