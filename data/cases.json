@@ -27,35 +27,40 @@
         { "name": "Unusual The Dark Doorway Heavy Artillery Officer's Cap", "rarity": "mythical", "price": 130.00, "weight": 10, "image": "images/items/tddh.png" }
       ]
     },
-      {
-      "id": "hunter",
-      "name": "Hunters (Medium)",
-      "price": 32.00,
-      "image": "images/cases/hunter.png",
+     {
+      "id": "heavy",
+      "name": "Heavy (Medium)",
+      "price": 10.00,
+      "image": "images/cases/theheavy1.png",
       "items": [
-        { "name": "Genuine Tartan Shade", "rarity": "genuine", "price": 0.93, "weight": 15249, "image": "images/items/gts.png" },
-        { "name": "Fear Monger", "rarity": "legendary", "price": 1.43, "weight": 13999, "image": "images/items/fearm.png" },
-        { "name": "Guano", "rarity": "legendary", "price": 5.03, "weight": 12999, "image": "images/items/guano.png" },
-        { "name": "Haunted Voodoo-Cursed Spy Soul", "rarity": "haunted", "price": 7.94, "weight": 4999, "image": "images/items/voospy.png" },
-        { "name": "Strange Fashionable Megalomaniac", "rarity": "strange", "price": 9.34, "weight": 2999, "image": "images/items/sfmeg.png" },
-        { "name": "Beast From Below", "rarity": "legendary", "price": 11.31, "weight": 4999, "image": "images/items/befb.png" },
-        { "name": "Hollowhead", "rarity": "legendary", "price": 14.56, "weight": 4999, "image": "images/items/hollowh.png" },
-        { "name": "Strange Australium Axtiguisher", "rarity": "strange", "price": 19.48, "weight": 1999, "image": "images/items/aussieaxt.png" },
-        { "name": "Unusual Stormy Storm Headhunter's Brim", "rarity": "mythical", "price": 30.78, "weight": 2999, "image": "images/items/huhb.png" },
-        { "name": "Unusual Terror-Watt Spirit of the Bombing Past", "rarity": "mythical", "price": 32.27, "weight": 4999, "image": "images/items/usobp.png" },
-        { "name": "Second Opinion", "rarity": "legendary", "price": 34.67, "weight": 4999, "image": "images/items/secop.png" },
-        { "name": "Strange A Brush with Death", "rarity": "strange", "price": 38.17, "weight": 7499 , "image": "images/items/abwd.png" },
-        { "name": "Strange Huntsman", "rarity": "strange", "price": 52.43, "weight": 6249, "image": "images/items/huntsman.png" },
-        { "name": "Unusual Severed Serration A Hat to Kill For", "rarity": "mythical", "price": 59.81, "weight": 4999, "image": "images/items/ahtkfss.png" },
-        { "name": "Unusual FLaming Lantern Ze Goggles", "rarity": "mythical", "price": 103.80, "weight": 4385, "image": "images/items/flzg.png" },
-        { "name": "Unusual Burning Flames Warhood", "rarity": "mythical", "price": 200.00, "weight": 759, "image": "images/items/bfwh.png" },
-        { "name": "Unusual Scorching Flames Glasgow Great Helm", "rarity": "mythical", "price": 450.00, "weight": 549, "image": "images/items/sfggh.png" },
-        { "name": "Unusual Stare From Beyond Brim-Full of Bullets", "rarity": "mythical", "price": 846.00, "weight": 149, "image": "images/items/bfobsfb.png" },
-        { "name": "Unusual Pumpkin Moon Wandering Wraith", "rarity": "mythical", "price": 900.00, "weight": 78, "image": "images/items/wwpm.png" },
-        { "name": "Unusual Misty Skull Grimm Hatte", "rarity": "collector", "price": 1350.00, "weight": 74, "image": "images/items/ghms.png" }
+        { "name": "Strange Sandvich", "rarity": "strange", "price": 21.93, "weight": 1000, "image": "images/items/sandvich.png" },
+        { "name": "Chicken Kiev", "rarity": "legendary", "price": 63.72, "weight": 400, "image": "images/items/kiev.png" },
+        { "name": "Sophisticated Smoker ", "rarity": "legendary", "price": 0.65, "weight": 2000, "image": "images/items/sophs.png" },
+        { "name": "Brute's Braces", "rarity": "legendary", "price": 0.27, "weight": 2500, "image": "images/items/bb3.png" },
+        { "name": "Full Metal Helmet", "rarity": "legendary", "price": 12.40, "weight": 1500, "image": "images/items/fmh.png" },
+        { "name": "Red Army Robin", "rarity": "legendary", "price": 0.05, "weight": 1750, "image": "images/items/rar3.png" },
+        { "name": "Carl", "rarity": "legendary", "price": 0.19, "weight": 1000, "image": "images/items/carl.png" },
+        { "name": "Evil Carl", "rarity": "mythical", "price": 111.76, "weight": 50, "image": "images/items/ecarl.png" },
+        { "name": "Unusual Sulphurous Heavy Lifter", "rarity": "mythical", "price": 89.91, "weight": 50, "image": "images/items/ushl.png" },
+        { "name": "Strange Battle Baclava", "rarity": "strange", "price": 69.99, "weight": 75, "image": "images/items/sbb0.png" },
+        { "name": "Unusual Amaranthine Road Rage", "rarity": "mythical", "price":150.00, "weight": 530, "image": "images/items/arru.png" },
+        { "name": "Heavy's Unusual Eyes of Molten Mannvich", "rarity": "collector", "price": 635.35, "weight": 3, "image": "images/items/eomm.png" },
+        { "name": "Officer's Ushanka", "rarity": "legendary", "price":0.08, "weight": 2600, "image": "images/items/ou.png" },
+        { "name": "Unusual Malevolent Monoculi Team Captian", "rarity": "mythical", "price": 210.76, "weight": 30, "image": "images/items/mmtc.png" },
+        { "name": "Heavys Professional Killstreak Family Business", "rarity": "strange", "price": 18.84, "weight": 3000, "image": "images/items/familyb.png" },
+        { "name": "Australium Minigun", "rarity": "legendary", "price": 59.99, "weight": 200, "image": "images/items/aussiemini.png" },
+        { "name": "Australium Tomislav", "rarity": "legendary", "price": 59.00, "weight": 200, "image": "images/items/aussietomy.png" },
+        { "name": "Heavy's Professional Killstreak Fists", "rarity": "strange", "price": 3.19, "weight": 4000, "image": "images/items/fists.png" },
+        { "name": "Strange Holiday Punch", "rarity": "strange", "price": 29.00, "weight": 540, "image": "images/items/holidayp.png" },
+        { "name": "Genuine Robo-Sandvich", "rarity": "genuine", "price": 550.00, "weight": 5, "image": "images/items/robos.png" },
+        { "name": "Bread Bite", "rarity": "legendary", "price": 12.99, "weight": 3000, "image": "images/items/breadb.png" },
+        { "name": "Professional Killstreak Iron Curtain", "rarity": "legendary", "price": 72.00, "weight": 230, "image": "images/items/icurtain.png" },
+        { "name": "Unusual Burning Flames Large Luchador", "rarity": "mythical", "price": 190.00, "weight": 45, "image": "images/items/ubfll.png" },
+        { "name": "Unusual Demonflame One-Man Army", "rarity": "mythical", "price": 125.00, "weight": 60, "image": "images/items/udoma.png" },
+        { "name": "Unusual Ventum Maris Brass Beast", "rarity": "mythical", "price": 73.00, "weight": 90, "image": "images/items/ubrass.png" }
       ]
-    },
-    {
+     },
+        {
       "id": "sanctuary",
       "name": "Silent Sanctuary (Low)",
       "price": 15.00,
@@ -92,6 +97,64 @@
         { "name": "Unusual Dead Presidents Tundra Top", "rarity": "mythical", "price": 60.00, "weight": 260, "image": "images/items/deadtundra.png" }
       ]
     },
+      {
+      "id": "hunter",
+      "name": "Hunters (Medium)",
+      "price": 32.00,
+      "image": "images/cases/hunter.png",
+      "items": [
+        { "name": "Genuine Tartan Shade", "rarity": "genuine", "price": 0.93, "weight": 15249, "image": "images/items/gts.png" },
+        { "name": "Fear Monger", "rarity": "legendary", "price": 1.43, "weight": 13999, "image": "images/items/fearm.png" },
+        { "name": "Guano", "rarity": "legendary", "price": 5.03, "weight": 12999, "image": "images/items/guano.png" },
+        { "name": "Haunted Voodoo-Cursed Spy Soul", "rarity": "haunted", "price": 7.94, "weight": 4999, "image": "images/items/voospy.png" },
+        { "name": "Strange Fashionable Megalomaniac", "rarity": "strange", "price": 9.34, "weight": 2999, "image": "images/items/sfmeg.png" },
+        { "name": "Beast From Below", "rarity": "legendary", "price": 11.31, "weight": 4999, "image": "images/items/befb.png" },
+        { "name": "Hollowhead", "rarity": "legendary", "price": 14.56, "weight": 4999, "image": "images/items/hollowh.png" },
+        { "name": "Strange Australium Axtiguisher", "rarity": "strange", "price": 19.48, "weight": 1999, "image": "images/items/aussieaxt.png" },
+        { "name": "Unusual Stormy Storm Headhunter's Brim", "rarity": "mythical", "price": 30.78, "weight": 2999, "image": "images/items/huhb.png" },
+        { "name": "Unusual Terror-Watt Spirit of the Bombing Past", "rarity": "mythical", "price": 32.27, "weight": 4999, "image": "images/items/usobp.png" },
+        { "name": "Second Opinion", "rarity": "legendary", "price": 34.67, "weight": 4999, "image": "images/items/secop.png" },
+        { "name": "Strange A Brush with Death", "rarity": "strange", "price": 38.17, "weight": 7499 , "image": "images/items/abwd.png" },
+        { "name": "Strange Huntsman", "rarity": "strange", "price": 52.43, "weight": 6249, "image": "images/items/huntsman.png" },
+        { "name": "Unusual Severed Serration A Hat to Kill For", "rarity": "mythical", "price": 59.81, "weight": 4999, "image": "images/items/ahtkfss.png" },
+        { "name": "Unusual FLaming Lantern Ze Goggles", "rarity": "mythical", "price": 103.80, "weight": 4385, "image": "images/items/flzg.png" },
+        { "name": "Unusual Burning Flames Warhood", "rarity": "mythical", "price": 200.00, "weight": 759, "image": "images/items/bfwh.png" },
+        { "name": "Unusual Scorching Flames Glasgow Great Helm", "rarity": "mythical", "price": 450.00, "weight": 549, "image": "images/items/sfggh.png" },
+        { "name": "Unusual Stare From Beyond Brim-Full of Bullets", "rarity": "mythical", "price": 846.00, "weight": 149, "image": "images/items/bfobsfb.png" },
+        { "name": "Unusual Pumpkin Moon Wandering Wraith", "rarity": "mythical", "price": 900.00, "weight": 78, "image": "images/items/wwpm.png" },
+        { "name": "Unusual Misty Skull Grimm Hatte", "rarity": "collector", "price": 1350.00, "weight": 74, "image": "images/items/ghms.png" }
+      ]
+    },
+     {
+      "id": "f",
+      "name": "f",
+      "price": f,
+      "image": "images/cases/f.png",
+      "items": [
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" },
+        { "name": "f", "rarity": "f", "price": f.00, "weight": f, "image": "images/items/f.png" }
+      ]
+    },
     {
       "id": "robots",
       "name": "🅁🄾🄱🄾🅃🄸🄲 (Big)",
@@ -122,37 +185,20 @@
         { "name": "Unusual Warp Drive Rogues Rabbit ", "rarity": "mythical", "price": 270.00, "weight": 1300, "image": "images/items/warprabbit.png" }
       ]
      },
-    {
-      "id": "heavy",
-      "name": "Heavy (Medium)",
-      "price": 10.00,
-      "image": "images/cases/theheavy1.png",
+        {
+      "id": "five",
+      "name": "5% Jackpot (Big)",
+      "price": 85,
+      "image": "images/cases/fivejackpot.png",
       "items": [
-        { "name": "Strange Sandvich", "rarity": "strange", "price": 21.93, "weight": 1000, "image": "images/items/sandvich.png" },
-        { "name": "Chicken Kiev", "rarity": "legendary", "price": 63.72, "weight": 400, "image": "images/items/kiev.png" },
-        { "name": "Sophisticated Smoker ", "rarity": "legendary", "price": 0.65, "weight": 2000, "image": "images/items/sophs.png" },
-        { "name": "Brute's Braces", "rarity": "legendary", "price": 0.27, "weight": 2500, "image": "images/items/bb3.png" },
-        { "name": "Full Metal Helmet", "rarity": "legendary", "price": 12.40, "weight": 1500, "image": "images/items/fmh.png" },
-        { "name": "Red Army Robin", "rarity": "legendary", "price": 0.05, "weight": 1750, "image": "images/items/rar3.png" },
-        { "name": "Carl", "rarity": "legendary", "price": 0.19, "weight": 1000, "image": "images/items/carl.png" },
-        { "name": "Evil Carl", "rarity": "mythical", "price": 111.76, "weight": 50, "image": "images/items/ecarl.png" },
-        { "name": "Unusual Sulphurous Heavy Lifter", "rarity": "mythical", "price": 89.91, "weight": 50, "image": "images/items/ushl.png" },
-        { "name": "Strange Battle Baclava", "rarity": "strange", "price": 69.99, "weight": 75, "image": "images/items/sbb0.png" },
-        { "name": "Unusual Amaranthine Road Rage", "rarity": "mythical", "price":150.00, "weight": 530, "image": "images/items/arru.png" },
-        { "name": "Heavy's Unusual Eyes of Molten Mannvich", "rarity": "collector", "price": 635.35, "weight": 3, "image": "images/items/eomm.png" },
-        { "name": "Officer's Ushanka", "rarity": "legendary", "price":0.08, "weight": 2600, "image": "images/items/ou.png" },
-        { "name": "Unusual Malevolent Monoculi Team Captian", "rarity": "mythical", "price": 210.76, "weight": 30, "image": "images/items/mmtc.png" },
-        { "name": "Heavys Professional Killstreak Family Business", "rarity": "strange", "price": 18.84, "weight": 3000, "image": "images/items/familyb.png" },
-        { "name": "Australium Minigun", "rarity": "legendary", "price": 59.99, "weight": 200, "image": "images/items/aussiemini.png" },
-        { "name": "Australium Tomislav", "rarity": "legendary", "price": 59.00, "weight": 200, "image": "images/items/aussietomy.png" },
-        { "name": "Heavy's Professional Killstreak Fists", "rarity": "strange", "price": 3.19, "weight": 4000, "image": "images/items/fists.png" },
-        { "name": "Strange Holiday Punch", "rarity": "strange", "price": 29.00, "weight": 540, "image": "images/items/holidayp.png" },
-        { "name": "Genuine Robo-Sandvich", "rarity": "genuine", "price": 550.00, "weight": 5, "image": "images/items/robos.png" },
-        { "name": "Bread Bite", "rarity": "legendary", "price": 12.99, "weight": 3000, "image": "images/items/breadb.png" },
-        { "name": "Professional Killstreak Iron Curtain", "rarity": "legendary", "price": 72.00, "weight": 230, "image": "images/items/icurtain.png" },
-        { "name": "Unusual Burning Flames Large Luchador", "rarity": "mythical", "price": 190.00, "weight": 45, "image": "images/items/ubfll.png" },
-        { "name": "Unusual Demonflame One-Man Army", "rarity": "mythical", "price": 125.00, "weight": 60, "image": "images/items/udoma.png" },
-        { "name": "Unusual Ventum Maris Brass Beast", "rarity": "mythical", "price": 73.00, "weight": 90, "image": "images/items/ubrass.png" }
+        { "name": "Unusual Piercing Headache Propaniac", "rarity": "mythical", "price": 750.00, "weight": 1400, "image": "images/items/php1.png" },
+        { "name": "Unusual Darkblaze Colonel Kringle", "rarity": "collector", "price": 10000.00, "weight": 100, "image": "images/items/dbcc1.png" },
+        { "name": "Unusual Cold Cosmos Brimmed Bootlegger", "rarity": "mythical", "price": 1100.00, "weight": 1100, "image": "images/items/bbcc.png" },
+        { "name": "Unusual Flourishing Passion Mean Captain", "rarity": "mythical", "price": 1875.00, "weight": 500, "image": "images/items/mcfp.png" },
+        { "name": "Unusual Verdatica Scot Bonnet", "rarity": "mythical", "price": 996.00, "weight": 500, "image": "images/items/vsb.png" },
+        { "name": "Unusual Phantom Crown Towering Pillar of Summer Shades", "rarity": "mythical", "price": 1950.00, "weight": 400, "image": "images/items/pcpss.png" },
+        { "name": "Unusual Serenus Lumen Mann of the Seven Sees", "rarity": "mythical", "price": 842.00, "weight": 1000, "image": "images/items/motss.png" },
+        { "name": "Refined Metal", "rarity": "legendary", "price": 0.03, "weight": 95000, "image": "images/items/refined.png" }
       ]
      },
      {
@@ -191,22 +237,6 @@
         { "name": "Unusual Australium Professional Killstreak Eyelander ", "rarity": "unusual", "price": 630.00, "weight": 200, "image": "images/items/aussieeye.png" }
       ]
     },
-    {
-      "id": "five",
-      "name": "5% Jackpot (Big)",
-      "price": 85,
-      "image": "images/cases/fivejackpot.png",
-      "items": [
-        { "name": "Unusual Piercing Headache Propaniac", "rarity": "mythical", "price": 750.00, "weight": 1400, "image": "images/items/php1.png" },
-        { "name": "Unusual Darkblaze Colonel Kringle", "rarity": "collector", "price": 10000.00, "weight": 100, "image": "images/items/dbcc1.png" },
-        { "name": "Unusual Cold Cosmos Brimmed Bootlegger", "rarity": "mythical", "price": 1100.00, "weight": 1100, "image": "images/items/bbcc.png" },
-        { "name": "Unusual Flourishing Passion Mean Captain", "rarity": "mythical", "price": 1875.00, "weight": 500, "image": "images/items/mcfp.png" },
-        { "name": "Unusual Verdatica Scot Bonnet", "rarity": "mythical", "price": 996.00, "weight": 500, "image": "images/items/vsb.png" },
-        { "name": "Unusual Phantom Crown Towering Pillar of Summer Shades", "rarity": "mythical", "price": 1950.00, "weight": 400, "image": "images/items/pcpss.png" },
-        { "name": "Unusual Serenus Lumen Mann of the Seven Sees", "rarity": "mythical", "price": 842.00, "weight": 1000, "image": "images/items/motss.png" },
-        { "name": "Refined Metal", "rarity": "legendary", "price": 0.03, "weight": 95000, "image": "images/items/refined.png" }
-      ]
-     },
     {
       "id": "aussie",
       "name": "AUSTRALIUM (High)",
