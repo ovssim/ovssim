@@ -30,7 +30,7 @@
       {
       "id": "hunter",
       "name": "Hunters (Medium)",
-      "price": 45.00,
+      "price": 32.00,
       "image": "images/cases/hunter.png",
       "items": [
         { "name": "Genuine Tartan Shade", "rarity": "genuine", "price": 0.93, "weight": 15249, "image": "images/items/gts.png" },
