@@ -31,9 +31,9 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   100% { text-shadow: 0 0 25px #ff6666, 0 0 50px #ff8080, 0 0 70px #ff9999; }
 }
 
-/* ================= BUTTON THEME (Teal now) ================= */
+/* ================= BUTTON THEME ================= */
 .theme-btn {
-  background: linear-gradient(135deg, #00bfae, #33fff0);
+  background: linear-gradient(135deg, #00bfa5, #1de9b6);
   border: none;
   padding: 10px 22px;
   font-size: 16px;
@@ -41,12 +41,12 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   cursor: pointer;
   font-weight: bold;
   margin: 5px;
-  color: black;
   transition: all 0.2s ease;
+  color: black;
 }
 .theme-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 15px #00fff0;
+  box-shadow: 0 0 15px #00bfa5;
 }
 
 /* ================= CASE SECTION ================= */
@@ -206,7 +206,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 .sell-btn {
   margin-top: 8px;
   padding: 6px;
-  background: #00bfae;
+  background: #00bfa5;
   border: none;
   border-radius: 6px;
   color: black;
@@ -221,7 +221,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   margin-top: 30px;
 }
 #sell-all-btn {
-  background: linear-gradient(135deg, #33fff0, #00bfae);
+  background: linear-gradient(135deg, #00bfa5, #1de9b6);
   border: none;
   padding: 8px 18px;
   border-radius: 10px;
@@ -232,7 +232,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 }
 #sell-all-btn:hover {
   transform: scale(1.07);
-  box-shadow: 0 0 15px #00fff0;
+  box-shadow: 0 0 15px #00bfa5;
 }
 
 /* ================= TOP DROPS ================= */
@@ -264,7 +264,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 .collector  { border: 2px solid #AA0000; box-shadow: 0 0 22px #AA0000; color: #AA0000; }
 .haunted    { border: 2px solid #38F3AB; box-shadow: 0 0 18px #38F3AB; color: #38F3AB; }
 
-/* ================= COINFLIP SECTION WITH IMAGES ================= */
+/* ================= COINFLIP SECTION ================= */
 #coinflip-section {
   background: rgba(25,25,30,0.85);
   backdrop-filter: blur(8px);
@@ -275,16 +275,25 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   text-align: center;
   box-shadow: 0 0 25px rgba(0,0,0,0.6);
 }
+#coinflip-select {
+  width: 90%;
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 2px solid #444;
+  background: rgba(20,20,25,0.9);
+  color: white;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
 
-/* Coin container */
+/* ================= POKER CHIP COIN ================= */
 #coin-container {
   perspective: 1000px;
   width: 100px;
   height: 100px;
   margin: 15px auto;
-  position: relative;
 }
-
 #coin {
   width: 100px;
   height: 100px;
@@ -294,27 +303,12 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   transition: transform 0.2s ease;
   border: 4px solid white;
 }
-
 #coin.head, #coin.tail {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   backface-visibility: hidden;
-  top: 0;
-  left: 0;
-  background: none;
 }
-
-#coin.head img, #coin.tail img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  backface-visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-#coin.head { transform: rotateY(0deg); }
-#coin.tail { transform: rotateY(180deg); }
+#coin.head { background: red; transform: rotateY(0deg); box-shadow: 0 0 15px red, 0 0 25px #ff4d4d; }
+#coin.tail { background: #00bfa5; transform: rotateY(180deg); box-shadow: 0 0 15px #00bfa5, 0 0 25px #1de9b6; }
