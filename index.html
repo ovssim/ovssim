@@ -9,9 +9,12 @@
 
 <h1>OVFF's Sim</h1>
 
+<!-- Neon New Banner -->
+<div id="neon-banner">New: COINFLIP </div>
+
 <!-- Controls -->
 <div id="controls">
-  <button class="theme-btn" id="toggle-inv-btn">Toggle Inventory</button>
+  <button class="theme-btn" id="toggle-inv-btn">devving</button>
   <button class="theme-btn" id="add-coins-btn">+0.10 Coins</button>
   <button class="theme-btn" id="remove-coins-btn">Donate To Charity</button>
 </div>
@@ -20,8 +23,8 @@
 <div id="coinflip-section">
   <h2>Coinflip</h2>
   <select id="coinflip-select">
-    <option value="heads">Heads</option>
-    <option value="tails">Tails</option>
+    <option value="head">Heads</option>
+    <option value="tail">Tails</option>
   </select>
   <button id="coinflip-btn" class="theme-btn">Flip Coin</button>
   <div id="coin-container">
@@ -35,22 +38,21 @@
 <!-- Coins Display -->
 <div id="coins"></div>
 
-<!-- Case selection -->
+<!-- Case selection (Custom dropdown) -->
 <div class="custom-dropdown">
-  <div id="case-select-display">Select a Case</div>
+  <div id="case-select-display"></div>
   <div id="case-select-options"></div>
 </div>
 
-<!-- Case Section -->
+<!-- Case section -->
 <div id="case-section">
   <div class="case-left">
     <img id="case-image" src="" alt="Case Image">
   </div>
   <div class="case-right">
     <h2 id="case-name"></h2>
-    <button class="theme-btn" id="open-btn">Open</button>
+    <button class="theme-btn" id="open-btn">Open Case</button>
     <button class="theme-btn" id="show-case-items-btn">Show Potential Items</button>
-    <button class="theme-btn" id="sort-items-btn">Sort by Price</button>
     <div id="case-items-list"></div>
   </div>
 </div>
@@ -76,6 +78,7 @@
 <h2 class="top-title">• Last TOP Drops</h2>
 <div id="top-drops"></div>
 
+<script src="cases.json"></script>
 <script src="script.js"></script>
 </body>
 </html>
