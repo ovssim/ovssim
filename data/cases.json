@@ -127,7 +127,7 @@
     },
      {
       "id": "halloween",
-      "name": "Halloween",
+      "name": "Halloween (Big)",
       "price": 66.60,
       "image": "images/cases/halloween.png",
       "items": [
@@ -239,6 +239,19 @@
         { "name": "Unusual Australium Professional Killstreak Eyelander ", "rarity": "unusual", "price": 630.00, "weight": 200, "image": "images/items/aussieeye.png" }
       ]
     },
+        {
+      "id": "stakes",
+      "name": "Grand Stakes (Unfinished) (Big)",
+      "price": 300.00,
+      "image": "images/cases/stakes.png",
+      "items": [
+        { "name": "Hawaiian Hangover", "rarity": "legendary", "price": 2.00, "weight": 4001, "image": "images/items/hawh.png" },
+        { "name": "Strange Scottsmann's Stove Pipe", "rarity": "strange", "price": 3.82, "weight": 8499, "image": "images/items/stovepipe.png" },
+        { "name": "Scot Bonnet", "rarity": "legendary", "price": 5.48, "weight": 4999, "image": "images/items/scotbon.png" },
+        { "name": "Unusual Golden Gusts Taunt: Scotsmann's Stagger", "rarity": "mythical", "price": 11.99, "weight": 6999, "image": "images/items/uscotstagg.png" },
+      ]
+    },
+
     {
       "id": "aussie",
       "name": "AUSTRALIUM (High)",
