@@ -134,7 +134,7 @@
         { "name": "Voodoo-Cursed Spy Soul", "rarity": "legendary", "price": 1.11, "weight": 32980, "image": "images/items/voospy.png" },
         { "name": "Haunted Grease Monkey", "rarity": "haunted", "price": 3.12, "weight": 24999, "image": "images/items/greasem.png" },
         { "name": "Handhunter", "rarity": "legendary", "price": 6.20, "weight": 4999, "image": "images/items/handh.png" },
-        { "name": "Haunted Haunted Hat", "rarity": "haunted", "price": 10.75, "weight": 4999, "image": "images/items/haunthat.png" },
+        { "name": "Haunted Haunted Hat", "rarity": "haunted", "price": 10.75, "weight": 4999, "image": "images/items/haunth.png" },
         { "name": "Cap'n Calamari", "rarity": "legendary", "price": 19.43, "weight": 3999, "image": "images/items/capcali.png" },
         { "name": "Taunt: Burstchester", "rarity": "legendary", "price": 27.95, "weight": 2999, "image": "images/items/burstchester.png" },
         { "name": "Strange Self-Aware Beauty Mark", "rarity": "strange", "price": 28.32, "weight": 2999, "image": "images/items/sabm3.png" },
