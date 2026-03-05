@@ -182,7 +182,7 @@
         { "name": "Halcyon Halo Robotler 2000", "rarity": "mythical", "price": 34000.00, "weight": 22, "image": "images/items/halobotler.png" },
         { "name": "Sapped Glitched Circuit Board", "rarity": "mythical", "price": 173.19, "weight": 800, "image": "images/items/circuitsap.png" },
         { "name": "Resonation Robro 3000", "rarity": "mythical", "price": 76.00, "weight": 5400, "image": "images/items/robrou.png" },
-        { "name": "Haunted Voltaic Hat Protector Teufort Kight", "rarity": "haunted", "price": 90.00, "weight": 5400, "image": "images/items/tkv.png" },
+        { "name": "Haunted Voltaic Hat Protector Teufort Knight", "rarity": "haunted", "price": 90.00, "weight": 5400, "image": "images/items/tkv.png" },
         { "name": "Abyssal Aura Scrap Pack", "rarity": "mythical", "price": 29.99, "weight": 8000, "image": "images/items/aurascrap.png" },
         { "name": "Warp Drive Rogues Rabbit ", "rarity": "mythical", "price": 270.00, "weight": 1300, "image": "images/items/warprabbit.png" }
       ]
@@ -266,8 +266,8 @@
         { "name": "Knifestorm Mask of the Shaman", "rarity": "mythical", "price": 4500.00, "weight": 199, "image": "images/items/kmots.png" },
         { "name": "Knifestorm Team Captain", "rarity": "mythical", "price": 6750.00, "weight": 149, "image": "images/items/ktc.png" },
         { "name": "Strange Golden Frying Pan", "rarity": "strange", "price": 8000.00, "weight": 99, "image": "images/items/aussiefrying.png" }
-    },
-
+      ]
+        },
     {
       "id": "aussie",
       "name": "AUSTRALIUM (High)",
