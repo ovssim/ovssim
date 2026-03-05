@@ -13,6 +13,34 @@ const promoCodes = {
 };
 
 let usedCodes = JSON.parse(localStorage.getItem("usedCodes")) || [];
+function redeemPromoCode(){
+  const input = document.getElementById("promo-input");
+  const message = document.getElementById("promo-message");
+
+  const code = input.value.trim().toUpperCase();
+
+  if(!promoCodes[code]){
+    message.textContent = "❌ Invalid code.";
+    return;
+  }
+
+  if(usedCodes.includes(code)){
+    message.textContent = "⚠️ Code already used.";
+    return;
+  }
+
+  const reward = promoCodes[code];
+
+  coins += reward;
+  updateCoins();
+
+  usedCodes.push(code);
+  localStorage.setItem("usedCodes", JSON.stringify(usedCodes));
+
+  message.textContent = `🎉 Redeemed! +${reward} coins`;
+  input.value = "";
+}
+
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   updateCoins();
