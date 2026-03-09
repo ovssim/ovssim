@@ -17,7 +17,7 @@
         { "name": "Stock Rocket Launcher", "rarity": "legendary", "price": 0.01, "weight": 900, "image": "images/items/rr.png" },
         { "name": "Strange Professional Killstreak Frontier Justice", "rarity": "strange", "price": 13.99, "weight": 450, "image": "images/items/frontjust.png" },
         { "name": "Übersaw", "rarity": "legendary", "price": 0.01, "weight": 700, "image": "images/items/ubersaw.png" },
-        { "name": "Vintage Bill's Hat", "rarity": "vintage", "price": 800.99, "weight": 10, "image": "images/items/billhat.png" },
+        { "name": "Vintage Bill's Hat", "rarity": "vintage", "price": 330.99, "weight": 10, "image": "images/items/billhat.png" },
         { "name": "Strange Ghost Town Claidheamh Mor", "rarity": "strange", "price": 15.75, "weight": 320, "image": "images/items/spooky.png" },
         { "name": "Strange Helldiver Black Box", "rarity": "strange", "price": 25.19, "weight": 190, "image": "images/items/hellblackbox.png" },
         { "name": "Terror-Watt Capo's Capper", "rarity": "mythical", "price": 60.99, "weight": 30, "image": "images/items/regrets.png" },
