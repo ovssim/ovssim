@@ -314,4 +314,58 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 #coin.head { background: red; transform: rotateY(0deg); box-shadow: 0 0 15px red, 0 0 25px #ff4d4d; }
 #coin.tail { background: #00bfa5; transform: rotateY(180deg); box-shadow: 0 0 15px #00bfa5, 0 0 25px #1de9b6; }
 
+#admin-panel{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  z-index:9999;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+#admin-panel-inner{
+  background:#111;
+  padding:20px;
+  border-radius:10px;
+  width:600px;
+  max-height:70vh;
+  overflow-y:auto;
+}
+
+#admin-item-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.admin-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#1a1a1a;
+  padding:10px;
+  border-radius:6px;
+}
+
+.admin-item img{
+  width:50px;
+  height:50px;
+}
+
+.admin-item-info{
+  flex:1;
+  margin-left:10px;
+}
+
+.admin-buy-btn{
+  background:#2ecc71;
+  border:none;
+  padding:6px 10px;
+  cursor:pointer;
+}
+
 
