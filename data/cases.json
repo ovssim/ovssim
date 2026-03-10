@@ -41,7 +41,7 @@
         { "name": "Sophisticated Smoker ", "rarity": "legendary", "price": 0.65, "weight": 2000, "image": "images/items/sophs.png" },
         { "name": "Brute's Braces", "rarity": "legendary", "price": 0.27, "weight": 2500, "image": "images/items/bb3.png" },
         { "name": "Full Metal Helmet", "rarity": "legendary", "price": 12.40, "weight": 1500, "image": "images/items/fmh.png" },
-        { "name": "Red Army Robin", "rarity": "legendary", "price": 0.05, "weight": 4750, "image": "images/items/rar3.png" },
+        { "name": "Red Army Robin", "rarity": "legendary", "price": 0.05, "weight": 7750, "image": "images/items/rar3.png" },
         { "name": "Carl", "rarity": "legendary", "price": 0.19, "weight": 1000, "image": "images/items/carl.png" },
         { "name": "Collector's Evil Carl", "rarity": "collector", "price": 1932.76, "weight": 3, "image": "images/items/carl.png" },
         { "name": "Unusual Sulphurous Heavy Lifter", "rarity": "mythical", "price": 89.91, "weight": 50, "image": "images/items/ushl.png" },
