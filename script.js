@@ -343,16 +343,13 @@ function adminGiveItem() {
     return;
   }
 
-So i remove the allitem part from this right?
-
-So i remove the allitem part from this right?
 
 // Collect all items from all cases
   let allItems = [];
   cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
   const itemNames = allItems.map((item, i) => `${i}: ${item.name} (${item.price})`);
-  const index = prompt("Enter item number:\n\n" + itemNames.slice(0,500).join("\n"));
+  const index = prompt("Enter item number:\n\n" + itemNames.slice(0,250).join("\n"));
 
   const item = allItems[index];
 
