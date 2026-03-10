@@ -9,6 +9,7 @@ let currentCase = null;
 
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
+document.getElementById("admin-give-btn").onclick = adminGiveItem;
   updateCoins();
   renderInventory();
   renderTopDrops();
@@ -309,4 +310,64 @@ function showWinner(item) {
   }
 }
 
+// ===================== ADMIN MODE =====================
+let adminMode = false;
+const ADMIN_PASSWORD = "ovffadmin";
+
+function adminGiveItem() {
+
+  // If admin mode OFF → ask password
+  if (!adminMode) {
+
+    const password = prompt("Enter admin password:");
+
+    if (password !== ADMIN_PASSWORD) {
+      alert("Wrong password.");
+      return;
+    }
+
+    adminMode = true;
+    alert("Admin mode enabled.");
+  }
+
+  // If already enabled → ask if disable
+  const disable = confirm("Admin mode active.\n\nPress OK to disable admin mode.\nPress Cancel to give an item.");
+
+  if (disable) {
+    adminMode = false;
+    alert("Admin mode disabled.");
+    return;
+  }
+
+  if (!cases || cases.length === 0) {
+    alert("Cases not loaded yet.");
+    return;
+  }
+
+  // collect all items
+  let allItems = [];
+  cases.forEach(c => {
+    c.items.forEach(item => {
+      allItems.push(item);
+    });
+  });
+
+  const itemNames = allItems.map((item, i) => `${i}: ${item.name}`);
+  const index = prompt("Enter item number:\n\n" + itemNames.slice(0,50).join("\n"));
+
+  const item = allItems[index];
+
+  if (!item) {
+    alert("Invalid item.");
+    return;
+  }
+
+  inventory.push({ ...item });
+
+  saveInventory();
+  renderInventory();
+  populateCoinflipDropdown();
+
+  alert(`Added ${item.name} (${item.price} coins)`);
+}
 
