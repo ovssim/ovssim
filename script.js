@@ -9,7 +9,7 @@ let currentCase = null;
 
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
-document.getElementById("admin-give-btn").onclick = adminGiveItem;
+  document.getElementById("admin-give-btn").onclick = adminGiveItem;
   updateCoins();
   renderInventory();
   renderTopDrops();
