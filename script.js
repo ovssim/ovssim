@@ -343,19 +343,42 @@ function adminGiveItem() {
     return;
   }
 
-  // Collect all items from all cases
-  let allItems = [];
-  cases.forEach(c => c.items.forEach(item => allItems.push(item)));
+// Collect all items from all cases
+let allItems = [];
+cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
-  const itemNames = allItems.map((item, i) => `${i}: ${item.name} (${item.price})`);
-  const index = prompt("Enter item number:\n\n" + itemNames.slice(0,50).join("\n"));
+// Build a scrollable admin menu instead of a prompt
+const adminMenu = document.getElementById("admin-item-list"); // make sure you have a div
+adminMenu.innerHTML = ""; // clear previous items
 
-  const item = allItems[index];
+allItems.forEach((item, i) => {
+  const div = document.createElement("div");
+  div.className = "admin-item";
+  div.innerHTML = `
+    <img src="${item.image}" alt="${item.name}" />
+    <div>
+      <div>${item.name}</div>
+      <div>Price: ${item.price}</div>
+    </div>
+    <button>Buy for ${item.price}</button>
+  `;
+  
+  // Buy button functionality
+  div.querySelector("button").onclick = () => {
+    if (coins < item.price) {
+      alert("Not enough coins!");
+      return;
+    }
+    coins -= item.price;
+    localStorage.setItem("coins", coins);
+    inventory.push({...item});
+    localStorage.setItem("inventory", JSON.stringify(inventory));
+    renderInventory(); // update inventory display
+    updateCoins(); // update coins display
+  };
 
-  if (!item) {
-    alert("Invalid item.");
-    return;
-  }
+  adminMenu.appendChild(div);
+});
 
   // Check coin balance
   if (coins < item.price) {
