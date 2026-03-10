@@ -127,7 +127,7 @@
     },
        {
       "id": "subclass",
-      "name": "Subclasses (Big)",
+      "name": "Subclasses (unfinished) (Big)",
       "price": 40.00,
       "image": "images/cases/subclass.png",
       "items": [
@@ -212,7 +212,7 @@
      },
        {
       "id": "lev",
-      "name": "LEV1A1HN (Medium)",
+      "name": "LEV1A1HN (unfinished) (Medium)",
       "price": 85.00,
       "image": "images/cases/lev.png",
       "items": [
