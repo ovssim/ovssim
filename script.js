@@ -69,7 +69,7 @@ function sellItem(index) {
 }
 
 function sellAllItems() {
-  if (inventory.length === 0) return alert("Inventory empty.");
+  if (inventory.length === 0) return alert("Backpack empty.");
   const total = inventory.reduce((sum, i) => sum + i.price, 0);
   coins += total;
   inventory = [];
@@ -312,7 +312,7 @@ function showWinner(item) {
 
 // ===================== ADMIN MODE =====================
 let adminMode = false;
-const ADMIN_PASSWORD = "ovffadmin";
+const ADMIN_PASSWORD = "leyley";
 
 function adminGiveItem() {
 
@@ -321,20 +321,20 @@ function adminGiveItem() {
     const password = prompt("Enter admin password:");
 
     if (password !== ADMIN_PASSWORD) {
-      alert("Wrong password.");
+      alert("Incorrect Trading Passkey.");
       return;
     }
 
     adminMode = true;
-    alert("Admin mode enabled.");
+    alert("Trading enabled.");
   }
 
   // Option to disable admin mode
-  const disable = confirm("Admin mode active.\n\nOK = Disable admin mode\nCancel = Give item");
+  const disable = confirm("Trading mode active.\n\nOK = Disable Trading mode\nCancel = Give item");
 
   if (disable) {
     adminMode = false;
-    alert("Admin mode disabled.");
+    alert("Trading mode disabled.");
     return;
   }
 
