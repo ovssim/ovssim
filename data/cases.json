@@ -324,6 +324,18 @@
         { "name": "Strange Golden Frying Pan", "rarity": "strange", "price": 8000.00, "weight": 99, "image": "images/items/aussiefrying.png" }
       ]
         },
+       {
+      "id": "crashout",
+      "name": "Crashout (unfinished) (Big)",
+      "price": 1000.00,
+      "image": "images/cases/crashout.png",
+      "items": [
+        { "name": "Cosmic Constellations Patriot Peak", "rarity": "mythical", "price": 9000.00, "weight": 20, "image": "images/items/ccpp2.png" },
+        { "name": "Burning Flames Team Captain", "rarity": "mythical", "price": 11000.00, "weight": 10, "image": "images/items/bftc.png" },
+        { "name": "Haunted Lolichop Licker", "rarity": "haunted", "price": 64.83, "weight": 6000, "image": "images/items/lolichoplicker.png" }
+      ]
+    },
+
     {
       "id": "aussie",
       "name": "AUSTRALIUM (High)",
