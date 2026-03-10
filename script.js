@@ -316,7 +316,7 @@ const ADMIN_PASSWORD = "leyley";
 
 function adminGiveItem() {
 
-  // Ask password if admin mode is off
+  // Ask password if trading mode is off
   if (!adminMode) {
     const password = prompt("Enter Trading password:");
 
@@ -329,7 +329,7 @@ function adminGiveItem() {
     alert("Trading enabled.");
   }
 
-  // Option to disable admin mode
+  // Option to disable trading mode
   const disable = confirm("Trading mode active.\n\nOK = Disable Trading mode\nCancel = Give item");
 
   if (disable) {
@@ -386,80 +386,4 @@ function adminGiveItem() {
 
   alert(`Purchased ${item.name} for ${item.price} 
 
-  // ===================== ADMIN PANEL =====================
-
-const ADMIN_PASSWORD = "ovffadmin";
-
-document.getElementById("admin-give-btn").onclick = () => {
-
-  const pass = prompt("Enter admin password:");
-
-  if(pass !== ADMIN_PASSWORD){
-    alert("Wrong password");
-    return;
-  }
-
-  openAdminPanel();
-};
-
-document.getElementById("close-admin-panel").onclick = () => {
-  document.getElementById("admin-panel").style.display = "none";
-};
-
-function openAdminPanel(){
-
-  const panel = document.getElementById("admin-panel");
-  const list = document.getElementById("admin-item-list");
-
-  list.innerHTML = "";
-
-  let allItems = [];
-
-  cases.forEach(c=>{
-    c.items.forEach(item=>{
-      allItems.push(item);
-    });
-  });
-
-  allItems.forEach(item=>{
-
-    const div = document.createElement("div");
-    div.className = "admin-item";
-
-    div.innerHTML = `
-      <img src="${item.image}">
-      <div class="admin-item-info">
-        <div>${item.name}</div>
-        <div>Price: ${item.price}</div>
-      </div>
-      <button class="admin-buy-btn">
-        Buy for ${item.price}
-      </button>
-    `;
-
-    div.querySelector("button").onclick = () => {
-
-      if(coins < item.price){
-        alert("Not enough coins");
-        return;
-      }
-
-      coins -= item.price;
-      localStorage.setItem("coins", coins);
-      updateCoins();
-
-      inventory.push({...item});
-      localStorage.setItem("inventory", JSON.stringify(inventory));
-
-      renderInventory();
-      populateCoinflipDropdown();
-
-      alert(`Purchased ${item.name}`);
-    };
-
-    list.appendChild(div);
-
-  });
-
-  panel.style.display = "flex";
-}
+ 
