@@ -310,14 +310,14 @@ function showWinner(item) {
   }
 }
 
-/// ===================== ADMIN MODE =====================
+// ===================== ADMIN MODE =====================
 let adminMode = false;
 const ADMIN_PASSWORD = "ovffadmin";
 
 function adminGiveItem() {
 
-  // Ask password if admin mode is off
   if (!adminMode) {
+
     const password = prompt("Enter admin password:");
 
     if (password !== ADMIN_PASSWORD) {
@@ -329,7 +329,6 @@ function adminGiveItem() {
     alert("Admin mode enabled.");
   }
 
-  // Option to disable admin mode
   const disable = confirm("Admin mode active.\n\nOK = Disable admin mode\nCancel = Give item");
 
   if (disable) {
@@ -338,12 +337,7 @@ function adminGiveItem() {
     return;
   }
 
-  if (!cases || cases.length === 0) {
-    alert("Cases not loaded yet.");
-    return;
-  }
-
-  // Collect all items from all cases
+  // Collect all items
   let allItems = [];
   cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
@@ -357,7 +351,7 @@ function adminGiveItem() {
     return;
   }
 
-  // Check coin balance
+  // Check if player has enough coins
   if (coins < item.price) {
     alert("Not enough coins.");
     return;
@@ -370,18 +364,12 @@ function adminGiveItem() {
   // Give item
   inventory.push({ ...item });
 
-  // Save inventory
-  localStorage.setItem("inventory", JSON.stringify(inventory));
+  saveInventory();
+  renderInventory();
+  populateCoinflipDropdown();
 
-  // Refresh UI
-  if (typeof renderInventory === "function") renderInventory();
-  if (typeof populateCoinflipDropdown === "function") populateCoinflipDropdown();
-
-  // Update coins display safely
-  const coinsDisplay = document.getElementById("coins");
-  if (coinsDisplay) {
-    coinsDisplay.textContent = `Coins: ${coins.toFixed(2)}`;
-  }
+  // Update coin display
+  updateCoinsDisplay();
 
   alert(`Purchased ${item.name} for ${item.price} coins`);
 }
