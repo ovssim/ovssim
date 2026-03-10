@@ -316,9 +316,8 @@ const ADMIN_PASSWORD = "ovffadmin";
 
 function adminGiveItem() {
 
-  // If admin mode OFF → ask password
+  // Ask password if admin mode is off
   if (!adminMode) {
-
     const password = prompt("Enter admin password:");
 
     if (password !== ADMIN_PASSWORD) {
@@ -330,8 +329,8 @@ function adminGiveItem() {
     alert("Admin mode enabled.");
   }
 
-  // If already enabled → ask if disable
-  const disable = confirm("Admin mode active.\n\nPress OK to disable admin mode.\nPress Cancel to give an item.");
+  // Option to disable admin mode
+  const disable = confirm("Admin mode active.\n\nOK = Disable admin mode\nCancel = Give item");
 
   if (disable) {
     adminMode = false;
@@ -344,15 +343,11 @@ function adminGiveItem() {
     return;
   }
 
-  // collect all items
+  // Collect all items from all cases
   let allItems = [];
-  cases.forEach(c => {
-    c.items.forEach(item => {
-      allItems.push(item);
-    });
-  });
+  cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
-  const itemNames = allItems.map((item, i) => `${i}: ${item.name}`);
+  const itemNames = allItems.map((item, i) => `${i}: ${item.name} (${item.price})`);
   const index = prompt("Enter item number:\n\n" + itemNames.slice(0,50).join("\n"));
 
   const item = allItems[index];
@@ -362,12 +357,31 @@ function adminGiveItem() {
     return;
   }
 
+  // Check coin balance
+  if (coins < item.price) {
+    alert("Not enough coins.");
+    return;
+  }
+
+  // Deduct coins
+  coins -= item.price;
+  localStorage.setItem("coins", coins);
+
+  // Give item
   inventory.push({ ...item });
 
-  saveInventory();
-  renderInventory();
-  populateCoinflipDropdown();
+  // Save inventory
+  localStorage.setItem("inventory", JSON.stringify(inventory));
 
-  alert(`Added ${item.name} (${item.price} coins)`);
+  // Refresh UI
+  if (typeof renderInventory === "function") renderInventory();
+  if (typeof populateCoinflipDropdown === "function") populateCoinflipDropdown();
+
+  // Update coins display safely
+  const coinsDisplay = document.getElementById("coins");
+  if (coinsDisplay) {
+    coinsDisplay.textContent = `Coins: ${coins.toFixed(2)}`;
+  }
+
+  alert(`Purchased ${item.name} for ${item.price} coins`);
 }
-
