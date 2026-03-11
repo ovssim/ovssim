@@ -360,6 +360,7 @@
         { "name": "Earbuds", "rarity": "legendary", "price": 18.63, "weight": 9000, "image": "images/items/earbuds.png" },
         { "name": "Strange Lady Killer", "rarity": "strange", "price": 6.82, "weight": 6000, "image": "images/items/ladykiller.png" },
         { "name": "Sparkling Lights Prehistoric Pullover", "rarity": "mythical", "price": 756.00, "weight": 7000, "image": "images/items/slpp.png" },
+        { "name": "Cold Cosmos Hawaiian Hunter", "rarity": "mythical", "price": 136.00, "weight": 13000, "image": "images/items/cchh.png" },
         { "name": "Shooting Star", "rarity": "legendary", "price": 18.34, "weight": 15000, "image": "images/items/shootingstar.png" }
       ]
     },
