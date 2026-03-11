@@ -364,7 +364,7 @@
         { "name": "Strange Handsome Devil", "rarity": "strange", "price": 1.27, "weight": 13000, "image": "images/items/handsomedevil.png" },
         { "name": "Duck Token", "rarity": "legendary", "price": 43.24, "weight": 10000, "image": "images/items/ducktoken.png" },
         { "name": "Distant Drift Cat's Pajamas", "rarity": "mythical", "price": 2025.00, "weight": 500, "image": "images/items/ddcp.png" },
-        { "name": "Green Energy Saxton", "rarity": "mythical", "price": 130.27, "weight": 2000, "image": "images/items/f.png" },
+        { "name": "Green Energy Saxton", "rarity": "mythical", "price": 130.27, "weight": 2000, "image": "images/items/ges.png" },
         { "name": "Strange Grim Tweeter", "rarity": "strange", "price": 82.50, "weight": 9000, "image": "images/items/grimtweet.png" },
         { "name": "Astral Presence Decorated Veteran", "rarity": "mythical", "price": 1500.00, "weight": 900, "image": "images/items/apdv.png" },
         { "name": "Strange Mercs Muffler", "rarity": "strange", "price": 3.01, "weight": 9000, "image": "images/items/mercm.png" },
