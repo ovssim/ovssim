@@ -372,3 +372,9 @@ function adminGiveItem() {
     itemsContainer.appendChild(div);
   });
 }
+
+// Bottom close button
+document.getElementById("admin-give-close-bottom").onclick = () => {
+  document.getElementById("admin-give-panel").style.display = "none";
+  adminMode = false; // require password next time
+};
