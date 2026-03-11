@@ -317,59 +317,53 @@ const ADMIN_PASSWORD = "LeyLey";
 function adminGiveItem() {
 
   if (!adminMode) {
-
     const password = prompt("Enter Trading passkey:");
-
     if (password !== ADMIN_PASSWORD) {
       alert("Incorrect Trading Passkey.");
       return;
     }
-
     adminMode = true;
     alert("Trading Mode Enabled.");
   }
 
-  const disable = confirm("Trading Mode Active.\n\nOK = Disabled Trading Mode\nCancel = Give item");
+  // Toggle admin panel
+  const panel = document.getElementById("admin-give-panel");
+  const itemsContainer = document.getElementById("admin-give-items");
+  panel.style.display = "block";
+  itemsContainer.innerHTML = "";
 
-  if (disable) {
-    adminMode = false;
-    alert("Trading mode disabled.");
-    return;
-  }
+  // Close button
+  document.getElementById("admin-give-close").onclick = () => {
+    panel.style.display = "none";
+  };
 
   // Collect all items
   let allItems = [];
   cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
-  const itemNames = allItems.map((item, i) => `${i}: ${item.name} (${item.price})`);
-  const index = prompt("Enter item number:\n\n" + itemNames.slice(0,250).join("\n"));
+  allItems.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "admin-give-item";
+    div.innerHTML = `
+      <img src="${item.image}">
+      <div class="admin-give-info">
+        <span class="name">${item.name}</span>
+        <span class="price">${item.price.toFixed(2)} coins</span>
+      </div>
+      <button>Give</button>
+    `;
+    div.querySelector("button").onclick = () => {
+      if (coins < item.price) return alert("Not enough coins.");
 
-  const item = allItems[index];
-
-  if (!item) {
-    alert("Invalid item.");
-    return;
-  }
-
-  // Check if player has enough coins
-  if (coins < item.price) {
-    alert("Not enough coins.");
-    return;
-  }
-
-  // Deduct coins
-  coins -= item.price;
-  localStorage.setItem("coins", coins);
-
-  // Give item
-  inventory.push({ ...item });
-
-  saveInventory();
-  renderInventory();
-  populateCoinflipDropdown();
-
-  // Update coin display
-  updateCoinsDisplay();
-
-  alert(`Traded ${item.name} for ${item.price} coins`);
+      coins -= item.price;
+      localStorage.setItem("coins", coins);
+      inventory.push({ ...item });
+      saveInventory();
+      renderInventory();
+      populateCoinflipDropdown();
+      updateCoins();
+      alert(`Traded ${item.name} for ${item.price.toFixed(2)} coins`);
+    };
+    itemsContainer.appendChild(div);
+  });
 }
