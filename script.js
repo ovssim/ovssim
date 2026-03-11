@@ -7,6 +7,10 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
+// Admin password system
+let adminMode = false;
+const ADMIN_PASSWORD = "LeyLey";
+
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("admin-give-btn").onclick = adminGiveItem;
@@ -51,7 +55,7 @@ function renderInventory() {
     div.innerHTML = `
       <img src="${item.image}">
       <p>${item.name}</p>
-      <small>${item.price} coins</small>
+      <small>${item.price.toFixed(2)} coins</small>
       <button class="sell-btn theme-btn">Sell</button>
     `;
     div.querySelector(".sell-btn").onclick = () => sellItem(index);
@@ -103,7 +107,7 @@ function toggleCaseItems() {
     div.innerHTML = `
       <img src="${item.image}">
       <p>${item.name}</p>
-      <small>${item.price} coins</small>
+      <small>${item.price.toFixed(2)} coins</small>
       <small style="font-size:14px; margin-top:5px;">🎯 ${dropRate}% chance</small>
     `;
     list.appendChild(div);
@@ -124,7 +128,7 @@ function renderTopDrops() {
       div.innerHTML = `
         <img src="${item.image}">
         <p>${item.name}</p>
-        <strong>${item.price} coins</strong>
+        <strong>${item.price.toFixed(2)} coins</strong>
       `;
       container.appendChild(div);
     });
@@ -145,7 +149,7 @@ function populateCoinflipDropdown() {
   inventory.forEach((item, index) => {
     const option = document.createElement("option");
     option.value = index;
-    option.textContent = `${item.name} (${item.price} coins)`;
+    option.textContent = `${item.name} (${item.price.toFixed(2)} coins)`;
     select.appendChild(option);
   });
 }
@@ -177,7 +181,7 @@ function coinflipItem(index) {
         alert(`You won another ${item.name} 🎉!`);
       } else {
         inventory.splice(index, 1);
-        alert(`You lost, your ${item.name} was evicerated.`);
+        alert(`You lost, your ${item.name} was destroyed.`);
       }
 
       saveInventory();
@@ -200,7 +204,7 @@ function loadCases() {
 
       cases.forEach(c => {
         const div = document.createElement("div");
-        div.innerHTML = `<img src="${c.image}"><span>${c.name} (${c.price} coins)</span>`;
+        div.innerHTML = `<img src="${c.image}"><span>${c.name} (${c.price.toFixed(2)} coins)</span>`;
         div.onclick = () => {
           selectCase(c.id);
           options.style.display = "none";
@@ -231,11 +235,11 @@ function selectCase(id) {
 
   document.getElementById("case-image").src = currentCase.image;
   document.getElementById("case-name").textContent = currentCase.name;
-  document.getElementById("open-btn").textContent = ` ${currentCase.price} Coins`;
+  document.getElementById("open-btn").textContent = `${currentCase.price.toFixed(2)} Coins`;
 
   // Update dropdown display
   const display = document.getElementById("case-select-display");
-  display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price} coins)</span>`;
+  display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
 
 function openCase() {
@@ -310,6 +314,7 @@ function showWinner(item) {
   }
 }
 
+// ===================== ADMIN GIVE =====================
 function adminGiveItem() {
   const panel = document.getElementById("admin-give-panel");
   const itemsContainer = document.getElementById("admin-give-items");
@@ -329,11 +334,11 @@ function adminGiveItem() {
   panel.style.display = "block";
   itemsContainer.innerHTML = "";
 
-  // Populate items
+  // Populate items from all cases
   let allItems = [];
   cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
-  allItems.forEach((item, index) => {
+  allItems.forEach((item) => {
     const div = document.createElement("div");
     div.className = "admin-give-item";
     div.innerHTML = `
@@ -348,29 +353,19 @@ function adminGiveItem() {
       if (coins < item.price) return alert("Not enough coins.");
 
       coins -= item.price;
-      localStorage.setItem("coins", coins);
+      updateCoins();
       inventory.push({ ...item });
       saveInventory();
       renderInventory();
       populateCoinflipDropdown();
-      updateCoins();
       alert(`Traded ${item.name} for ${item.price.toFixed(2)} coins`);
     };
     itemsContainer.appendChild(div);
   });
 
-  // Top close button
+  // Close button
   document.getElementById("admin-give-close").onclick = () => {
     panel.style.display = "none";
     adminMode = false; // require password next time
   };
-
-  // Bottom close button (optional)
-  const bottomClose = document.getElementById("admin-give-close-bottom");
-  if (bottomClose) {
-    bottomClose.onclick = () => {
-      panel.style.display = "none";
-      adminMode = false; // require password next time
-    };
-  }
 }
