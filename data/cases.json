@@ -377,10 +377,6 @@
         { "name": "Shooting Star", "rarity": "legendary", "price": 18.34, "weight": 15000, "image": "images/items/shootingstar.png" }
       ]
     },
-
-      ]
-    },
-
     {
       "id": "aussie",
       "name": "AUSTRALIUM (High)",
