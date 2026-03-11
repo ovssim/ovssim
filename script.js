@@ -312,28 +312,28 @@ function showWinner(item) {
 
 // ===================== ADMIN MODE =====================
 let adminMode = false;
-const ADMIN_PASSWORD = "ovffadmin";
+const ADMIN_PASSWORD = "LeyLey";
 
 function adminGiveItem() {
 
   if (!adminMode) {
 
-    const password = prompt("Enter admin password:");
+    const password = prompt("Enter Trading passkey:");
 
     if (password !== ADMIN_PASSWORD) {
-      alert("Wrong password.");
+      alert("Incorrect Trading Passkey.");
       return;
     }
 
     adminMode = true;
-    alert("Admin mode enabled.");
+    alert("Trading Mode Enabled.");
   }
 
-  const disable = confirm("Admin mode active.\n\nOK = Disable admin mode\nCancel = Give item");
+  const disable = confirm("Trading Mode Active.\n\nOK = Disabled Trading Mode\nCancel = Give item");
 
   if (disable) {
     adminMode = false;
-    alert("Admin mode disabled.");
+    alert("Trading mode disabled.");
     return;
   }
 
@@ -342,7 +342,7 @@ function adminGiveItem() {
   cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
   const itemNames = allItems.map((item, i) => `${i}: ${item.name} (${item.price})`);
-  const index = prompt("Enter item number:\n\n" + itemNames.slice(0,50).join("\n"));
+  const index = prompt("Enter item number:\n\n" + itemNames.slice(0,250).join("\n"));
 
   const item = allItems[index];
 
@@ -371,5 +371,5 @@ function adminGiveItem() {
   // Update coin display
   updateCoinsDisplay();
 
-  alert(`Purchased ${item.name} for ${item.price} coins`);
+  alert(`Traded ${item.name} for ${item.price} coins`);
 }
