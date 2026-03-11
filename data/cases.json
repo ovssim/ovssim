@@ -212,6 +212,7 @@
         { "name": "Resonation Robro 3000", "rarity": "mythical", "price": 176.00, "weight": 5400, "image": "images/items/robrou.png" },
         { "name": "Haunted Voltaic Hat Protector Teufort Knight", "rarity": "haunted", "price": 140.00, "weight": 5400, "image": "images/items/tkv.png" },
         { "name": "Abyssal Aura Scrap Pack", "rarity": "mythical", "price": 129.99, "weight": 8000, "image": "images/items/aurascrap.png" },
+        { "name": "Nebula Corona Australis", "rarity": "mythical", "price": 14000.00, "weight": 33, "image": "images/items/nebcorona.png" },
         { "name": "Warp Drive Rogues Rabbit ", "rarity": "mythical", "price": 270.00, "weight": 1300, "image": "images/items/warprabbit.png" }
       ]
      },
@@ -326,18 +327,43 @@
         { "name": "The Eldritch Opening Frag Proof Fragger", "rarity": "mythical", "price": 3600.00, "weight": 499, "image": "images/items/teofpf.png" },
         { "name": "Knifestorm Mask of the Shaman", "rarity": "mythical", "price": 4500.00, "weight": 199, "image": "images/items/kmots.png" },
         { "name": "Knifestorm Team Captain", "rarity": "mythical", "price": 6750.00, "weight": 149, "image": "images/items/ktc.png" },
-        { "name": "Strange Golden Frying Pan", "rarity": "strange", "price": 8000.00, "weight": 99, "image": "images/items/aussiefrying.png" }
+        { "name": "Strange Golden Frying Pan", "rarity": "strange", "price": 8000.00, "weight": 99, "image": "images/items/aussiefrying.png" } 
       ]
         },
        {
       "id": "crashout",
-      "name": "Crashout (unfinished) (Big)",
+      "name": "Crashout (Big)",
       "price": 1000.00,
       "image": "images/cases/crashout.png",
       "items": [
         { "name": "Cosmic Constellations Patriot Peak", "rarity": "mythical", "price": 9000.00, "weight": 20, "image": "images/items/ccpp2.png" },
         { "name": "Burning Flames Team Captain", "rarity": "mythical", "price": 11000.00, "weight": 10, "image": "images/items/bftc.png" },
-        { "name": "Haunted Lolichop Licker", "rarity": "haunted", "price": 64.83, "weight": 6000, "image": "images/items/lolichoplicker.png" } nebcorona
+        { "name": "Haunted Lolichop Licker", "rarity": "haunted", "price": 64.83, "weight": 8000, "image": "images/items/lolichoplicker.png" },
+        { "name": "Scorching Flames Bedouin Bandanna", "rarity": "mythical", "price": 4500.00, "weight": 300, "image": "images/items/sfbb.png" },
+        { "name": "Infernal Flames Potassium Bonnet", "rarity": "mythical", "price": 6750.00, "weight": 250, "image": "images/items/ifpb.png" },
+        { "name": "Treasure Trove Captain Cardbeard", "rarity": "mythical", "price": 4600.00, "weight": 350, "image": "images/items/ttcc.png" },
+        { "name": "Bewitched Dead Head", "rarity": "mythical", "price": 18573.00, "weight": 120, "image": "images/items/bdh.png" },
+        { "name": "Strange Magical Spirits Cool Cat Cardigan", "rarity": "mythical", "price": 28200.00, "weight": 100, "image": "images/items/msccc.png" },
+        { "name": "Godlike Der Maschinensoldaten-Helm", "rarity": "mythical", "price": 743.00, "weight": 1500, "image": "images/items/dmhg.png" },
+        { "name": "Amatory Hat Out Of Hell", "rarity": "mythical", "price": 540.00, "weight": 1400, "image": "images/items/ahooh.png" },
+        { "name": "Twinkling Fireworks Blighted Beak", "rarity": "mythical", "price": 4320.00, "weight": 300, "image": "images/items/tbb.png" },
+        { "name": "Arcane Assistance Motley Sleeves", "rarity": "mythical", "price": 3533.00, "weight": 400, "image": "images/items/aams.png" },
+        { "name": "Strange Handsome Devil", "rarity": "strange", "price": 1.27, "weight": 13000, "image": "images/items/handsomedevil.png" },
+        { "name": "Duck Token", "rarity": "legendary", "price": 43.24, "weight": 10000, "image": "images/items/ducktoken.png" },
+        { "name": "Distant Drift Cat's Pajamas", "rarity": "mythical", "price": 2025.00, "weight": 500, "image": "images/items/ddcp.png" },
+        { "name": "Green Energy Saxton", "rarity": "mythical", "price": 130.27, "weight": 2000, "image": "images/items/f.png" },
+        { "name": "Strange Grim Tweeter", "rarity": "strange", "price": 82.50, "weight": f, "image": "images/items/grimtweet.png" },
+        { "name": "Astral Presence Decorated Veteran", "rarity": "mythical", "price": 1500.00, "weight": 900, "image": "images/items/apdv.png" },
+        { "name": "Strange Mercs Muffler", "rarity": "strange", "price": 3.01, "weight": 9000, "image": "images/items/mercm.png" },
+        { "name": "Infernal Smoke Taunt: Shred Alert", "rarity": "mythical", "price": 137.00, "weight": 13000, "image": "images/items/issa.png" },
+        { "name": "100 Coins", "rarity": "legendary", "price": 100.00, "weight": 500, "image": "images/items/coins1.png" },
+        { "name": "Earbuds", "rarity": "legendary", "price": 18.63, "weight": 9000, "image": "images/items/earbuds.png" },
+        { "name": "Strange Lady Killer", "rarity": "strange", "price": 6.82, "weight": 6000, "image": "images/items/ladykiller.png" },
+        { "name": "Sparkling Lights Prehistoric Pullover", "rarity": "mythical", "price": 756.00, "weight": 7000, "image": "images/items/slpp.png" },
+        { "name": "Shooting Star", "rarity": "legendary", "price": 18.34, "weight": 15000, "image": "images/items/shootingstar.png" }
+      ]
+    },
+
       ]
     },
 
