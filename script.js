@@ -332,9 +332,10 @@ function adminGiveItem() {
   panel.style.display = "block";
   itemsContainer.innerHTML = "";
 
-  // Close button
+  // Close button resets adminMode
   document.getElementById("admin-give-close").onclick = () => {
     panel.style.display = "none";
+    adminMode = false; // Require password next time
   };
 
   // Collect all items
@@ -363,6 +364,10 @@ function adminGiveItem() {
       populateCoinflipDropdown();
       updateCoins();
       alert(`Traded ${item.name} for ${item.price.toFixed(2)} coins`);
+
+      // Reset adminMode after purchase so password is needed next time
+      adminMode = false;
+      panel.style.display = "none";
     };
     itemsContainer.appendChild(div);
   });
