@@ -186,6 +186,26 @@
         { "name": "Collector's Mad Milk", "rarity": "collector", "price": 170.00, "weight": 350, "image": "images/items/madmilk.png" }
       ]
     },
+    {
+      "id": "rouletter",
+      "name": "Double Red (Medium)",
+      "price": 100.00,
+      "image": "images/cases/roulette.png",
+      "items": [
+        { "name": "Black", "rarity": "common", "price": 0.00, "weight": 50, "image": "images/items/black.png" },
+        { "name": "Red", "rarity": "collector", "price": 100.00, "weight": 50, "image": "images/items/red.png" }
+      ]
+    },
+        {
+      "id": "rouletteb",
+      "name": "Double Black",
+      "price": 100.00,
+      "image": "images/cases/roulette.png",
+      "items": [
+        { "name": "Black", "rarity": "common", "price": 100.00, "weight": 50, "image": "images/items/black.png" },
+        { "name": "Red", "rarity": "collector", "price": 0.00, "weight": 50, "image": "images/items/red.png" }
+      ]
+    },
 
        {
       "id": "subclass",
