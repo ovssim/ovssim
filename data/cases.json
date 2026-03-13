@@ -160,6 +160,38 @@
         { "name": "Misty Skull Grimm Hatte", "rarity": "mythical", "price": 1350.00, "weight": 74, "image": "images/items/ghms.png" }
       ]
     },
+        {
+      "id": "pootis",
+      "name": "Nobody (unfinished) (High)",
+      "price": 32.00,
+      "image": "images/cases/pootis.png",
+      "items": [
+        { "name": "Bird-Man Of Aberdeen", "rarity": "legendary", "price": 0.09, "weight": 3000, "image": "images/items/birdmoa.png" },
+        { "name": "Strange Haunted Birdie Bonnet", "rarity": "haunted", "price": 37.28, "weight": 3000, "image": "images/items/birdb.png" },
+        { "name": "Freedom Feathers", "rarity": "legendary", "price": 41.70, "weight": 2000, "image": "images/items/freefeathers.png" },
+        { "name": "Tux", "rarity": "legendary", "price": 233.00, "weight": 200, "image": "images/items/tux.png" },
+        { "name": "Evil Tux", "rarity": "mythical", "price": 521.00, "weight": 100, "image": "images/items/etux.png" },
+        { "name": "Red Army Robin", "rarity": "legendary", "price": 0.07, "weight": 6000, "image": "images/items/rar3.png" },
+        { "name": "Chicken Kiev", "rarity": "legendary", "price": 63.72, "weight": 1000, "image": "images/items/kiev.png" },
+        { "name": "Evil Pootis", "rarity": "mythical", "price": 713.00, "weight": 50, "image": "images/items/ekiev.png" },
+        { "name": "Medimedes", "rarity": "legendary", "price": 32.61, "weight": 4000, "image": "images/items/medimedes.png" },
+        { "name": "Green Confetti Ein", "rarity": "mythical", "price": 21.25, "weight": 2000, "image": "images/items/gce.png" },
+        { "name": "Prinny Hat", "rarity": "legendary", "price": 0.32, "weight": 9000, "image": "images/items/prinnyhat.png" },
+        { "name": "Grim Tweeter", "rarity": "legendary", "price": 8.43, "weight": 5000, "image": "images/items/grimtweet.png" },
+        { "name": "Frosted Decadence Aristotle", "rarity": "mythical", "price": 37.92, "weight": 2000, "image": "images/items/fda.png" },
+        { "name": "Archimedes", "rarity": "legendary", "price": 0.21, "weight": 11000, "image": "images/items/archimedes.png" },
+        { "name": "Collector's Deadliest Duckling", "rarity": "collector", "price": 430.00, "weight": 100, "image": "images/items/deadduckling.png" },
+        { "name": "Mann-Bird Of Aberdeen", "rarity": "legendary", "price": 50.75, "weight": 1000, "image": "images/items/mboa0.png" },
+        { "name": "Festive Lights Santarchimedes", "rarity": "mythical", "price": 27.21, "weight": 9000, "image": "images/items/fls.png" },
+        { "name": "Private Maggot Muncher", "rarity": "legendary", "price": 0.64, "weight": 10000, "image": "images/items/privmag.png" },
+        { "name": "Blizzardy Storm Pebbles The Penguin", "rarity": "mythical", "price": 210.00, "weight": 150, "image": "images/items/bsptp.png" },
+        { "name": "Bird's Eye Viewer", "rarity": "legendary", "price": 0.28, "weight": 9999, "image": "images/items/birdev.png" },
+        { "name": "Vivid Plasma Momma Kiev", "rarity": "mythical", "price": 49.32, "weight": 3000, "image": "images/items/vpmk.png" },
+        { "name": "Batter's Beak", "rarity": "legendary", "price": 23.29, "weight": 5000, "image": "images/items/batbeak.png" },
+        { "name": "Pocket-Medes", "rarity": "legendary", "price": 0.20, "weight": 13000, "image": "images/items/pockmedes.png" }
+      ]
+    },
+
        {
       "id": "leyley",
       "name": "Leyley (unfinished) (Medium)",
