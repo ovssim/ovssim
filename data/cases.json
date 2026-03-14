@@ -202,7 +202,7 @@
         { "name": "Grim Tweeter", "rarity": "legendary", "price": 8.43, "weight": 5000, "image": "images/items/grimtweet.png" },
         { "name": "Frosted Decadence Aristotle", "rarity": "mythical", "price": 37.92, "weight": 2000, "image": "images/items/fda.png" },
         { "name": "Archimedes", "rarity": "legendary", "price": 0.21, "weight": 11000, "image": "images/items/archimedes.png" },
-        { "name": "Collector's Deadliest Duckling", "rarity": "collector", "price": 430.00, "weight": 100, "image": "images/items/deadiestd.png" },
+        { "name": "Collector's Deadliest Duckling", "rarity": "collector", "price": 430.00, "weight": 100, "image": "images/items/deadliestd.png" },
         { "name": "Mann-Bird Of Aberdeen", "rarity": "legendary", "price": 50.75, "weight": 1000, "image": "images/items/mboa0.png" },
         { "name": "Festive Lights Santarchimedes", "rarity": "mythical", "price": 27.21, "weight": 9000, "image": "images/items/fls.png" },
         { "name": "Private Maggot Muncher", "rarity": "legendary", "price": 0.64, "weight": 10000, "image": "images/items/privmag.png" },
