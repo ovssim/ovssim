@@ -219,9 +219,9 @@
       "price": 35.00,
       "image": "images/cases/ekaflex.png",
       "items": [
-        { "name": "Hat Of Undeniable Wealth And Respect", "rarity": "legendary", "price": 869.99, "weight": 50, "image": "images/items/houwar.png" },
+        { "name": "Hat Of Undeniable Wealth And Respect", "rarity": "legendary", "price": 869.99, "weight": 30, "image": "images/items/houwar.png" },
         { "name": "Bill's Hat", "rarity": "legendary", "price": 8.99, "weight": 6000, "image": "images/items/billshat.png" },
-        { "name": "Refined Metal", "rarity": "legendary", "price": 0.03, "weight": 17500, "image": "images/items/refined.png" },
+        { "name": "Refined Metal", "rarity": "legendary", "price": 0.03, "weight": 22500, "image": "images/items/refined.png" },
         { "name": "Earbuds", "rarity": "legendary", "price": 18.22, "weight": 9000, "image": "images/items/earbuds.png" },
         { "name": "Tour Of Duty Ticket", "rarity": "legendary", "price": 1.00, "weight": 5000, "image": "images/items/ticket.png" },
         { "name": "Max's Severed Head", "rarity": "legendary", "price": 90.60, "weight": 15000, "image": "images/items/maxhead.png" },
