@@ -436,7 +436,7 @@
       "id": "unusualprofit",
       "name": "Unusual Profits (High)",
       "price": 101.11,
-      "image": "images/cases/unusualprofit.png",
+      "image": "images/cases/unusualp.png",
       "items": [
         { "name": "Steaming Bulb Bonnet", "rarity": "mythical", "price": 18.86, "weight": 4000, "image": "images/items/usbb.png" },
         { "name": "Nuts n'Bolts Gym Rat", "rarity": "mythical", "price": 19.84, "weight": 4000, "image": "images/items/nnbgr.png" },
