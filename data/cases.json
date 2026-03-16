@@ -259,7 +259,7 @@
        {
       "id": "leyley",
       "name": "Leyley (Medium)",
-      "price": 44.00,
+      "price": 42.00,
       "image": "images/cases/leyley.png",
       "items": [
         { "name": "Leyley's Mad Milk", "rarity": "mythical", "price": 330.00, "weight": 150, "image": "images/items/umadmilk.png" },
@@ -279,7 +279,7 @@
         { "name": "Strange Aurora Skies Skullcap", "rarity": "mythical", "price": 187.75, "weight": 2000, "image": "images/items/uskullcap.png" },
         { "name": "Femscout", "rarity": "legendary", "price": 100.75, "weight": 2000, "image": "images/items/fems.png" },
         { "name": "Circling Heart Field Practice", "rarity": "mythical", "price": 91.63, "weight": 4000, "image": "images/items/chfp.png" },
-        { "name": "Mad Milk", "rarity": "legendary", "price": 0.01, "weight": 6000, "image": "images/items/madmilk.png" },
+        { "name": "Mad Milk", "rarity": "legendary", "price": 0.01, "weight": 5000, "image": "images/items/madmilk.png" },
         { "name": "Strange Australium Medigun", "rarity": "strange", "price": 135.00, "weight": 700, "image": "images/items/aussiemedi.png" },
         { "name": "Strange Australium Scattergun", "rarity": "strange", "price": 98.07, "weight": 700, "image": "images/items/aussiescatt.png" },
         { "name": "Collector's Mad Milk", "rarity": "collector", "price": 170.00, "weight": 350, "image": "images/items/madmilk.png" }
