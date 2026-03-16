@@ -51,7 +51,16 @@
         { "name": "Whispy Halos Taunt: High Five", "rarity": "mythical", "price": 26.69, "weight": 1450, "image": "images/items/whthf.png" }
       ]
     },
-
+        {
+      "id": "lasthop3",
+      "name": "The Last Hope (Big)",
+      "price": 9.99,
+      "image": "images/cases/lasthope.png",
+      "items": [
+        { "name": "Strange Golden Frying Pan", "rarity": "strange", "price": 8000.00, "weight": 1, "image": "images/items/aussiefrying.png" },
+        { "name": "Refined Metal", "rarity": "legendary", "price": 0.03, "weight": 9999, "image": "images/items/refined.png" }
+      ]
+    },
      {
       "id": "heavy",
       "name": "Heavy (Medium)",
