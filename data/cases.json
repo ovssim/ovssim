@@ -68,7 +68,7 @@
         { "name": "Collector's Evil Carl", "rarity": "collector", "price": 1932.76, "weight": 3, "image": "images/items/carl.png" },
         { "name": "Unusual Sulphurous Heavy Lifter", "rarity": "mythical", "price": 89.91, "weight": 50, "image": "images/items/ushl.png" },
         { "name": "Strange Battle Baclava", "rarity": "strange", "price": 69.99, "weight": 75, "image": "images/items/sbb0.png" },
-        { "name": "This is a sign to kidnap a child", "rarity": "common", "price": 0.01, "weight": 3, "image": "images/items/sbb0.png" },
+        { "name": "Legacy Item", "rarity": "common", "price": 0.00, "weight": 0, "image": "images/items/sbb0.png" },
         { "name": "Amaranthine Road Rage", "rarity": "mythical", "price":150.00, "weight": 330, "image": "images/items/arru.png" },
         { "name": "Heavy's Unusual Eyes of Molten Mannvich", "rarity": "mythical", "price": 635.35, "weight": 3, "image": "images/items/eomm.png" },
         { "name": "Officer's Ushanka", "rarity": "legendary", "price":0.08, "weight": 2900, "image": "images/items/ou.png" },
