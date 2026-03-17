@@ -149,7 +149,7 @@
         { "name": "Strange Balloonicorpse", "rarity": "strange", "price": 18.64, "weight": 4000, "image": "images/items/bcorpse.png" },
         { "name": "Pug Mug", "rarity": "legendary", "price": 0.09, "weight": 12000, "image": "images/items/pugmug.png" },
         { "name": "Mint Frost Tropical Toad", "rarity": "mythical", "price": 432.00, "weight": 20, "image": "images/items/mftt.png" },
-        { "name": "Toxic Swirl Croaking Hazard", "rarity": "mythical", "price": 612.00, "weight": 10, "image": "images/items/tsch.png" },
+        { "name": "Skill Issue Frog's Own Toxic Swirl Croaking Hazard", "rarity": "mythical", "price": 612.00, "weight": 10, "image": "images/items/tsch.png" },
         { "name": "Red Army Robin", "rarity": "legendary", "price": 0.07, "weight": 6000, "image": "images/items/rar3.png" },
         { "name": "Chicken Kiev", "rarity": "legendary", "price": 63.73, "weight": 200, "image": "images/items/kiev.png" },
         { "name": "Acidic Climate Rocko", "rarity": "mythical", "price": 71.00, "weight": 210, "image": "images/items/acr.png" },
@@ -204,7 +204,7 @@
         { "name": "Evil Tux", "rarity": "mythical", "price": 521.00, "weight": 100, "image": "images/items/etux.png" },
         { "name": "Red Army Robin", "rarity": "legendary", "price": 0.07, "weight": 5000, "image": "images/items/rar3.png" },
         { "name": "Chicken Kiev", "rarity": "legendary", "price": 63.72, "weight": 1000, "image": "images/items/kiev.png" },
-        { "name": "Evil Pootis", "rarity": "mythical", "price": 713.00, "weight": 50, "image": "images/items/ekiev.png" },
+        { "name": "Nobody's Own Evil Pootis", "rarity": "mythical", "price": 713.00, "weight": 50, "image": "images/items/ekiev.png" },
         { "name": "Medimedes", "rarity": "legendary", "price": 32.61, "weight": 4000, "image": "images/items/medimedes.png" },
         { "name": "Green Confetti Ein", "rarity": "mythical", "price": 21.25, "weight": 2000, "image": "images/items/gce.png" },
         { "name": "Prinny Hat", "rarity": "legendary", "price": 0.32, "weight": 5000, "image": "images/items/prinnyhat.png" },
@@ -228,7 +228,7 @@
       "price": 35.00,
       "image": "images/cases/ekaflex.png",
       "items": [
-        { "name": "Hat Of Undeniable Wealth And Respect", "rarity": "legendary", "price": 869.99, "weight": 30, "image": "images/items/houwar.png" },
+        { "name": "Ekaflex's Own Hat Of Undeniable Wealth And Respect", "rarity": "legendary", "price": 869.99, "weight": 30, "image": "images/items/houwar.png" },
         { "name": "Bill's Hat", "rarity": "legendary", "price": 8.99, "weight": 6000, "image": "images/items/billshat.png" },
         { "name": "Refined Metal", "rarity": "legendary", "price": 0.03, "weight": 18000, "image": "images/items/refined.png" },
         { "name": "Earbuds", "rarity": "legendary", "price": 18.22, "weight": 9000, "image": "images/items/earbuds.png" },
@@ -262,9 +262,9 @@
       "price": 42.00,
       "image": "images/cases/leyley.png",
       "items": [
-        { "name": "Leyley's Mad Milk", "rarity": "mythical", "price": 330.00, "weight": 150, "image": "images/items/umadmilk.png" },
+        { "name": "Leyley's Own Mad Milk", "rarity": "mythical", "price": 330.00, "weight": 150, "image": "images/items/umadmilk.png" },
         { "name": "Strange Mad Milk", "rarity": "strange", "price": 4.52, "weight": 1100, "image": "images/items/madmilk.png" },
-        { "name": "Leyley's Knife", "rarity": "mythical", "price": 320.00, "weight": 150, "image": "images/items/leyknife.png" },
+        { "name": "Leyley's Own Knife", "rarity": "mythical", "price": 320.00, "weight": 150, "image": "images/items/leyknife.png" },
         { "name": "Enchanted Battle Boonie", "rarity": "mythical", "price": 230.00, "weight": 200, "image": "images/items/ebb.png" },
         { "name": "Strange Heat Of Winter", "rarity": "strange", "price": 0.75, "weight": 2300, "image": "images/items/how.png" },
         { "name": "Doc's Holiday", "rarity": "legendary", "price": 0.15, "weight": 3000, "image": "images/items/dh.png" },
@@ -282,6 +282,9 @@
         { "name": "Mad Milk", "rarity": "legendary", "price": 0.01, "weight": 5000, "image": "images/items/madmilk.png" },
         { "name": "Strange Australium Medigun", "rarity": "strange", "price": 135.00, "weight": 700, "image": "images/items/aussiemedi.png" },
         { "name": "Strange Australium Scattergun", "rarity": "strange", "price": 98.07, "weight": 700, "image": "images/items/aussiescatt.png" },
+        { "name": "Vintage Mad Milk", "rarity": "rare", "price": 128.07, "weight": 4000, "image": "images/items/madmilk.png" },
+        { "name": "Genuine Mad Milk", "rarity": "genuine", "price": 54.16, "weight": 2000, "image": "images/items/madmilk.png" },
+        { "name": "Haunted Mad Milk", "rarity": "haunted", "price": 12.98, "weight": 4000, "image": "images/items/madmilk.png" },
         { "name": "Collector's Mad Milk", "rarity": "collector", "price": 170.00, "weight": 350, "image": "images/items/madmilk.png" }
       ]
     },
@@ -409,7 +412,7 @@
         { "name": "Strange Cobber Chameleon", "rarity": "strange", "price": 4.95, "weight": 4000, "image": "images/items/cobcam.png" },
         { "name": "Miami Nights Aviator Assassin", "rarity": "mythical", "price": 230.00, "weight": 1500, "image": "images/items/mnaa.png" },
         { "name": "Pyroland Dream Dadliest Catch", "rarity": "mythical", "price": 130.00, "weight": 2500, "image": "images/items/pddc.png" },
-        { "name": "Fragmented Photons Jungle Booty", "rarity": "mythical", "price": 9500.03, "weight": 10, "image": "images/items/ujunglebooty.png" },
+        { "name": "LEV1A1HN's Own Fragmented Photons Jungle Booty", "rarity": "mythical", "price": 9500.03, "weight": 10, "image": "images/items/ujunglebooty.png" },
         { "name": "Spawn Camper", "rarity": "legendary", "price": 0.60, "weight": 7000, "image": "images/items/spawncamper.png" },
         { "name": "Kill-A-Watt Bananades", "rarity": "mythical", "price": 95.00, "weight": 13000, "image": "images/items/twb.png" },
         { "name": "Darkblaze Pyro Shark", "rarity": "mythical", "price": 3300.00, "weight": 150, "image": "images/items/dbps.png" },
@@ -496,7 +499,7 @@
         { "name": "Frosty Flavours Demonic Dome", "rarity": "mythical", "price": 900.00, "weight": 450, "image": "images/items/ffdd.png" },
         { "name": "Celestial Summit Legendary Lid", "rarity": "mythical", "price": 1690.00, "weight": 113, "image": "images/items/ssll.png" },
         { "name": "Bonzo the All-Gnawing Bonk Helm", "rarity": "mythical", "price": 2800.00, "weight": 98, "image": "images/items/btagbh.png" },
-        { "name": "ovff's Track Terrorizer", "rarity": "mythical", "price": 4000.00, "weight": 35, "image": "images/items/cftt.png" }
+        { "name": "ovff's Own Track Terrorizer", "rarity": "mythical", "price": 4000.00, "weight": 35, "image": "images/items/cftt.png" }
       ]
     },
 
@@ -506,7 +509,7 @@
       "price": 120,
       "image": "images/cases/peak.png",
       "items": [
-        { "name": "Collectors Flapjack", "rarity": "collector", "price": 9642.00, "weight": 10, "image": "images/items/flapjack.png" },
+        { "name": "ovff's Own Collectors Flapjack", "rarity": "collector", "price": 9642.00, "weight": 10, "image": "images/items/flapjack.png" },
         { "name": "Crystal Crown Breach and Bomb", "rarity": "mythical", "price": 630.00, "weight": 200, "image": "images/items/crybomb.png" },
         { "name": "Playful Aurora Fuel Injector", "rarity": "mythical", "price": 744.99, "weight": 200, "image": "images/items/pafi.png" },
         { "name": "Ghosts of Smissmas Time Alcoholic Automoton", "rarity": "mythical", "price": 666.00, "weight": 200, "image": "images/items/gostaa.png" },
@@ -562,7 +565,7 @@
         { "name": "Condescending Embrace Dapper Noel", "rarity": "mythical", "price": 83.00, "weight": 8000, "image": "images/items/cebn.png" },
         { "name": "Gravely Ghoul Battle Baclava", "rarity": "mythical", "price": 270.00, "weight": 10000, "image": "images/items/ggbb.png" },
         { "name": "Free Mann's Fashion", "rarity": "legendary", "price": 14.22, "weight": 3000, "image": "images/items/freeman.png" },
-        { "name": "Award Winning Clowns Cover-Up", "rarity": "mythical", "price": 8123.00, "weight": 100, "image": "images/items/ffccu.png" },
+        { "name": "Maskman's Own Award Winning Clowns Cover-Up", "rarity": "mythical", "price": 8123.00, "weight": 100, "image": "images/items/ffccu.png" },
         { "name": "Atomic Elf Defense", "rarity": "mythical", "price": 1203.00, "weight": 2000, "image": "images/items/aed.png" }
       ]
     },
@@ -617,7 +620,7 @@
         { "name": "Strange Handsome Devil", "rarity": "strange", "price": 1.27, "weight": 5000, "image": "images/items/handsomedevil.png" },
         { "name": "Duck Token", "rarity": "legendary", "price": 43.24, "weight": 10000, "image": "images/items/ducktoken.png" },
         { "name": "Distant Drift Cat's Pajamas", "rarity": "mythical", "price": 2025.00, "weight": 550, "image": "images/items/ddcp.png" },
-        { "name": "Do0mzic's Saxton", "rarity": "mythical", "price": 130.27, "weight": 2000, "image": "images/items/ges.png" },
+        { "name": "Do0mzic's Own Saxton", "rarity": "mythical", "price": 130.27, "weight": 2000, "image": "images/items/ges.png" },
         { "name": "Strange Grim Tweeter", "rarity": "strange", "price": 82.50, "weight": 9000, "image": "images/items/grimtweet.png" },
         { "name": "Astral Presence Decorated Veteran", "rarity": "mythical", "price": 1500.00, "weight": 900, "image": "images/items/apdv.png" },
         { "name": "Strange Mercs Muffler", "rarity": "strange", "price": 3.01, "weight": 9000, "image": "images/items/mercm.png" },
