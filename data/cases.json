@@ -143,7 +143,7 @@
         { "name": "Fiercesome Fluorescence", "rarity": "legendary", "price": 0.38, "weight": 2000, "image": "images/items/fearsomef.png" },
         { "name": "Strange Shortness Of Breath", "rarity": "strange", "price": 0.32, "weight": 2000, "image": "images/items/shortob.png" },
         { "name": "Wicked Woods Blastphomet", "rarity": "mythical", "price": 32.54, "weight": 400, "image": "images/items/wwb.png" },
-        { "name": "Fragmented Quarks Bare Bear Bones", "rarity": "mythical", "price": 231.00, "weight": e00, "image": "images/items/fqbbb.png" },
+        { "name": "Fragmented Quarks Bare Bear Bones", "rarity": "mythical", "price": 231.00, "weight": 300, "image": "images/items/fqbbb.png" },
         { "name": "Strange Stealth Bomber", "rarity": "strange", "price": 0.49, "weight": 4000, "image": "images/items/stealthb.png" },
         { "name": "Pyroland Dream Momma Kiev", "rarity": "mythical", "price": 46.23, "weight": 300, "image": "images/items/pdmk.png" },
         { "name": "Strange Balloonicorpse", "rarity": "strange", "price": 18.64, "weight": 4000, "image": "images/items/bcorpse.png" },
