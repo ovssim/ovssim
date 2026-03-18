@@ -52,6 +52,24 @@
       ]
     },
         {
+      "id": "duel",
+      "name": "Duelists (unfinished) (Big)",
+      "price": 7.75,
+      "image": "images/cases/duelist.png",
+      "items": [
+        { "name": "Dueling Mini-Game", "rarity": "legendary", "price": 0.16, "weight": 7000, "image": "images/items/duelminigame.png" },
+        { "name": "Ambassador", "rarity": "legendary", "price": 0.01, "weight": 12000, "image": "images/items/amby.png" },
+        { "name": "Strange Australium Professional Killstreak Ambassador", "rarity": "strange", "price": 47.00, "weight": 1700, "image": "images/items/aussieamby.png" },
+        { "name": "Collector's Ambassador", "rarity": "collector", "price": 97.43, "weight": 100, "image": "images/items/amby.png" },
+        { "name": "Three Rune Sword", "rarity": "legendary", "price": 0.23, "weight": 7000, "image": "images/items/threers.png" },
+        { "name": "Strange Genuine Three Rune Sword", "rarity": "genuine", "price": 62.97, "weight": 1000, "image": "images/items/threers.png" },
+        { "name": "Strange Splendid Shield", "rarity": "legendary", "price": 47.32, "weight": 893, "image": "images/items/spenshield.png" },
+        { "name": "Collector's Splendid Shield", "rarity": "collector", "price": 213.00, "weight": 20, "image": "images/items/f.png" },
+        { "name": "Collector's Enforcer", "rarity": "collector", "price": 71.00, "weight": 120, "image": "images/items/enforcer.png" },
+        { "name": "Strange Enforcer", "rarity": "strange", "price": 0.28, "weight": 12000, "image": "images/items/enforcer.png" }
+      ]
+    },
+        {
       "id": "lasthop3",
       "name": "The Last Hope (Big)",
       "price": 9.99,
