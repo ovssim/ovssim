@@ -33,7 +33,7 @@
         {
       "id": "taunts",
       "name": "Lights, Camera, Action! (Low)",
-      "price": 3.30,
+      "price": 5.00,
       "image": "images/cases/taunts.png",
       "items": [
         { "name": "Taunt: Meet The Medic", "rarity": "legendary", "price": 0.61, "weight": 15000, "image": "images/items/meetmed.png" },
@@ -43,9 +43,9 @@
         { "name": "Taunt: The Boston Boarder", "rarity": "legendary", "price": 2.36, "weight": 8000, "image": "images/items/bostboard.png" },
         { "name": "Taunt: The Table Tantrum", "rarity": "legendary", "price": 2.95, "weight": 5500, "image": "images/items/tabletant.png" },
         { "name": "Taunt: High Five", "rarity": "legendary", "price": 3.23, "weight": 7500, "image": "images/items/highfive.png" },
-        { "name": "Taunt: Cremators Condolenses", "rarity": "legendary", "price": 4.77, "weight": 7500, "image": "images/items/cremcond.png" },
-        { "name": "Taunt: Bucking Bronco", "rarity": "legendary", "price": 5.25, "weight": 8000, "image": "images/items/buckingbronk.png" },
-        { "name": "Whispy Halos Taunt: Proletariat Showoff", "rarity": "mythical", "price": 6.98, "weight": 8000, "image": "images/items/poleshow.png" },
+        { "name": "Taunt: Cremators Condolenses", "rarity": "legendary", "price": 3.77, "weight": 7500, "image": "images/items/cremcond.png" },
+        { "name": "Taunt: Bucking Bronco", "rarity": "legendary", "price": 4.25, "weight": 8000, "image": "images/items/buckingbronk.png" },
+        { "name": "Whispy Halos Taunt: Proletariat Showoff", "rarity": "mythical", "price": 6.98, "weight": 6000, "image": "images/items/poleshow.png" },
         { "name": "Winning Spirit Taunt: Shanty Shipmate", "rarity": "mythical", "price": 9.16, "weight": 6500, "image": "images/items/winspishanty.png" },
         { "name": "Arctic Delight Taunt: Killer Signature", "rarity": "mythical", "price": 14.90, "weight": 5000, "image": "images/items/adtks.png" },
         { "name": "Whispy Halos Taunt: High Five", "rarity": "mythical", "price": 26.69, "weight": 1450, "image": "images/items/whthf.png" }
