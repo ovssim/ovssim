@@ -656,6 +656,34 @@
         { "name": "Shooting Star", "rarity": "legendary", "price": 18.34, "weight": 7000, "image": "images/items/shootingstar.png" }
       ]
     },
+        {
+      "id": "hauntsme1",
+      "name": "Haunted Forever ",
+      "price": 1789.43,
+      "image": "images/cases/haunted.png",
+      "items": [
+        { "name": "Silver Serenade Pocket Purrer", "rarity": "mythical", "price": 43.12, "weight": 3000, "image": "images/items/ssppur.png" },
+        { "name": "Strange Searing Plasma Sightseer", "rarity": "mythical", "price": 910.00, "weight": 4000, "image": "images/items/sspseer.png" },
+        { "name": "Baron's Cherished Chaplet Toy Soldier", "rarity": "mythical", "price": 1235.00, "weight": 7378, "image": "images/items/bccts.png" },
+        { "name": "Hard Carry Nasty Norsemann", "rarity": "mythical", "price": 36.00, "weight": 3000, "image": "images/items/hcnn.png" },
+        { "name": "Vintage Nether Trail Parasight", "rarity": "mythical", "price": 1272.00, "weight": 4328, "image": "images/items/ntp.png" },
+        { "name": "Terrestrial Favor Boxcar Bomber", "rarity": "mythical", "price": 3242.00, "weight": 1000, "image": "images/items/tfbb.png" },
+        { "name": "Sylicone Succiduous Law", "rarity": "mythical", "price": 4333.00, "weight": 2343, "image": "images/items/ssl.png" },
+        { "name": "Scorching Flames Tartantaloons", "rarity": "mythical", "price": 2433.00, "weight": 2343, "image": "images/items/f.png" },
+        { "name": "Fully Charged Crack Pot", "rarity": "mythical", "price": 1279.00, "weight": 9000, "image": "images/items/fccp.png" },
+        { "name": "Jellyfish Field Dead Heat", "rarity": "mythical", "price": 8774.00, "weight": 548, "image": "images/items/jfdh.png" },
+        { "name": "Genus Plasmos Night Vision Gawkers", "rarity": "mythical", "price": 476.00, "weight": 8344, "image": "images/items/gpnvg.png" },
+        { "name": "Prismatica Heavy Heating", "rarity": "mythical", "price": 254.00, "weight": 7495, "image": "images/items/phh.png" },
+        { "name": "Flaming Lantern Texas Ten Gallon", "rarity": "mythical", "price": 2432.00, "weight": 1000, "image": "images/items/flttg.png" },
+        { "name": "Sunbeams Mann-O-War", "rarity": "mythical", "price": 235.00, "weight": 3254, "image": "images/items/smow.png" },
+        { "name": "Searing Stove Dumb Bell", "rarity": "mythical", "price": 56.23, "weight": 842, "image": "images/items/ssdb.png" },
+        { "name": "Malevolent Monoculi Hat Of Cards", "rarity": "mythical", "price": 3248.00, "weight": 7154, "image": "images/items/mmhoc.png" },
+        { "name": "Stardust Ghastlier Gibus", "rarity": "mythical", "price": 7455.00, "weight": 9844, "image": "images/items/sgg.png" },
+        { "name": "Cold Cosmos Brooklyn Booties", "rarity": "mythical", "price": 3428.00, "weight": 5244, "image": "images/items/ccbb.png" },
+        { "name": "ovff's Own Genuine Green Confetti Patriot Peak", "rarity": "mythical", "price": 17265.00, "weight": 234, "image": "images/items/imissit.png" }
+      ]
+    },
+
     {
       "id": "aussie",
       "name": "AUSTRALIUM (High)",
