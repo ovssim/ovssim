@@ -1,3 +1,4 @@
+```js
 // ===================== GLOBAL STATE =====================
 let coins = parseFloat(localStorage.getItem("coins"));
 if (isNaN(coins) || coins < 0) coins = 100;
@@ -20,15 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
   loadCases();
   populateCoinflipDropdown();
 
-  // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00 ; updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
   document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
+
   document.getElementById("coinflip-btn").onclick = () => {
-    const select = document.getElementById("coinflip-select");
-    const index = parseInt(select.value);
+    const index = parseInt(document.getElementById("coinflip-select").value);
     if (!isNaN(index)) coinflipItem(index);
   };
+
   document.getElementById("open-btn").onclick = openCase;
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
@@ -84,36 +85,6 @@ function sellAllItems() {
   alert(`Scrapped Backpack for ${total.toFixed(2)} coins.`);
 }
 
-// ===================== SHOW CASE ITEMS =====================
-function toggleCaseItems() {
-  const list = document.getElementById("case-items-list");
-  if (!currentCase) return;
-
-  if (list.style.display === "block") {
-    list.style.display = "none";
-    return;
-  }
-
-  list.style.display = "block";
-  list.innerHTML = "";
-
-  const totalWeight = currentCase.items.reduce((sum, i) => sum + i.weight, 0);
-  const sortedItems = [...currentCase.items].sort((a, b) => b.price - a.price);
-
-  sortedItems.forEach(item => {
-    const dropRate = ((item.weight / totalWeight) * 100).toFixed(2);
-    const div = document.createElement("div");
-    div.className = `inv-item ${item.rarity.toLowerCase()}`;
-    div.innerHTML = `
-      <img src="${item.image}">
-      <p>${item.name}</p>
-      <small>${item.price.toFixed(2)} coins</small>
-      <small style="font-size:14px; margin-top:5px;">🎯 ${dropRate}% chance</small>
-    `;
-    list.appendChild(div);
-  });
-}
-
 // ===================== TOP DROPS =====================
 function renderTopDrops() {
   const container = document.getElementById("top-drops");
@@ -164,25 +135,18 @@ function coinflipItem(index) {
   const finalClass = win ? "head" : "tail";
 
   let flips = 0;
-  const totalFlips = 10;
-
-  const flipInterval = setInterval(() => {
+  const interval = setInterval(() => {
     coin.classList.toggle("head");
     coin.classList.toggle("tail");
     flips++;
 
-    if (flips > totalFlips) {
-      clearInterval(flipInterval);
+    if (flips > 10) {
+      clearInterval(interval);
       coin.classList.remove("head", "tail");
       coin.classList.add(finalClass);
 
-      if (win) {
-        inventory.push({ ...item });
-        alert(`You won another ${item.name} 🎉!`);
-      } else {
-        inventory.splice(index, 1);
-        alert(`You lost, your ${item.name} was destroyed.`);
-      }
+      if (win) inventory.push({ ...item });
+      else inventory.splice(index, 1);
 
       saveInventory();
       renderInventory();
@@ -198,7 +162,6 @@ function loadCases() {
     .then(res => res.json())
     .then(data => {
       cases = data.cases;
-      const display = document.getElementById("case-select-display");
       const options = document.getElementById("case-select-options");
       options.innerHTML = "";
 
@@ -212,20 +175,7 @@ function loadCases() {
         options.appendChild(div);
       });
 
-      // Initial selection
       selectCase(cases[0].id);
-
-      // Toggle dropdown
-      display.onclick = () => {
-        options.style.display = options.style.display === "block" ? "none" : "block";
-      };
-
-      // Close dropdown if clicked outside
-      document.addEventListener("click", (e) => {
-        if (!display.contains(e.target) && !options.contains(e.target)) {
-          options.style.display = "none";
-        }
-      });
     });
 }
 
@@ -236,10 +186,6 @@ function selectCase(id) {
   document.getElementById("case-image").src = currentCase.image;
   document.getElementById("case-name").textContent = currentCase.name;
   document.getElementById("open-btn").textContent = `${currentCase.price.toFixed(2)} Coins`;
-
-  // Update dropdown display
-  const display = document.getElementById("case-select-display");
-  display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
 
 function openCase() {
@@ -256,6 +202,7 @@ function openCase() {
 function getRandomItem(items) {
   const total = items.reduce((sum, i) => sum + i.weight, 0);
   let roll = Math.random() * total;
+
   for (let item of items) {
     if (roll < item.weight) return item;
     roll -= item.weight;
@@ -272,7 +219,7 @@ function spinToItem(winningItem) {
   const winnerIndex = 38;
 
   for (let i = 0; i < slots; i++) {
-    let item = currentCase.items[Math.floor(Math.random() * currentCase.items.length)];
+    let item = getRandomItem(currentCase.items); // weighted visuals
     if (i === winnerIndex) item = winningItem;
 
     const div = document.createElement("div");
@@ -283,7 +230,20 @@ function spinToItem(winningItem) {
 
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
-  const offset = -(winnerIndex * itemWidth - containerWidth / 2 + itemWidth / 2);
+
+  // 🎯 Random landing inside item
+  const randomSpot = (Math.random() + Math.random()) / 2;
+  const edgePadding = 6;
+  const randomOffsetInsideItem = (randomSpot - 0.5) * (itemWidth - edgePadding);
+  const jitter = (Math.random() - 0.5) * 4;
+
+  const offset = -(
+    winnerIndex * itemWidth 
+    - containerWidth / 2 
+    + itemWidth / 2 
+    + randomOffsetInsideItem 
+    + jitter
+  );
 
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
@@ -292,9 +252,7 @@ function spinToItem(winningItem) {
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
-  setTimeout(() => {
-    showWinner(winningItem);
-  }, 3200);
+  setTimeout(() => showWinner(winningItem), 3200);
 }
 
 function showWinner(item) {
@@ -313,59 +271,4 @@ function showWinner(item) {
     winnerBox.className = item.rarity.toLowerCase();
   }
 }
-
-// ===================== ADMIN GIVE =====================
-function adminGiveItem() {
-  const panel = document.getElementById("admin-give-panel");
-  const itemsContainer = document.getElementById("admin-give-items");
-
-  // Prompt for password if admin mode not active
-  if (!adminMode) {
-    const password = prompt("Enter Trading passkey:");
-    if (password !== ADMIN_PASSWORD) {
-      alert("Incorrect Trading Passkey.");
-      return;
-    }
-    adminMode = true;
-    alert("Trading Mode Enabled.");
-  }
-
-  // Show panel
-  panel.style.display = "block";
-  itemsContainer.innerHTML = "";
-
-  // Populate items from all cases
-  let allItems = [];
-  cases.forEach(c => c.items.forEach(item => allItems.push(item)));
-
-  allItems.forEach((item) => {
-    const div = document.createElement("div");
-    div.className = "admin-give-item";
-    div.innerHTML = `
-      <img src="${item.image}">
-      <div class="admin-give-info">
-        <span class="name">${item.name}</span>
-        <span class="price">${item.price.toFixed(2)} coins</span>
-      </div>
-      <button>Trade</button>
-    `;
-    div.querySelector("button").onclick = () => {
-      if (coins < item.price) return alert("Not enough coins.");
-
-      coins -= item.price;
-      updateCoins();
-      inventory.push({ ...item });
-      saveInventory();
-      renderInventory();
-      populateCoinflipDropdown();
-      alert(`Traded ${item.name} for ${item.price.toFixed(2)} coins`);
-    };
-    itemsContainer.appendChild(div);
-  });
-
-  // Close button
-  document.getElementById("admin-give-close").onclick = () => {
-    panel.style.display = "none";
-    adminMode = false; // require password next time
-  };
-}
+```
