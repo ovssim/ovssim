@@ -418,3 +418,59 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   font-size: 14px;
   resize: none;
 }
+
+#upgrader-panel {
+  border: 2px solid #555;
+  padding: 15px;
+  max-width: 500px;
+  margin: 20px auto;
+  background-color: #222;
+  color: white;
+  font-family: sans-serif;
+}
+
+#wager-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+#wager-items-container .wager-item {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #555;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#wager-items-container .wager-item.selected {
+  border-color: #00FF00;
+  box-shadow: 0 0 8px #00FF00;
+}
+
+#upgrade-chance-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+#upgrade-hexagon {
+  transition: transform 0.3s ease, filter 0.3s ease, stroke-width 0.3s ease;
+  filter: drop-shadow(0 0 6px #00FF00);
+  transform-origin: 50% 50%;
+}
+
+#chance-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #00FF00;
+  font-family: monospace;
+  pointer-events: none;
+}
