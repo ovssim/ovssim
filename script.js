@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00 ; updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
   document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
@@ -237,7 +237,6 @@ function selectCase(id) {
   document.getElementById("case-name").textContent = currentCase.name;
   document.getElementById("open-btn").textContent = `${currentCase.price.toFixed(2)} Coins`;
 
-  // Update dropdown display
   const display = document.getElementById("case-select-display");
   display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
@@ -281,8 +280,6 @@ function spinToItem(winningItem) {
     strip.appendChild(div);
   }
 
-  if (!strip.children.length) return;
-
   strip.offsetHeight; // force reflow
 
   const itemWidth = strip.children[0].offsetWidth + 30;
@@ -301,38 +298,47 @@ function spinToItem(winningItem) {
     + jitter
   );
 
-  // Animate the strip
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
-  strip.offsetHeight;
+  strip.offsetHeight; 
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
-  // Smooth grey gradient effect
-  const updateTint = () => {
+  const interval = setInterval(() => {
     const children = Array.from(strip.children);
     const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
-
     children.forEach((child) => {
       const rect = child.getBoundingClientRect();
       const dist = Math.abs(rect.left + rect.width / 2 - centerX);
-
-      // Max distance we consider for fading
-      const maxDist = containerWidth / 2;
-      const factor = Math.max(0, 1 - dist / maxDist); // closer to center = brighter
+      const factor = Math.max(0, 1 - dist / (containerWidth / 2));
       child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
     });
-  };
-
-  const interval = setInterval(updateTint, 30); // smooth updates
+  }, 30);
 
   setTimeout(() => {
     clearInterval(interval);
-    // Make winning item fully bright
     const children = Array.from(strip.children);
     children.forEach((child) => child.style.filter = "grayscale(0%) brightness(1)");
     showWinner(winningItem);
   }, 3200);
+}
+
+// ===================== WINNER =====================
+function showWinner(item) {
+  inventory.push(item);
+  recentDrops.push(item);
+  if (recentDrops.length > 20) recentDrops.shift();
+
+  saveInventory();
+  renderInventory();
+  renderTopDrops();
+  populateCoinflipDropdown();
+
+  const winnerBox = document.getElementById("winner-name");
+  if (winnerBox) {
+    winnerBox.textContent = item.name;
+    winnerBox.className = item.rarity.toLowerCase();
+  }
 }
 
 // ===================== ADMIN GIVE =====================
@@ -340,22 +346,16 @@ function adminGiveItem() {
   const panel = document.getElementById("admin-give-panel");
   const itemsContainer = document.getElementById("admin-give-items");
 
-  // Prompt for password if admin mode not active
   if (!adminMode) {
     const password = prompt("Enter Trading passkey:");
-    if (password !== ADMIN_PASSWORD) {
-      alert("Incorrect Trading Passkey.");
-      return;
-    }
+    if (password !== ADMIN_PASSWORD) return alert("Incorrect Trading Passkey.");
     adminMode = true;
     alert("Trading Mode Enabled.");
   }
 
-  // Show panel
   panel.style.display = "block";
   itemsContainer.innerHTML = "";
 
-  // Populate items from all cases
   let allItems = [];
   cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
@@ -372,7 +372,6 @@ function adminGiveItem() {
     `;
     div.querySelector("button").onclick = () => {
       if (coins < item.price) return alert("Not enough coins.");
-
       coins -= item.price;
       updateCoins();
       inventory.push({ ...item });
@@ -384,19 +383,8 @@ function adminGiveItem() {
     itemsContainer.appendChild(div);
   });
 
-  // Close button
   document.getElementById("admin-give-close").onclick = () => {
     panel.style.display = "none";
-    adminMode = false; // require password next time
+    adminMode = false;
   };
 }
-
-// load all items as grey tinted initially
-Array.from(strip.children).forEach(child => child.classList.add("inactive"));
-
-// remove grey tint from win item
-setTimeout(() => {
-  Array.from(strip.children).forEach(child => child.classList.add("inactive"));
-  strip.children[winnerIndex].classList.remove("inactive");
-}, 3200);
-
