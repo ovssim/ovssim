@@ -335,7 +335,7 @@ function adminGiveItem() {
   const panel = document.getElementById("admin-give-panel");
   const itemsContainer = document.getElementById("admin-give-items");
 
-  // Prompt for password if admin mode not active
+  // ask for password if admin mode not active
   if (!adminMode) {
     const password = prompt("Enter Trading passkey:");
     if (password !== ADMIN_PASSWORD) {
@@ -346,11 +346,11 @@ function adminGiveItem() {
     alert("Trading Mode Enabled.");
   }
 
-  // Show panel
+  // show trading panel
   panel.style.display = "block";
   itemsContainer.innerHTML = "";
 
-  // Populate items from all cases
+  // show items from all cases
   let allItems = [];
   cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
@@ -379,7 +379,7 @@ function adminGiveItem() {
     itemsContainer.appendChild(div);
   });
 
-  // Close button
+  // close button
   document.getElementById("admin-give-close").onclick = () => {
     panel.style.display = "none";
     adminMode = false; // require password next time
@@ -398,7 +398,7 @@ function loadSiteItems() {
   cases.forEach(c => c.items.forEach(item => siteItems.push(item)));
 }
 
-// Populate upgrader GUI selects
+// add upgrader selects
 function populateUpgraderGUI() {
   const betSelect = document.getElementById("bet-item-select");
   const targetSelect = document.getElementById("target-items-select");
@@ -406,7 +406,7 @@ function populateUpgraderGUI() {
   betSelect.innerHTML = "";
   targetSelect.innerHTML = "";
 
-  // Bet items = your inventory
+  // bets items from your inventory
   inventory.forEach((item, index) => {
     const option = document.createElement("option");
     option.value = index;
@@ -414,7 +414,7 @@ function populateUpgraderGUI() {
     betSelect.appendChild(option);
   });
 
-  // Wager items = all site items
+  // wager items from all site items
   siteItems.forEach((item, index) => {
     const option = document.createElement("option");
     option.value = index;
@@ -425,7 +425,7 @@ function populateUpgraderGUI() {
   updateUpgradePercent();
 }
 
-// Calculate percent chance based on bet vs target(s)
+// calculate percent chance
 function updateUpgradePercent() {
   const betIndex = document.getElementById("bet-item-select").value;
   const targetOptions = Array.from(document.getElementById("target-items-select").selectedOptions);
@@ -459,11 +459,11 @@ function drawHexagonPercent(percent) {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Grey hex background
+  // grey hex background
   ctx.fillStyle = "#333";
   drawHex(ctx, centerX, centerY, size, true);
 
-  // Lime glow outline scaled by percent
+  // lime glow outline scaled by percent
   ctx.strokeStyle = "#32ff00";
   ctx.lineWidth = 5;
   ctx.shadowColor = "#32ff00";
@@ -535,7 +535,5 @@ function spinUpgrade() {
 
 // ===================== BALL ANIMATION =====================
 function animateBallAroundHexagon(ballPos, callback) {
-  // TODO: animate small ball moving along hex outline
-  // Currently placeholder for timing
   setTimeout(callback, 2500);
 }
