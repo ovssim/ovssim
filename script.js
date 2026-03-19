@@ -278,9 +278,6 @@ function spinToItem(winningItem) {
     const div = document.createElement("div");
     div.className = `spinner-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `<img src="${item.image}">`;
-
-    // Initially, all items are greyed out except winnerIndex
-    if (i !== winnerIndex) div.classList.add("inactive");
     strip.appendChild(div);
   }
 
@@ -304,42 +301,40 @@ function spinToItem(winningItem) {
     + jitter
   );
 
-  // Animate the spinner
+  // Animate the strip
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
   strip.offsetHeight;
-
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
-  // Animate the dynamic grey tint
-  const interval = setInterval(() => {
+  // Smooth grey gradient effect
+  const updateTint = () => {
     const children = Array.from(strip.children);
-    const center = Math.floor(containerWidth / 2 / itemWidth); // rough center index
-    children.forEach((child, i) => {
-      child.classList.add("inactive");
-    });
+    const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
 
-    // Find the element closest to center
-    let closestIndex = 0;
-    let minDist = Infinity;
-    children.forEach((child, i) => {
+    children.forEach((child) => {
       const rect = child.getBoundingClientRect();
-      const dist = Math.abs(rect.left + rect.width / 2 - (strip.parentElement.getBoundingClientRect().left + containerWidth / 2));
-      if (dist < minDist) {
-        minDist = dist;
-        closestIndex = i;
-      }
-    });
+      const dist = Math.abs(rect.left + rect.width / 2 - centerX);
 
-    children[closestIndex].classList.remove("inactive");
-  }, 50);
+      // Max distance we consider for fading
+      const maxDist = containerWidth / 2;
+      const factor = Math.max(0, 1 - dist / maxDist); // closer to center = brighter
+      child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
+    });
+  };
+
+  const interval = setInterval(updateTint, 30); // smooth updates
 
   setTimeout(() => {
     clearInterval(interval);
+    // Make winning item fully bright
+    const children = Array.from(strip.children);
+    children.forEach((child) => child.style.filter = "grayscale(0%) brightness(1)");
     showWinner(winningItem);
   }, 3200);
 }
+
 // ===================== ADMIN GIVE =====================
 function adminGiveItem() {
   const panel = document.getElementById("admin-give-panel");
