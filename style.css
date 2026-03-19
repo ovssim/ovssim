@@ -474,3 +474,21 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   font-family: monospace;
   pointer-events: none;
 }
+
+#hexagon-spinner-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
+}
+
+#hexagon-canvas {
+  background-color: #444; /* grey background */
+  border-radius: 12px;
+}
+
+.hexagon-glow {
+  stroke: lime;
+  stroke-width: 5;
+  filter: drop-shadow(0 0 8px lime);
+}
