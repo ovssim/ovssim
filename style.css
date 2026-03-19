@@ -419,3 +419,49 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   resize: none;
 }
 
+/* ================= HEXAGON ITEM OUTLINES ================= */
+.inv-item, .spinner-item, .top-drop {
+  position: relative;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+
+.hexagon-outline {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(
+    25% 5%, 75% 5%, 
+    100% 50%, 75% 95%, 
+    25% 95%, 0% 50%
+  );
+  border: 3px solid limegreen; 
+  box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.inv-item:hover .hexagon-outline,
+.spinner-item:hover .hexagon-outline,
+.top-drop:hover .hexagon-outline {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px currentColor, 0 0 35px currentColor, 0 0 50px currentColor;
+}
+
+/* ================= RARITY COLORS ================= */
+.common .hexagon-outline     { border-color: #777; color: #777; }
+.rare .hexagon-outline       { border-color: #4aa3ff; color: #4aa3ff; }
+.strange .hexagon-outline    { border-color: orange; color: orange; }
+.unusual .hexagon-outline    { border-color: purple; color: purple; }
+.legendary .hexagon-outline  { border-color: gold; color: gold; }
+.mythical .hexagon-outline   { border-color: violet; color: violet; }
+.genuine .hexagon-outline    { border-color: #4D7455; color: #4D7455; }
+.vintage .hexagon-outline    { border-color: #476291; color: #476291; }
+.collector .hexagon-outline  { border-color: #AA0000; color: #AA0000; }
+.haunted .hexagon-outline    { border-color: #38F3AB; color: #38F3AB; }
