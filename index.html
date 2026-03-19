@@ -79,39 +79,38 @@
 <h2 class="top-title">• Latest TOP Drops</h2>
 <div id="top-drops"></div>
 
-<div id="upgrader-panel">
-  <h2>Item Upgrader</h2>
+<div id="upgrader-panel" class="panel">
+  <h2>Upgrader</h2>
 
-  <!-- Selected bet item -->
-  <div id="bet-item-container">
-    <h3>Choose item</h3>
+  <!-- wager Item -->
+  <div class="upgrader-section">
+    <h3>Bet Item (from your inventory)</h3>
     <select id="bet-item-select"></select>
   </div>
 
-  <!-- Target items to try to get -->
-  <div id="target-items-container">
-    <h3>Select Items To Upgrade to</h3>
-    <select id="target-items-select" multiple></select>
+  <!-- bet Items -->
+  <div class="upgrader-section">
+    <h3>Target Items (choose one or more)</h3>
+    <select id="target-items-select" multiple size="5"></select>
   </div>
 
-  <!-- Percent chance display -->
-  <div id="upgrade-percent-display">
-    <p>Chance to win: <span id="percent-text">0%</span></p>
+  <!-- High / Low -->
+  <div class="upgrader-section">
+    <h3>Choose High or Low</h3>
+    <button id="high-btn" class="highlow-btn active">High</button>
+    <button id="low-btn" class="highlow-btn">Low</button>
   </div>
 
-  <!-- High / Low choice -->
-  <div id="high-low-container">
-    <button id="high-btn">High</button>
-    <button id="low-btn">Low</button>
-  </div>
-
-  <!-- Spinner / Hexagon -->
-  <div id="hexagon-spinner-container">
+  <!--  Percent -->
+  <div class="upgrader-section hex-section">
     <canvas id="hexagon-canvas" width="300" height="300"></canvas>
+    <div id="percent-text" class="percent-text">0%</div>
   </div>
 
-  <!-- Upgrade button -->
-  <button id="start-upgrade-btn">Upgrade</button>
+  <!-- Start Button -->
+  <div class="upgrader-section">
+    <button id="start-upgrade-btn" class="theme-btn">Start Upgrade</button>
+  </div>
 </div>
   
 <!-- Admin Panel -->
