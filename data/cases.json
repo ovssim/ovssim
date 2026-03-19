@@ -69,6 +69,11 @@
         { "name": "Strange Enforcer", "rarity": "strange", "price": 0.28, "weight": 12000, "image": "images/items/enforcer.png" },
         { "name": "Devilish Diablo Shogun's Shoulder Guard", "rarity": "mythical", "price": 321.24, "weight": 10, "image": "images/items/ddssg.png" },
         { "name": "Roaring Rockets Dark Falkirk Helm", "rarity": "mythical", "price": 78.41, "weight": 58, "image": "images/items/rrdfh.png" },
+        { "name": "Strange Professional Killstreak Austrlium Knife", "rarity": "strange", "price": 78.41, "weight": 58, "image": "images/items/aussieknife.png" },
+        { "name": "Professional Killstreak Black Rose", "rarity": "legendary", "price": 999.99, "weight": 58, "image": "images/items/blackrose.png" },
+        { "name": "Ap-Sap", "rarity": "legendary", "price": 5.41, "weight": 588, "image": "images/items/apsap.png" },
+        { "name": "Dead Head", "rarity": "legendary", "price": 30.13, "weight": 900, "image": "images/items/deadhead.png" },
+        { "name": "Genuine Noh Mercy", "rarity": "genuine", "price": 5.73, "weight": 4000, "image": "images/items/nohmercy.png" },
         { "name": "Claidheamh Mòr", "rarity": "legendary", "price": 0.01, "weight": 8000, "image": "images/items/claid.png" }
       ]
     },
