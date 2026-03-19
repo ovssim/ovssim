@@ -419,76 +419,100 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   resize: none;
 }
 
+/* Upgrader Panel */
 #upgrader-panel {
-  border: 2px solid #555;
-  padding: 15px;
-  max-width: 500px;
+  background-color: #1e1e1e;
+  border: 2px solid #444;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
   margin: 20px auto;
-  background-color: #222;
-  color: white;
-  font-family: sans-serif;
+  color: #eee;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-#wager-items-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+.upgrader-section {
+  margin-bottom: 15px;
 }
 
-#wager-items-container .wager-item {
-  width: 50px;
-  height: 50px;
-  border: 2px solid #555;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.upgrader-section h3 {
+  margin-bottom: 5px;
+  font-size: 16px;
 }
 
-#wager-items-container .wager-item.selected {
-  border-color: #00FF00;
-  box-shadow: 0 0 8px #00FF00;
+#bet-item-select,
+#target-items-select {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background-color: #2b2b2b;
+  border: 1px solid #555;
+  color: #eee;
+  font-size: 14px;
 }
 
-#upgrade-chance-container {
-  position: relative;
-  width: 120px;
+#target-items-select {
   height: 120px;
-  margin: 20px auto;
+}
+
+.highlow-btn {
+  padding: 6px 15px;
+  margin-right: 10px;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: #eee;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.highlow-btn.active {
+  background-color: #32ff00;
+  color: #000;
+  box-shadow: 0 0 10px #32ff00;
+}
+
+.highlow-btn:hover {
+  background-color: #444;
+}
+
+.hex-section {
   text-align: center;
+  position: relative;
 }
 
-#upgrade-hexagon {
-  transition: transform 0.3s ease, filter 0.3s ease, stroke-width 0.3s ease;
-  filter: drop-shadow(0 0 6px #00FF00);
-  transform-origin: 50% 50%;
+#hexagon-canvas {
+  display: block;
+  margin: 0 auto;
+  background-color: #222;
+  border-radius: 8px;
 }
 
-#chance-label {
+.percent-text {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-size: 22px;
   font-weight: bold;
-  color: #00FF00;
-  font-family: monospace;
-  pointer-events: none;
+  color: #32ff00;
+  text-shadow: 0 0 6px #32ff00;
 }
 
-#hexagon-spinner-container {
-  position: relative;
-  width: 300px;
-  height: 300px;
-  margin: 20px auto;
+.theme-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #32ff00;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
 }
 
-#hexagon-canvas {
-  background-color: #444; /* grey background */
-  border-radius: 12px;
-}
-
-.hexagon-glow {
-  stroke: lime;
-  stroke-width: 5;
-  filter: drop-shadow(0 0 8px lime);
+.theme-btn:hover {
+  background-color: #28cc00;
+  box-shadow: 0 0 12px #32ff00;
 }
