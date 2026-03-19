@@ -53,6 +53,7 @@ function renderInventory() {
     const div = document.createElement("div");
     div.className = `inv-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `
+      <div class="hexagon-outline"></div>
       <img src="${item.image}">
       <p>${item.name}</p>
       <small>${item.price.toFixed(2)} coins</small>
@@ -105,6 +106,7 @@ function toggleCaseItems() {
     const div = document.createElement("div");
     div.className = `inv-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `
+      <div class="hexagon-outline"></div>
       <img src="${item.image}">
       <p>${item.name}</p>
       <small>${item.price.toFixed(2)} coins</small>
@@ -126,6 +128,7 @@ function renderTopDrops() {
       const div = document.createElement("div");
       div.className = `top-drop ${item.rarity.toLowerCase()}`;
       div.innerHTML = `
+        <div class="hexagon-outline"></div>
         <img src="${item.image}">
         <p>${item.name}</p>
         <strong>${item.price.toFixed(2)} coins</strong>
@@ -212,15 +215,15 @@ function loadCases() {
         options.appendChild(div);
       });
 
-      // Initial selection
+      //  selection
       selectCase(cases[0].id);
 
-      // Toggle dropdown
+      // Toggle 
       display.onclick = () => {
         options.style.display = options.style.display === "block" ? "none" : "block";
       };
 
-      // Close dropdown if clicked outside
+      // close dropdown if clicked outside
       document.addEventListener("click", (e) => {
         if (!display.contains(e.target) && !options.contains(e.target)) {
           options.style.display = "none";
@@ -237,7 +240,7 @@ function selectCase(id) {
   document.getElementById("case-name").textContent = currentCase.name;
   document.getElementById("open-btn").textContent = `${currentCase.price.toFixed(2)} Coins`;
 
-  // Update dropdown display
+  //  dropdown display
   const display = document.getElementById("case-select-display");
   display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
@@ -277,34 +280,34 @@ function spinToItem(winningItem) {
 
     const div = document.createElement("div");
     div.className = `spinner-item ${item.rarity.toLowerCase()}`;
-    div.innerHTML = `<img src="${item.image}">`;
+    div.innerHTML = `
+      <div class="hexagon-outline"></div>
+      <img src="${item.image}">
+    `;
     strip.appendChild(div);
   }
 
   if (!strip.children.length) return;
-
   strip.offsetHeight;
 
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
-
   const randomSpot = (Math.random() + Math.random()) / 2;
   const edgePadding = itemWidth * 0.1;
   const randomOffsetInsideItem = (randomSpot - 0.5) * (itemWidth - edgePadding);
   const jitter = (Math.random() - 0.5) * 3;
 
   const offset = -(
-    winnerIndex * itemWidth 
-    - containerWidth / 2 
-    + itemWidth / 2 
-    + randomOffsetInsideItem 
+    winnerIndex * itemWidth
+    - containerWidth / 2
+    + itemWidth / 2
+    + randomOffsetInsideItem
     + jitter
   );
 
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
-  strip.offsetHeight; // Force render again before animation
-
+  strip.offsetHeight;
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
@@ -335,7 +338,7 @@ function adminGiveItem() {
   const panel = document.getElementById("admin-give-panel");
   const itemsContainer = document.getElementById("admin-give-items");
 
-  // Prompt for password if admin mode not active
+  // ask for password if admin mode not active
   if (!adminMode) {
     const password = prompt("Enter Trading passkey:");
     if (password !== ADMIN_PASSWORD) {
@@ -346,11 +349,11 @@ function adminGiveItem() {
     alert("Trading Mode Enabled.");
   }
 
-  // Show panel
+  // trade panel
   panel.style.display = "block";
   itemsContainer.innerHTML = "";
 
-  // Populate items from all cases
+  // load items from all cases
   let allItems = [];
   cases.forEach(c => c.items.forEach(item => allItems.push(item)));
 
@@ -379,12 +382,9 @@ function adminGiveItem() {
     itemsContainer.appendChild(div);
   });
 
-  // Close button
+  // close button
   document.getElementById("admin-give-close").onclick = () => {
     panel.style.display = "none";
-    adminMode = false; // require password next time
+    adminMode = false; // need password next time
   };
 }
-
-
-
