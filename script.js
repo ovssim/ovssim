@@ -388,37 +388,50 @@ function adminGiveItem() {
 
 // ===================== UPGRADER SYSTEM =====================
 
-// state for upgrader
-let highSelected = true; // default to High
+// Global state
+let highSelected = true; // default High
+let siteItems = []; // all items available on the site
 
+// Load site items from all cases
+function loadSiteItems() {
+  siteItems = [];
+  cases.forEach(c => c.items.forEach(item => siteItems.push(item)));
+}
 
-function populateUpgraderInventory() {
+// Populate upgrader GUI selects
+function populateUpgraderGUI() {
   const betSelect = document.getElementById("bet-item-select");
   const targetSelect = document.getElementById("target-items-select");
 
-  // clear existing bets
   betSelect.innerHTML = "";
   targetSelect.innerHTML = "";
 
+  // Bet items = your inventory
   inventory.forEach((item, index) => {
     const option = document.createElement("option");
     option.value = index;
     option.textContent = `${item.name} (${item.price.toFixed(2)} coins)`;
     betSelect.appendChild(option);
+  });
 
-    const targetOption = option.cloneNode(true);
-    targetSelect.appendChild(targetOption);
+  // Wager items = all site items
+  siteItems.forEach((item, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = `${item.name} (${item.price.toFixed(2)} coins)`;
+    targetSelect.appendChild(option);
   });
 
   updateUpgradePercent();
 }
 
-// calculate upgrade percent based on bet and target items
+// Calculate percent chance based on bet vs target(s)
 function updateUpgradePercent() {
   const betIndex = document.getElementById("bet-item-select").value;
   const targetOptions = Array.from(document.getElementById("target-items-select").selectedOptions);
+
   const betItem = inventory[betIndex];
-  const targetItems = targetOptions.map(o => inventory[o.value]);
+  const targetItems = targetOptions.map(o => siteItems[o.value]);
 
   if (!betItem || targetItems.length === 0) {
     document.getElementById("percent-text").textContent = "0%";
@@ -428,10 +441,9 @@ function updateUpgradePercent() {
 
   const totalTargetValue = targetItems.reduce((sum, i) => sum + i.price, 0);
   let percent = (betItem.price / totalTargetValue) * 100;
+  percent = Math.max(0.01, Math.min(85, percent));
 
-  percent = Math.max(0.01, Math.min(85, percent)); // clamp 0.01 - 85%
   document.getElementById("percent-text").textContent = percent.toFixed(2) + "%";
-
   drawHexagonPercent(percent);
 }
 
@@ -440,19 +452,21 @@ const canvas = document.getElementById("hexagon-canvas");
 const ctx = canvas.getContext("2d");
 
 function drawHexagonPercent(percent) {
-  const size = 120; 
-  const glowSize = size * (percent / 100); 
+  const size = 120;
+  const glowSize = size * (percent / 100);
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#555";
+  // Grey hex background
+  ctx.fillStyle = "#333";
   drawHex(ctx, centerX, centerY, size, true);
 
-  ctx.strokeStyle = "lime";
+  // Lime glow outline scaled by percent
+  ctx.strokeStyle = "#32ff00";
   ctx.lineWidth = 5;
-  ctx.shadowColor = "lime";
+  ctx.shadowColor = "#32ff00";
   ctx.shadowBlur = 15;
   drawHex(ctx, centerX, centerY, glowSize, false);
 }
@@ -471,7 +485,7 @@ function drawHex(ctx, x, y, radius, fill = false) {
   else ctx.stroke();
 }
 
-// ===================== HIGH / LOW SELECTION =====================
+// ===================== HIGH / LOW =====================
 document.getElementById("high-btn").onclick = () => {
   highSelected = true;
   document.getElementById("high-btn").classList.add("active");
@@ -490,40 +504,38 @@ document.getElementById("start-upgrade-btn").onclick = spinUpgrade;
 function spinUpgrade() {
   const betIndex = document.getElementById("bet-item-select").value;
   const targetOptions = Array.from(document.getElementById("target-items-select").selectedOptions);
-  const betItem = inventory[betIndex];
-  const targetItems = targetOptions.map(o => inventory[o.value]);
 
-  if (!betItem || targetItems.length === 0) return alert("Select a bet item and at least one target item!");
+  const betItem = inventory[betIndex];
+  const targetItems = targetOptions.map(o => siteItems[o.value]);
+
+  if (!betItem || targetItems.length === 0) return alert("Select bet item and target item(s)!");
 
   const totalTargetValue = targetItems.reduce((sum, i) => sum + i.price, 0);
   let percent = (betItem.price / totalTargetValue) * 100;
   percent = Math.max(0.01, Math.min(85, percent));
 
-  const ballPos = Math.random() * 100; // 0 - 100
+  const ballPos = Math.random() * 100;
 
-  let win = false;
-  if (highSelected) win = ballPos >= (100 - percent);
-  else win = ballPos <= percent;
+  let win = highSelected ? ballPos >= (100 - percent) : ballPos <= percent;
 
   animateBallAroundHexagon(ballPos, () => {
     if (win) {
-      // win
-      inventory.splice(betIndex, 1); // delete bet item
-      targetItems.forEach(item => inventory.push({ ...item })); // choose item for betting
-      alert("Upgrade success! You got your target items.");
+      inventory.splice(betIndex, 1); // remove bet
+      targetItems.forEach(item => inventory.push({ ...item }));
+      alert("Upgrade success! You got the target item(s).");
     } else {
-      // lose outcome
       inventory.splice(betIndex, 1);
       alert("Upgrade failed. Bet item lost.");
     }
-
     saveInventory();
     renderInventory();
-    populateUpgraderInventory();
+    populateUpgraderGUI();
   });
 }
 
-// ===================== BALL ANIMATION PLACEHOLDER =====================
+// ===================== BALL ANIMATION =====================
 function animateBallAroundHexagon(ballPos, callback) {
+  // TODO: animate small ball moving along hex outline
+  // Currently placeholder for timing
   setTimeout(callback, 2500);
 }
