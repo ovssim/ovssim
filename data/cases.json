@@ -53,9 +53,9 @@
     },
         {
       "id": "duel",
-      "name": "Duelists (unfinished) (Big)",
+      "name": "Duelists (Big)",
       "price": 7.75,
-      "image": "images/cases/duelist.png",
+      "image": "images/cases/duelists.png",
       "items": [
         { "name": "Dueling Mini-Game", "rarity": "legendary", "price": 0.16, "weight": 8000, "image": "images/items/duelminigame.png" },
         { "name": "Ambassador", "rarity": "legendary", "price": 0.01, "weight": 12000, "image": "images/items/amby.png" },
@@ -663,7 +663,7 @@
     },
        {
       "id": "hauntsme2",
-      "name": "Continuous Contrition",
+      "name": "Continuous Contrition (Big)",
       "price": 1278.83,
       "image": "images/cases/regrets.png",
       "items": [
@@ -724,7 +724,7 @@
 
         {
       "id": "hauntsme1",
-      "name": "Haunted Forever ",
+      "name": "Haunted Forever (Medium)",
       "price": 1789.43,
       "image": "images/cases/haunted.png",
       "items": [
