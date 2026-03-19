@@ -386,5 +386,12 @@ function adminGiveItem() {
   };
 }
 
+// load all items as grey tinted initially
+Array.from(strip.children).forEach(child => child.classList.add("inactive"));
 
+// remove grey tint from win item
+setTimeout(() => {
+  Array.from(strip.children).forEach(child => child.classList.add("inactive"));
+  strip.children[winnerIndex].classList.remove("inactive");
+}, 3200);
 
