@@ -386,3 +386,144 @@ function adminGiveItem() {
   };
 }
 
+// ===================== UPGRADER SYSTEM =====================
+
+// state for upgrader
+let highSelected = true; // default to High
+
+
+function populateUpgraderInventory() {
+  const betSelect = document.getElementById("bet-item-select");
+  const targetSelect = document.getElementById("target-items-select");
+
+  // clear existing bets
+  betSelect.innerHTML = "";
+  targetSelect.innerHTML = "";
+
+  inventory.forEach((item, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = `${item.name} (${item.price.toFixed(2)} coins)`;
+    betSelect.appendChild(option);
+
+    const targetOption = option.cloneNode(true);
+    targetSelect.appendChild(targetOption);
+  });
+
+  updateUpgradePercent();
+}
+
+// calculate upgrade percent based on bet and target items
+function updateUpgradePercent() {
+  const betIndex = document.getElementById("bet-item-select").value;
+  const targetOptions = Array.from(document.getElementById("target-items-select").selectedOptions);
+  const betItem = inventory[betIndex];
+  const targetItems = targetOptions.map(o => inventory[o.value]);
+
+  if (!betItem || targetItems.length === 0) {
+    document.getElementById("percent-text").textContent = "0%";
+    drawHexagonPercent(0);
+    return;
+  }
+
+  const totalTargetValue = targetItems.reduce((sum, i) => sum + i.price, 0);
+  let percent = (betItem.price / totalTargetValue) * 100;
+
+  percent = Math.max(0.01, Math.min(85, percent)); // clamp 0.01 - 85%
+  document.getElementById("percent-text").textContent = percent.toFixed(2) + "%";
+
+  drawHexagonPercent(percent);
+}
+
+// ===================== HEXAGON DRAWING =====================
+const canvas = document.getElementById("hexagon-canvas");
+const ctx = canvas.getContext("2d");
+
+function drawHexagonPercent(percent) {
+  const size = 120; 
+  const glowSize = size * (percent / 100); 
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#555";
+  drawHex(ctx, centerX, centerY, size, true);
+
+  ctx.strokeStyle = "lime";
+  ctx.lineWidth = 5;
+  ctx.shadowColor = "lime";
+  ctx.shadowBlur = 15;
+  drawHex(ctx, centerX, centerY, glowSize, false);
+}
+
+function drawHex(ctx, x, y, radius, fill = false) {
+  const sides = 6;
+  ctx.beginPath();
+  for (let i = 0; i <= sides; i++) {
+    const angle = (Math.PI / 3) * i - Math.PI / 6;
+    const px = x + radius * Math.cos(angle);
+    const py = y + radius * Math.sin(angle);
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  if (fill) ctx.fill();
+  else ctx.stroke();
+}
+
+// ===================== HIGH / LOW SELECTION =====================
+document.getElementById("high-btn").onclick = () => {
+  highSelected = true;
+  document.getElementById("high-btn").classList.add("active");
+  document.getElementById("low-btn").classList.remove("active");
+};
+
+document.getElementById("low-btn").onclick = () => {
+  highSelected = false;
+  document.getElementById("low-btn").classList.add("active");
+  document.getElementById("high-btn").classList.remove("active");
+};
+
+// ===================== UPGRADE SPIN LOGIC =====================
+document.getElementById("start-upgrade-btn").onclick = spinUpgrade;
+
+function spinUpgrade() {
+  const betIndex = document.getElementById("bet-item-select").value;
+  const targetOptions = Array.from(document.getElementById("target-items-select").selectedOptions);
+  const betItem = inventory[betIndex];
+  const targetItems = targetOptions.map(o => inventory[o.value]);
+
+  if (!betItem || targetItems.length === 0) return alert("Select a bet item and at least one target item!");
+
+  const totalTargetValue = targetItems.reduce((sum, i) => sum + i.price, 0);
+  let percent = (betItem.price / totalTargetValue) * 100;
+  percent = Math.max(0.01, Math.min(85, percent));
+
+  const ballPos = Math.random() * 100; // 0 - 100
+
+  let win = false;
+  if (highSelected) win = ballPos >= (100 - percent);
+  else win = ballPos <= percent;
+
+  animateBallAroundHexagon(ballPos, () => {
+    if (win) {
+      // win
+      inventory.splice(betIndex, 1); // delete bet item
+      targetItems.forEach(item => inventory.push({ ...item })); // choose item for betting
+      alert("Upgrade success! You got your target items.");
+    } else {
+      // lose outcome
+      inventory.splice(betIndex, 1);
+      alert("Upgrade failed. Bet item lost.");
+    }
+
+    saveInventory();
+    renderInventory();
+    populateUpgraderInventory();
+  });
+}
+
+// ===================== BALL ANIMATION PLACEHOLDER =====================
+function animateBallAroundHexagon(ballPos, callback) {
+  setTimeout(callback, 2500);
+}
