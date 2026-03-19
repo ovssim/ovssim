@@ -79,6 +79,35 @@
 <h2 class="top-title">• Latest TOP Drops</h2>
 <div id="top-drops"></div>
 
+<div id="upgrader-panel">
+  <h2>Item Upgrader</h2>
+  
+  <div id="upgrader-selection">
+    <div>
+      <h3>Base Item</h3>
+      <select id="base-item-select"></select>
+    </div>
+    <div>
+      <h3>Wager Items</h3>
+      <div id="wager-items-container"></div>
+    </div>
+    <div>
+      <h3>Target Item</h3>
+      <select id="target-item-select"></select>
+    </div>
+  </div>
+
+  <div id="upgrade-chance-container">
+    <svg width="120" height="120" viewBox="0 0 100 100">
+      <polygon id="upgrade-hexagon" points="50,1 95,25 95,75 50,99 5,75 5,25"
+               fill="#555" stroke="#00FF00" stroke-width="3" />
+    </svg>
+    <div id="chance-label">0.01%</div>
+  </div>
+
+  <button id="upgrade-btn">Upgrade!</button>
+</div>
+  
 <!-- Admin Panel -->
 <div id="admin-give-panel" style="display:none;">
   <div id="admin-give-header">
