@@ -419,3 +419,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   resize: none;
 }
 
+.spinner-item.inactive img {
+  filter: grayscale(100%) brightness(60%);
+  opacity: 0.5;
+}
