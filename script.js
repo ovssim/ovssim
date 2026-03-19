@@ -278,12 +278,15 @@ function spinToItem(winningItem) {
     const div = document.createElement("div");
     div.className = `spinner-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `<img src="${item.image}">`;
+
+    // Initially, all items are greyed out except winnerIndex
+    if (i !== winnerIndex) div.classList.add("inactive");
     strip.appendChild(div);
   }
 
   if (!strip.children.length) return;
 
-  strip.offsetHeight;
+  strip.offsetHeight; // force reflow
 
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
@@ -294,42 +297,49 @@ function spinToItem(winningItem) {
   const jitter = (Math.random() - 0.5) * 3;
 
   const offset = -(
-    winnerIndex * itemWidth 
-    - containerWidth / 2 
-    + itemWidth / 2 
-    + randomOffsetInsideItem 
+    winnerIndex * itemWidth
+    - containerWidth / 2
+    + itemWidth / 2
+    + randomOffsetInsideItem
     + jitter
   );
 
+  // Animate the spinner
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
-  strip.offsetHeight; // Force render again before animation
+  strip.offsetHeight;
 
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
+  // Animate the dynamic grey tint
+  const interval = setInterval(() => {
+    const children = Array.from(strip.children);
+    const center = Math.floor(containerWidth / 2 / itemWidth); // rough center index
+    children.forEach((child, i) => {
+      child.classList.add("inactive");
+    });
+
+    // Find the element closest to center
+    let closestIndex = 0;
+    let minDist = Infinity;
+    children.forEach((child, i) => {
+      const rect = child.getBoundingClientRect();
+      const dist = Math.abs(rect.left + rect.width / 2 - (strip.parentElement.getBoundingClientRect().left + containerWidth / 2));
+      if (dist < minDist) {
+        minDist = dist;
+        closestIndex = i;
+      }
+    });
+
+    children[closestIndex].classList.remove("inactive");
+  }, 50);
+
   setTimeout(() => {
+    clearInterval(interval);
     showWinner(winningItem);
   }, 3200);
 }
-
-function showWinner(item) {
-  inventory.push(item);
-  recentDrops.push(item);
-  if (recentDrops.length > 20) recentDrops.shift();
-
-  saveInventory();
-  renderInventory();
-  renderTopDrops();
-  populateCoinflipDropdown();
-
-  const winnerBox = document.getElementById("winner-name");
-  if (winnerBox) {
-    winnerBox.textContent = item.name;
-    winnerBox.className = item.rarity.toLowerCase();
-  }
-}
-
 // ===================== ADMIN GIVE =====================
 function adminGiveItem() {
   const panel = document.getElementById("admin-give-panel");
