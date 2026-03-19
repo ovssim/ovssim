@@ -81,31 +81,37 @@
 
 <div id="upgrader-panel">
   <h2>Item Upgrader</h2>
-  
-  <div id="upgrader-selection">
-    <div>
-      <h3>Base Item</h3>
-      <select id="base-item-select"></select>
-    </div>
-    <div>
-      <h3>Wager Items</h3>
-      <div id="wager-items-container"></div>
-    </div>
-    <div>
-      <h3>Target Item</h3>
-      <select id="target-item-select"></select>
-    </div>
+
+  <!-- Selected bet item -->
+  <div id="bet-item-container">
+    <h3>Choose item</h3>
+    <select id="bet-item-select"></select>
   </div>
 
-  <div id="upgrade-chance-container">
-    <svg width="120" height="120" viewBox="0 0 100 100">
-      <polygon id="upgrade-hexagon" points="50,1 95,25 95,75 50,99 5,75 5,25"
-               fill="#555" stroke="#00FF00" stroke-width="3" />
-    </svg>
-    <div id="chance-label">0.01%</div>
+  <!-- Target items to try to get -->
+  <div id="target-items-container">
+    <h3>Select Items To Upgrade to</h3>
+    <select id="target-items-select" multiple></select>
   </div>
 
-  <button id="upgrade-btn">Upgrade!</button>
+  <!-- Percent chance display -->
+  <div id="upgrade-percent-display">
+    <p>Chance to win: <span id="percent-text">0%</span></p>
+  </div>
+
+  <!-- High / Low choice -->
+  <div id="high-low-container">
+    <button id="high-btn">High</button>
+    <button id="low-btn">Low</button>
+  </div>
+
+  <!-- Spinner / Hexagon -->
+  <div id="hexagon-spinner-container">
+    <canvas id="hexagon-canvas" width="300" height="300"></canvas>
+  </div>
+
+  <!-- Upgrade button -->
+  <button id="start-upgrade-btn">Upgrade</button>
 </div>
   
 <!-- Admin Panel -->
