@@ -424,26 +424,3 @@ function adminGiveItem() {
   };
 }
 
-// ===================== MULTI-OPEN CASES =====================
-function multiOpenCases(count) {
-  if (isSpinning) return; // prevent opening during spin
-  if (!currentCase) return;
-  if (coins < currentCase.price * count) return alert("Not enough coins.");
-
-  coins -= currentCase.price * count;
-  updateCoins();
-
-  let opened = 0;
-
-  function openNext() {
-    if (opened >= count) return; // done
-    const winningItem = getRandomItem(currentCase.items);
-    spinToItemMulti(winningItem, () => {
-      opened++;
-      openNext(); // recursively open next
-    });
-  }
-
-  openNext();
-}
-
