@@ -6,6 +6,7 @@ let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
 let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
+let isSpinning = false; // Prevent multiple opens
 
 // Admin password system
 let adminMode = false;
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00 ; updateCoins(); };
   document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
@@ -212,15 +213,12 @@ function loadCases() {
         options.appendChild(div);
       });
 
-      // Initial selection
       selectCase(cases[0].id);
 
-      // Toggle dropdown
       display.onclick = () => {
         options.style.display = options.style.display === "block" ? "none" : "block";
       };
 
-      // Close dropdown if clicked outside
       document.addEventListener("click", (e) => {
         if (!display.contains(e.target) && !options.contains(e.target)) {
           options.style.display = "none";
@@ -242,6 +240,7 @@ function selectCase(id) {
 }
 
 function openCase() {
+  if (isSpinning) return; // Prevent multiple opens
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins.");
 
@@ -266,7 +265,7 @@ function getRandomItem(items) {
 function spinToItem(winningItem) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
-
+  isSpinning = true;
   const slots = 50;
   const winnerIndex = 38;
 
@@ -277,10 +276,11 @@ function spinToItem(winningItem) {
     const div = document.createElement("div");
     div.className = `spinner-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `<img src="${item.image}">`;
+    div.classList.add("inactive"); // grey out initially
     strip.appendChild(div);
   }
 
-  strip.offsetHeight; // force reflow
+  strip.offsetHeight;
 
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
@@ -300,14 +300,16 @@ function spinToItem(winningItem) {
 
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
-  strip.offsetHeight; 
+  strip.offsetHeight;
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
   const interval = setInterval(() => {
     const children = Array.from(strip.children);
-    const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
-    children.forEach((child) => {
+    const containerRect = strip.parentElement.getBoundingClientRect();
+    const centerX = containerRect.left + containerWidth / 2;
+
+    children.forEach(child => {
       const rect = child.getBoundingClientRect();
       const dist = Math.abs(rect.left + rect.width / 2 - centerX);
       const factor = Math.max(0, 1 - dist / (containerWidth / 2));
@@ -317,13 +319,12 @@ function spinToItem(winningItem) {
 
   setTimeout(() => {
     clearInterval(interval);
-    const children = Array.from(strip.children);
-    children.forEach((child) => child.style.filter = "grayscale(0%) brightness(1)");
     showWinner(winningItem);
+    isSpinning = false;
   }, 3200);
 }
 
-// ===================== WINNER =====================
+// ===================== SHOW WINNER =====================
 function showWinner(item) {
   inventory.push(item);
   recentDrops.push(item);
@@ -348,7 +349,10 @@ function adminGiveItem() {
 
   if (!adminMode) {
     const password = prompt("Enter Trading passkey:");
-    if (password !== ADMIN_PASSWORD) return alert("Incorrect Trading Passkey.");
+    if (password !== ADMIN_PASSWORD) {
+      alert("Incorrect Trading Passkey.");
+      return;
+    }
     adminMode = true;
     alert("Trading Mode Enabled.");
   }
@@ -372,6 +376,7 @@ function adminGiveItem() {
     `;
     div.querySelector("button").onclick = () => {
       if (coins < item.price) return alert("Not enough coins.");
+
       coins -= item.price;
       updateCoins();
       inventory.push({ ...item });
