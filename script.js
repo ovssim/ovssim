@@ -261,7 +261,7 @@ function getRandomItem(items) {
   return items[0];
 }
 
-// ===================== SPINNER WITH WINNER GLOW =====================
+// ===================== SPINNER =====================
 function spinToItem(winningItem) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
@@ -314,18 +314,11 @@ function spinToItem(winningItem) {
       const dist = Math.abs(rect.left + rect.width / 2 - centerX);
       const factor = Math.max(0, 1 - dist / (containerWidth / 2));
       child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
-      child.style.transform = `scale(${0.8 + 0.2 * factor})`; // subtle scale
-      child.style.transition = "filter 0.1s, transform 0.1s";
     });
   }, 30);
 
   setTimeout(() => {
     clearInterval(interval);
-    // Ensure winner is fully highlighted
-    const winnerDiv = strip.children[winnerIndex];
-    winnerDiv.style.filter = "grayscale(0%) brightness(1.2)";
-    winnerDiv.style.transform = "scale(1.15)";
-    winnerDiv.style.transition = "filter 0.3s, transform 0.3s";
     showWinner(winningItem);
     isSpinning = false;
   }, 3200);
