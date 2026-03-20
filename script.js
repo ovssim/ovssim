@@ -331,6 +331,7 @@ function spinToItem(winningItem) {
     children.forEach((child, i) => {
       if (i === winnerIndex) {
         child.style.filter = "grayscale(0%) brightness(1)";
+        animateWinner(child); // swell up/down
       } else {
         child.style.filter = "grayscale(100%) brightness(0.6)";
       }
@@ -341,6 +342,25 @@ function spinToItem(winningItem) {
   }, 3200);
 }
 
+// ===================== WIN ITEM ANIMATION =====================
+function animateWinner(element) {
+  let scale = 1;
+  let growing = true;
+
+  function frame() {
+    if (growing) {
+      scale += 0.01;
+      if (scale >= 1.2) growing = false;
+    } else {
+      scale -= 0.01;
+      if (scale <= 1) growing = true;
+    }
+    element.style.transform = `scale(${scale})`;
+    requestAnimationFrame(frame);
+  }
+
+  frame();
+}
 // ===================== WINNER =====================
 function showWinner(item) {
   inventory.push(item);
