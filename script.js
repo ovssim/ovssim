@@ -426,3 +426,104 @@ function adminGiveItem() {
     adminMode = false;
   };
 }
+
+// ===================== MULTI-OPEN CASES =====================
+function multiOpenCases(count) {
+  if (isSpinning) return; // prevent opening during spin
+  if (!currentCase) return;
+  if (coins < currentCase.price * count) return alert("Not enough coins.");
+
+  coins -= currentCase.price * count;
+  updateCoins();
+
+  let opened = 0;
+
+  function openNext() {
+    if (opened >= count) return; // done
+    const winningItem = getRandomItem(currentCase.items);
+    spinToItemMulti(winningItem, () => {
+      opened++;
+      openNext(); // recursively open next
+    });
+  }
+
+  openNext();
+}
+
+// ===================== SPINNER FOR MULTI-OPEN =====================
+function spinToItemMulti(winningItem, callback) {
+  isSpinning = true;
+  const strip = document.getElementById("spinner-strip");
+  strip.innerHTML = "";
+
+  const slots = 50;
+  const winnerIndex = 38;
+
+  for (let i = 0; i < slots; i++) {
+    let item = currentCase.items[Math.floor(Math.random() * currentCase.items.length)];
+    if (i === winnerIndex) item = winningItem;
+
+    const div = document.createElement("div");
+    div.className = `spinner-item ${item.rarity.toLowerCase()}`;
+    div.innerHTML = `<img src="${item.image}">`;
+    div.style.filter = "grayscale(100%)"; // initially grey
+    strip.appendChild(div);
+  }
+
+  strip.offsetHeight;
+
+  const itemWidth = strip.children[0].offsetWidth + 30;
+  const containerWidth = document.getElementById("spinner-container").offsetWidth;
+
+  const randomSpot = (Math.random() + Math.random()) / 2;
+  const edgePadding = itemWidth * 0.1;
+  const randomOffsetInsideItem = (randomSpot - 0.5) * (itemWidth - edgePadding);
+  const jitter = (Math.random() - 0.5) * 3;
+
+  const offset = -(
+    winnerIndex * itemWidth
+    - containerWidth / 2
+    + itemWidth / 2
+    + randomOffsetInsideItem
+    + jitter
+  );
+
+  // Animate spinner
+  strip.style.transition = "none";
+  strip.style.transform = "translateX(0)";
+  strip.offsetHeight;
+  strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
+  strip.style.transform = `translateX(${offset}px)`;
+
+  // Dynamic grey tint during spin
+  const interval = setInterval(() => {
+    const children = Array.from(strip.children);
+    const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
+    children.forEach((child) => {
+      const rect = child.getBoundingClientRect();
+      const dist = Math.abs(rect.left + rect.width / 2 - centerX);
+      const factor = Math.max(0, 1 - dist / (containerWidth / 2));
+      child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
+    });
+  }, 30);
+
+  setTimeout(() => {
+    clearInterval(interval);
+
+    // Keep winner highlighted, all others grey
+    const children = Array.from(strip.children);
+    children.forEach((child, i) => {
+      if (i === winnerIndex) {
+        child.style.filter = "grayscale(0%) brightness(1)";
+        animateWinner(child);
+      } else {
+        child.style.filter = "grayscale(100%) brightness(0.6)";
+      }
+    });
+
+    showWinner(winningItem);
+    isSpinning = false;
+
+    if (callback) callback(); // open next case if multi-open
+  }, 3200);
+}
