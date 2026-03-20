@@ -333,7 +333,7 @@ function spinToItem(winningItem) {
         child.style.filter = "grayscale(0%) brightness(1)";
         animateWinner(child); // swell up/down
       } else {
-        child.style.filter = "grayscale(41%) brightness(0.6)";
+        child.style.filter = "grayscale(35%) brightness(0.6)";
       }
     });
 
@@ -503,7 +503,7 @@ function spinToItemMulti(winningItem, callback) {
       const rect = child.getBoundingClientRect();
       const dist = Math.abs(rect.left + rect.width / 2 - centerX);
       const factor = Math.max(0, 1 - dist / (containerWidth / 2));
-      child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
+      child.style.filter = `grayscale(${(1 - factor) * 77}%) brightness(${0.6 + 0.4 * factor})`;
     });
   }, 30);
 
@@ -517,7 +517,7 @@ function spinToItemMulti(winningItem, callback) {
         child.style.filter = "grayscale(0%) brightness(1)";
         animateWinner(child);
       } else {
-        child.style.filter = "grayscale(100%) brightness(0.6)";
+        child.style.filter = "grayscale(35%) brightness(0.6)";
       }
     });
 
