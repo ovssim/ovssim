@@ -11,6 +11,9 @@ let currentCase = null;
 let adminMode = false;
 const ADMIN_PASSWORD = "LeyLey";
 
+// Case spin state
+let isSpinning = false;
+
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("admin-give-btn").onclick = adminGiveItem;
@@ -212,15 +215,12 @@ function loadCases() {
         options.appendChild(div);
       });
 
-      // Initial selection
       selectCase(cases[0].id);
 
-      // Toggle dropdown
       display.onclick = () => {
         options.style.display = options.style.display === "block" ? "none" : "block";
       };
 
-      // Close dropdown if clicked outside
       document.addEventListener("click", (e) => {
         if (!display.contains(e.target) && !options.contains(e.target)) {
           options.style.display = "none";
@@ -242,6 +242,7 @@ function selectCase(id) {
 }
 
 function openCase() {
+  if (isSpinning) return; // prevent opening during spin
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins.");
 
@@ -264,6 +265,8 @@ function getRandomItem(items) {
 
 // ===================== SPINNER =====================
 function spinToItem(winningItem) {
+  isSpinning = true;
+
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
@@ -275,12 +278,12 @@ function spinToItem(winningItem) {
     if (i === winnerIndex) item = winningItem;
 
     const div = document.createElement("div");
-    div.className = `spinner-item ${item.rarity.toLowerCase()}`;
+    div.className = `spinner-item ${item.rarity.toLowerCase()} inactive`; // all start greyed
     div.innerHTML = `<img src="${item.image}">`;
     strip.appendChild(div);
   }
 
-  strip.offsetHeight; // force reflow
+  strip.offsetHeight;
 
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
@@ -300,26 +303,19 @@ function spinToItem(winningItem) {
 
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
-  strip.offsetHeight; 
+  strip.offsetHeight;
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
-  const interval = setInterval(() => {
-    const children = Array.from(strip.children);
-    const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
-    children.forEach((child) => {
-      const rect = child.getBoundingClientRect();
-      const dist = Math.abs(rect.left + rect.width / 2 - centerX);
-      const factor = Math.max(0, 1 - dist / (containerWidth / 2));
-      child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
-    });
-  }, 30);
-
   setTimeout(() => {
-    clearInterval(interval);
+    // Remove grey tint only from winner
     const children = Array.from(strip.children);
-    children.forEach((child) => child.style.filter = "grayscale(0%) brightness(1)");
+    children.forEach((child, i) => {
+      if (i === winnerIndex) child.classList.remove("inactive");
+    });
+
     showWinner(winningItem);
+    isSpinning = false;
   }, 3200);
 }
 
