@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
-  document.getElementById("open-btn").onclick = openCase;
+  document.getElementById("open-btn").onclick = () => openCases(1); // single-case open
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
 
@@ -212,15 +212,12 @@ function loadCases() {
         options.appendChild(div);
       });
 
-      // Initial selection
       selectCase(cases[0].id);
 
-      // Toggle dropdown
       display.onclick = () => {
         options.style.display = options.style.display === "block" ? "none" : "block";
       };
 
-      // Close dropdown if clicked outside
       document.addEventListener("click", (e) => {
         if (!display.contains(e.target) && !options.contains(e.target)) {
           options.style.display = "none";
@@ -241,16 +238,18 @@ function selectCase(id) {
   display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
 
-function openCase() {
-  if (isSpinning) return; // prevent opening during spin
+// ===================== OPEN MULTIPLE CASES =====================
+function openCases(count) {
   if (!currentCase) return;
-  if (coins < currentCase.price) return alert("Not enough coins.");
 
-  coins -= currentCase.price;
-  updateCoins();
+  for (let i = 0; i < count; i++) {
+    if (coins < currentCase.price) break;
+    coins -= currentCase.price;
+    updateCoins();
 
-  const winningItem = getRandomItem(currentCase.items);
-  spinToItem(winningItem);
+    const winningItem = getRandomItem(currentCase.items);
+    spinToItem(winningItem);
+  }
 }
 
 function getRandomItem(items) {
@@ -265,7 +264,6 @@ function getRandomItem(items) {
 
 // ===================== SPINNER =====================
 function spinToItem(winningItem) {
-  isSpinning = true;
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
@@ -279,11 +277,11 @@ function spinToItem(winningItem) {
     const div = document.createElement("div");
     div.className = `spinner-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `<img src="${item.image}">`;
-    div.style.filter = "grayscale(100%)"; // initially grey
+    div.style.filter = "grayscale(100%)";
     strip.appendChild(div);
   }
 
-  strip.offsetHeight; // force reflow
+  strip.offsetHeight;
 
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
@@ -301,14 +299,12 @@ function spinToItem(winningItem) {
     + jitter
   );
 
-  // Animate spinner
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
   strip.offsetHeight;
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
-  // Dynamic grey tint during spin
   const interval = setInterval(() => {
     const children = Array.from(strip.children);
     const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
@@ -323,19 +319,17 @@ function spinToItem(winningItem) {
   setTimeout(() => {
     clearInterval(interval);
 
-    // Keep winner highlighted, all others grey
     const children = Array.from(strip.children);
     children.forEach((child, i) => {
       if (i === winnerIndex) {
         child.style.filter = "grayscale(0%) brightness(1)";
-        animateWinner(child); // swell up/down
+        animateWinner(child);
       } else {
         child.style.filter = "grayscale(35%) brightness(0.6)";
       }
     });
 
     showWinner(winningItem);
-    isSpinning = false;
   }, 3200);
 }
 
@@ -358,6 +352,7 @@ function animateWinner(element) {
 
   frame();
 }
+
 // ===================== WINNER =====================
 function showWinner(item) {
   inventory.push(item);
@@ -423,4 +418,3 @@ function adminGiveItem() {
     adminMode = false;
   };
 }
-
