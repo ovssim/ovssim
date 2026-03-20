@@ -333,7 +333,7 @@ function spinToItem(winningItem) {
         child.style.filter = "grayscale(0%) brightness(1)";
         animateWinner(child); // swell up/down
       } else {
-        child.style.filter = "grayscale(100%) brightness(0.6)";
+        child.style.filter = "grayscale(50%) brightness(0.6)";
       }
     });
 
