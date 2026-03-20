@@ -319,7 +319,7 @@ function spinToItem(winningItem) {
       const rect = child.getBoundingClientRect();
       const dist = Math.abs(rect.left + rect.width / 2 - centerX);
       const factor = Math.max(0, 1 - dist / (containerWidth / 2));
-      child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
+      child.style.filter = `grayscale(${(1 - factor) * 77}%) brightness(${0.6 + 0.4 * factor})`;
     });
   }, 30);
 
