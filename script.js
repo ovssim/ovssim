@@ -11,7 +11,7 @@ let currentCase = null;
 let adminMode = false;
 const ADMIN_PASSWORD = "LeyLey";
 
-// Case spin state
+// Prevent opening multiple cases at once
 let isSpinning = false;
 
 // ===================== INIT =====================
@@ -215,12 +215,15 @@ function loadCases() {
         options.appendChild(div);
       });
 
+      // Initial selection
       selectCase(cases[0].id);
 
+      // Toggle dropdown
       display.onclick = () => {
         options.style.display = options.style.display === "block" ? "none" : "block";
       };
 
+      // Close dropdown if clicked outside
       document.addEventListener("click", (e) => {
         if (!display.contains(e.target) && !options.contains(e.target)) {
           options.style.display = "none";
@@ -266,7 +269,6 @@ function getRandomItem(items) {
 // ===================== SPINNER =====================
 function spinToItem(winningItem) {
   isSpinning = true;
-
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
@@ -278,12 +280,13 @@ function spinToItem(winningItem) {
     if (i === winnerIndex) item = winningItem;
 
     const div = document.createElement("div");
-    div.className = `spinner-item ${item.rarity.toLowerCase()} inactive`; // all start greyed
+    div.className = `spinner-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `<img src="${item.image}">`;
+    div.style.filter = "grayscale(100%)"; // initially grey
     strip.appendChild(div);
   }
 
-  strip.offsetHeight;
+  strip.offsetHeight; // force reflow
 
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
@@ -301,17 +304,36 @@ function spinToItem(winningItem) {
     + jitter
   );
 
+  // Animate spinner
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
   strip.offsetHeight;
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
+  // Dynamic grey tint during spin
+  const interval = setInterval(() => {
+    const children = Array.from(strip.children);
+    const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
+    children.forEach((child) => {
+      const rect = child.getBoundingClientRect();
+      const dist = Math.abs(rect.left + rect.width / 2 - centerX);
+      const factor = Math.max(0, 1 - dist / (containerWidth / 2));
+      child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
+    });
+  }, 30);
+
   setTimeout(() => {
-    // Remove grey tint only from winner
+    clearInterval(interval);
+
+    // Keep winner highlighted, all others grey
     const children = Array.from(strip.children);
     children.forEach((child, i) => {
-      if (i === winnerIndex) child.classList.remove("inactive");
+      if (i === winnerIndex) {
+        child.style.filter = "grayscale(0%) brightness(1)";
+      } else {
+        child.style.filter = "grayscale(100%) brightness(0.6)";
+      }
     });
 
     showWinner(winningItem);
