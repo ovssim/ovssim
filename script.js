@@ -349,10 +349,10 @@ function animateWinner(element) {
 
   function frame() {
     if (growing) {
-      scale += 0.01;
+      scale += 0.005;
       if (scale >= 1.2) growing = false;
     } else {
-      scale -= 0.01;
+      scale -= 0.005;
       if (scale <= 1) growing = true;
     }
     element.style.transform = `scale(${scale})`;
