@@ -627,6 +627,22 @@
         { "name": "Strange Golden Frying Pan", "rarity": "strange", "price": 8000.00, "weight": 99, "image": "images/items/aussiefrying.png" } 
       ]
         },
+    
+    {
+      "id": "kingdogemanguy",
+      "name": "King Doge",
+      "price": 600.00,
+      "image": "images/cases/kingdoge.png",
+      "items": [
+        { "name": "Spine-Chilling Skull", "rarity": "legendary", "price": 158.32, "weight": 7000, "image": "images/items/chillskull.png" },
+        { "name": "Abduction Hardy Laurel", "rarity": "mythical", "price": 435.32, "weight": 1500, "image": "images/items/frosharl.png" },
+        { "name": "Voltiac Hat Protector Skull Island Topper", "rarity": "mythical", "price": 823.00, "weight": 1200, "image": "images/items/akit.png" },
+        { "name": "Atomic Accursed Apparition", "rarity": "mythical", "price": 732.00, "weight": 4000, "image": "images/items/vhpaa.png" },
+        { "name": "Neutron Star Parasight", "rarity": "mythical", "price": 1230.00, "weight": 1000, "image": "images/items/atompara.png" },
+        { "name": "Nebula Mannhattan Project", "rarity": "mythical", "price": 11333.00, "weight": 20, "image": "images/items/nsmp.png" },
+        { "name": "Scrap", "rarity": "legendary", "price": 0.01, "weight": 10000, "image": "images/items/scrap.png" }
+      ]
+    },
        {
       "id": "crashout",
       "name": "Do0mzics (Big)",
