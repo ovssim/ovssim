@@ -11,9 +11,6 @@ let currentCase = null;
 let adminMode = false;
 const ADMIN_PASSWORD = "LeyLey";
 
-// Prevent opening multiple cases at once
-let isSpinning = false;
-
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("admin-give-btn").onclick = adminGiveItem;
