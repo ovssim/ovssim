@@ -7,9 +7,7 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-let isSpinning = false; // prevent spam case openings
-
-// trading password system
+// Admin password system
 let adminMode = false;
 const ADMIN_PASSWORD = "LeyLey";
 
@@ -22,10 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
   loadCases();
   populateCoinflipDropdown();
 
-  // buttons
+  // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 50; updateCoins(); };
-  document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50); updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
+  document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
     const index = parseInt(select.value);
@@ -239,13 +237,11 @@ function selectCase(id) {
   document.getElementById("case-name").textContent = currentCase.name;
   document.getElementById("open-btn").textContent = `${currentCase.price.toFixed(2)} Coins`;
 
-  // Update dropdown display
   const display = document.getElementById("case-select-display");
   display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
 
 function openCase() {
-  if (isSpinning) return; // prevent opening during spin
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins.");
 
@@ -270,7 +266,6 @@ function getRandomItem(items) {
 function spinToItem(winningItem) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
-  isSpinning = true;
 
   const slots = 50;
   const winnerIndex = 38;
@@ -282,11 +277,10 @@ function spinToItem(winningItem) {
     const div = document.createElement("div");
     div.className = `spinner-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `<img src="${item.image}">`;
-    div.classList.add("inactive"); // greyed out initially
     strip.appendChild(div);
   }
 
-  strip.offsetHeight;
+  strip.offsetHeight; // force reflow
 
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
@@ -304,35 +298,32 @@ function spinToItem(winningItem) {
     + jitter
   );
 
-  // Animate the spinner
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
-  strip.offsetHeight;
+  strip.offsetHeight; 
   strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
-  // Interval to maintain grey tint on all non-winner items
   const interval = setInterval(() => {
-    Array.from(strip.children).forEach((child, i) => {
-      if (i !== winnerIndex) child.classList.add("inactive");
+    const children = Array.from(strip.children);
+    const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
+    children.forEach((child) => {
+      const rect = child.getBoundingClientRect();
+      const dist = Math.abs(rect.left + rect.width / 2 - centerX);
+      const factor = Math.max(0, 1 - dist / (containerWidth / 2));
+      child.style.filter = `grayscale(${(1 - factor) * 100}%) brightness(${0.6 + 0.4 * factor})`;
     });
   }, 30);
 
-  // Finish spin
   setTimeout(() => {
     clearInterval(interval);
-
-    const winnerDiv = strip.children[winnerIndex];
-    winnerDiv.classList.remove("inactive");
-    winnerDiv.style.transform = "scale(1.15)";
-    winnerDiv.style.transition = "transform 0.3s";
-
+    const children = Array.from(strip.children);
+    children.forEach((child) => child.style.filter = "grayscale(0%) brightness(1)");
     showWinner(winningItem);
-    isSpinning = false;
   }, 3200);
 }
 
-// ===================== SHOW WINNER =====================
+// ===================== WINNER =====================
 function showWinner(item) {
   inventory.push(item);
   recentDrops.push(item);
@@ -357,10 +348,7 @@ function adminGiveItem() {
 
   if (!adminMode) {
     const password = prompt("Enter Trading passkey:");
-    if (password !== ADMIN_PASSWORD) {
-      alert("Incorrect Trading Passkey.");
-      return;
-    }
+    if (password !== ADMIN_PASSWORD) return alert("Incorrect Trading Passkey.");
     adminMode = true;
     alert("Trading Mode Enabled.");
   }
@@ -384,7 +372,6 @@ function adminGiveItem() {
     `;
     div.querySelector("button").onclick = () => {
       if (coins < item.price) return alert("Not enough coins.");
-
       coins -= item.price;
       updateCoins();
       inventory.push({ ...item });
