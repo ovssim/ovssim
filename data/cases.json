@@ -737,7 +737,6 @@
         { "name": "ovff's Own Genuine Starlight Haze Colonel Kringle", "rarity": "mythical", "price": 31678.00, "weight": 150, "image": "images/items/oogshck.png" }
       ]
     },
-
         {
       "id": "hauntsme1",
       "name": "Haunted Forever (Medium)",
@@ -766,7 +765,6 @@
         { "name": "ovff's Own Genuine Green Confetti Patriot Peak", "rarity": "mythical", "price": 37265.00, "weight": 234, "image": "images/items/imissit.png" }
       ]
     },
-
     {
       "id": "aussie",
       "name": "AUSTRALIUM (High)",
