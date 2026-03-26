@@ -316,6 +316,36 @@
       ]
     },
     {
+      "id": "aussie",
+      "name": "AUSTRALIUM (High)",
+      "price": 45.00,
+      "image": "images/cases/aussie.png",
+      "items": [
+        { "name": "Strange Professional Killstreak Australium Rocket Launcher", "rarity": "strange", "price": 270.00, "weight": 125, "image": "images/items/aussierocket.png" },
+        { "name": "Strange Professional Killstreak Australium Minigun", "rarity": "strange", "price": 85.00, "weight": 160, "image": "images/items/aussiemini.png" },
+        { "name": "Strange Professional Killstreak Australium Knife", "rarity": "strange", "price": 75.00, "weight": 170, "image": "images/items/aussieknife.png" },
+        { "name": "Strange Professional Killstreak Australium Scattergun", "rarity": "strange", "price": 196.00, "weight": 135, "image": "images/items/aussiescatt.png" },
+        { "name": "Strange Professional Killstreak Australium Force-a-Nature", "rarity": "strange", "price": 54.00, "weight": 195, "image": "images/items/aussiefan.png" },
+        { "name": "Strange Professional Killstreak Australium Black Box", "rarity": "strange", "price": 86.00, "weight": 200, "image": "images/items/aussieblack.png" },
+        { "name": "Strange Professional Killstreak Australium Flame Thrower", "rarity": "strange", "price": 226.00, "weight": 160, "image": "images/items/aussieflame.png" },
+        { "name": "Strange Professional Killstreak Australium Axtinguisher", "rarity": "strange", "price": 21.00, "weight": 195, "image": "images/items/aussieaxt.png" },
+        { "name": "Strange Professional Killstreak Australium Grenade Launcher", "rarity": "strange", "price": 98.00, "weight": 165, "image": "images/items/aussiegrenade.png" },
+        { "name": "Strange Professional Killstreak Australium Eyelander", "rarity": "strange", "price": 150.00, "weight": 275, "image": "images/items/aussieeye.png" },
+        { "name": "Strange Professional Killstreak Australium Tomislav", "rarity": "strange", "price": 82.00, "weight": 150, "image": "images/items/aussietomy.png" },
+        { "name": "Strange Professional Killstreak Australium Frontier Justice", "rarity": "strange", "price": 65.00, "weight": 175, "image": "images/items/aussiefront.png" },
+        { "name": "Strange Professional Killstreak Australium Wrench", "rarity": "strange", "price": 88.00, "weight": 160, "image": "images/items/aussiewrench.png" },
+        { "name": "Strange Professional Killstreak Australium Blutsauger", "rarity": "strange", "price": 18.00, "weight": 200, "image": "images/items/aussieblut.png" },
+        { "name": "Strange Professional Killstreak Australium Medigun", "rarity": "strange", "price": 170.00, "weight": 115, "image": "images/items/aussiemedi.png" },
+        { "name": "Strange Professional Killstreak Australium Sniper Rifle", "rarity": "strange", "price": 115.00, "weight": 155, "image": "images/items/aussiesniper.png" },
+        { "name": "Strange Professional Killstreak Australium SMG", "rarity": "strange", "price": 26.00, "weight": 190, "image": "images/items/aussiesmg.png" },
+        { "name": "Scrap Metal", "rarity": "legendary", "price": 0.01, "weight": 5500, "image": "images/items/scrap.png" },
+        { "name": "Strange Professional Killstreak Australium Ambassador", "rarity": "strange", "price": 47.00, "weight": 185, "image": "images/items/aussieamby.png" },
+        { "name": "Strange Professional Killstreak Golden Frying Pan", "rarity": "strange", "price": 8000.00, "weight": 6, "image": "images/items/aussiefrying.png" },
+        { "name": "Unusual Community Sparkle Professional Killstreak Festivized Golden Frying Pan", "rarity": "mythical", "price": 99000.00, "weight": 1, "image": "images/items/comspgp.png" },
+        { "name": "Strange Professional Killstreak Australium Sticky Bomb Launcher", "rarity": "strange", "price": 90.00, "weight": 170, "image": "images/items/aussiesticky.png" }
+      ]
+      },
+    {
       "id": "rouletter",
       "name": "Double Red (Medium)",
       "price": 50.00,
@@ -335,7 +365,6 @@
         { "name": "Red", "rarity": "collector", "price": 0.00, "weight": 50, "image": "images/items/red.png" }
       ]
     },
-
        {
       "id": "subclass",
       "name": "Subclasses (Big)",
@@ -763,36 +792,6 @@
         { "name": "Cold Cosmos Brooklyn Booties", "rarity": "mythical", "price": 8428.00, "weight": 6244, "image": "images/items/c1cbb3.png" },
         { "name": "Galactic Connection Taunt: Cheers!", "rarity": "mythical", "price": 3428.00, "weight": 5244, "image": "images/items/gcc3.png" },
         { "name": "ovff's Own Genuine Green Confetti Patriot Peak", "rarity": "mythical", "price": 37265.00, "weight": 234, "image": "images/items/imissit.png" }
-      ]
-    },
-    {
-      "id": "aussie",
-      "name": "AUSTRALIUM (High)",
-      "price": 45.00,
-      "image": "images/cases/aussie.png",
-      "items": [
-        { "name": "Strange Professional Killstreak Australium Rocket Launcher", "rarity": "strange", "price": 270.00, "weight": 125, "image": "images/items/aussierocket.png" },
-        { "name": "Strange Professional Killstreak Australium Minigun", "rarity": "strange", "price": 85.00, "weight": 160, "image": "images/items/aussiemini.png" },
-        { "name": "Strange Professional Killstreak Australium Knife", "rarity": "strange", "price": 75.00, "weight": 170, "image": "images/items/aussieknife.png" },
-        { "name": "Strange Professional Killstreak Australium Scattergun", "rarity": "strange", "price": 196.00, "weight": 135, "image": "images/items/aussiescatt.png" },
-        { "name": "Strange Professional Killstreak Australium Force-a-Nature", "rarity": "strange", "price": 54.00, "weight": 195, "image": "images/items/aussiefan.png" },
-        { "name": "Strange Professional Killstreak Australium Black Box", "rarity": "strange", "price": 86.00, "weight": 200, "image": "images/items/aussieblack.png" },
-        { "name": "Strange Professional Killstreak Australium Flame Thrower", "rarity": "strange", "price": 226.00, "weight": 160, "image": "images/items/aussieflame.png" },
-        { "name": "Strange Professional Killstreak Australium Axtinguisher", "rarity": "strange", "price": 21.00, "weight": 195, "image": "images/items/aussieaxt.png" },
-        { "name": "Strange Professional Killstreak Australium Grenade Launcher", "rarity": "strange", "price": 98.00, "weight": 165, "image": "images/items/aussiegrenade.png" },
-        { "name": "Strange Professional Killstreak Australium Eyelander", "rarity": "strange", "price": 150.00, "weight": 275, "image": "images/items/aussieeye.png" },
-        { "name": "Strange Professional Killstreak Australium Tomislav", "rarity": "strange", "price": 82.00, "weight": 150, "image": "images/items/aussietomy.png" },
-        { "name": "Strange Professional Killstreak Australium Frontier Justice", "rarity": "strange", "price": 65.00, "weight": 175, "image": "images/items/aussiefront.png" },
-        { "name": "Strange Professional Killstreak Australium Wrench", "rarity": "strange", "price": 88.00, "weight": 160, "image": "images/items/aussiewrench.png" },
-        { "name": "Strange Professional Killstreak Australium Blutsauger", "rarity": "strange", "price": 18.00, "weight": 200, "image": "images/items/aussieblut.png" },
-        { "name": "Strange Professional Killstreak Australium Medigun", "rarity": "strange", "price": 170.00, "weight": 115, "image": "images/items/aussiemedi.png" },
-        { "name": "Strange Professional Killstreak Australium Sniper Rifle", "rarity": "strange", "price": 115.00, "weight": 155, "image": "images/items/aussiesniper.png" },
-        { "name": "Strange Professional Killstreak Australium SMG", "rarity": "strange", "price": 26.00, "weight": 190, "image": "images/items/aussiesmg.png" },
-        { "name": "Scrap Metal", "rarity": "legendary", "price": 0.01, "weight": 5500, "image": "images/items/scrap.png" },
-        { "name": "Strange Professional Killstreak Australium Ambassador", "rarity": "strange", "price": 47.00, "weight": 185, "image": "images/items/aussieamby.png" },
-        { "name": "Strange Professional Killstreak Golden Frying Pan", "rarity": "strange", "price": 8000.00, "weight": 6, "image": "images/items/aussiefrying.png" },
-        { "name": "Unusual Community Sparkle Professional Killstreak Festivized Golden Frying Pan", "rarity": "mythical", "price": 99000.00, "weight": 1, "image": "images/items/comspgp.png" },
-        { "name": "Strange Professional Killstreak Australium Sticky Bomb Launcher", "rarity": "strange", "price": 90.00, "weight": 170, "image": "images/items/aussiesticky.png" }
       ]
     }
   ]
