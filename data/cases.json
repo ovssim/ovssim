@@ -670,7 +670,7 @@
         { "name": "Radiant Legacy Machina", "rarity": "mythical", "price": 3286.95, "weight": 500, "image": "images/items/radmachina.png" },
         { "name": "Radiant Legacy Festive Scattergun", "rarity": "mythical", "price": 3489.23, "weight": 700, "image": "images/items/festunus.png" },
         { "name": "Soulful Slice Tomb Wrapper", "rarity": "mythical", "price": 300.77, "weight": 7500, "image": "images/items/tombslicre.png" },
-        { "name": "Cosmic Constellations", "rarity": "mythical", "price": 4000.25, "weight": 100, "image": "images/items/cosmicconstellation.png" }
+        { "name": "Cosmic Constellations", "rarity": "mythical", "price": 84000.00, "weight": 10, "image": "images/items/cosmicconstellation.png" }
       ]
     },
     {
