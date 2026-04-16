@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   populateCoinflipDropdown();
 
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 0.05; updateCoins(); };
   document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
 
   document.getElementById("coinflip-btn").onclick = () => {
@@ -262,10 +262,10 @@ function selectCase(id) {
 
 // ===================== OPEN MULTIPLE CASES =====================
 function openCases(count) {
-  if (isSpinning) return;          // ✅ COOLDOWN LOCK ADDED
+  if (isSpinning) return;          // COOLDOWN LOCK 
   if (!currentCase) return;
 
-  isSpinning = true;               // ✅ LOCK ENABLED
+  isSpinning = true;               //  LOCK ENABLED
 
   for (let i = 0; i < count; i++) {
     if (coins < currentCase.price) break;
@@ -360,7 +360,7 @@ function spinToItem(winningItem) {
 
     showWinner(winningItem);
 
-    isSpinning = false; // ✅ COOLDOWN UNLOCK ADDED HERE
+    isSpinning = false; //  COOLDOWN UNLOck
   }, 3200);
 }
 
