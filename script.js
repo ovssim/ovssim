@@ -240,7 +240,7 @@ function selectCase(id) {
 
 // ===================== OPEN CASE =====================
 function openCase() {
-  if (isSpinning) return; // ✅ ONLY CHANGE (cooldown)
+  if (isSpinning) return; // (cooldown)
 
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins.");
@@ -264,7 +264,7 @@ function getRandomItem(items) {
 
 // ===================== SPINNER =====================
 function spinToItem(winningItem) {
-  isSpinning = true; // ✅ ONLY CHANGE
+  isSpinning = true; // 
 
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
@@ -327,7 +327,7 @@ function spinToItem(winningItem) {
 
     showWinner(winningItem);
 
-    isSpinning = false; // ✅ ONLY CHANGE
+    isSpinning = false; 
   }, 3200);
 }
 
