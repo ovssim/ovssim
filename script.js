@@ -7,6 +7,9 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
+// Prevent opening multiple cases at once
+let isSpinning = false;
+
 
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
