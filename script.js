@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
-  document.getElementById("open-btn").onclick = openCase; // unchanged
+  document.getElementById("open-btn").onclick = openCase;
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
 
