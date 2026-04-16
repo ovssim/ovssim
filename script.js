@@ -1,15 +1,12 @@
 // ===================== GLOBAL STATE =====================
 let coins = parseFloat(localStorage.getItem("coins"));
-if (isNaN(coins) || coins < 0) coins = 100;
+if (isNaN(coins) || coins < 0) coins = 10;
 
 let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
 let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-// Admin password system
-let adminMode = false;
-const ADMIN_PASSWORD = "LeyLey";
 
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 0.05; updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
   document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
@@ -108,7 +105,7 @@ function toggleCaseItems() {
       <img src="${item.image}">
       <p>${item.name}</p>
       <small>${item.price.toFixed(2)} coins</small>
-      <small style="font-size:14px; margin-top:5px;">🎯 ${dropRate}% chance</small>
+      <small style="font-size:14px; margin-top:5px;">⊹ ${dropRate}% ⊹ chance</small>
     `;
     list.appendChild(div);
   });
@@ -232,7 +229,7 @@ function selectCase(id) {
 
   document.getElementById("case-image").src = currentCase.image;
   document.getElementById("case-name").textContent = currentCase.name;
-  document.getElementById("open-btn").textContent = `${currentCase.price.toFixed(2)} Coins`;
+  document.getElementById("open-btn").textContent = `⛃ ${currentCase.price.toFixed(2)} ⛃`;
 
   const display = document.getElementById("case-select-display");
   display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
@@ -371,6 +368,9 @@ function showWinner(item) {
   }
 }
 
+// Admin password system
+let adminMode = false;
+const ADMIN_PASSWORD = "Trading";
 // ===================== ADMIN GIVE =====================
 function adminGiveItem() {
   const panel = document.getElementById("admin-give-panel");
