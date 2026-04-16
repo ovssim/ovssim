@@ -7,7 +7,7 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-// Prevent opening multiple cases at once
+// Prevent opening multiple cases at once (COOLDOWN)
 let isSpinning = false;
 
 
@@ -20,15 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
   loadCases();
   populateCoinflipDropdown();
 
-  // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
   document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
   document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
+
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
+
   document.getElementById("open-btn").onclick = openCase;
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
@@ -198,6 +199,7 @@ function loadCases() {
     .then(res => res.json())
     .then(data => {
       cases = data.cases;
+
       const display = document.getElementById("case-select-display");
       const options = document.getElementById("case-select-options");
       options.innerHTML = "";
@@ -240,7 +242,7 @@ function selectCase(id) {
 
 // ===================== OPEN CASE =====================
 function openCase() {
-  if (isSpinning) return; // (cooldown)
+  if (isSpinning) return; // COOLDOWN
 
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins.");
@@ -264,7 +266,7 @@ function getRandomItem(items) {
 
 // ===================== SPINNER =====================
 function spinToItem(winningItem) {
-  isSpinning = true; // 
+  isSpinning = true;
 
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
@@ -288,10 +290,17 @@ function spinToItem(winningItem) {
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
 
+  const randomSpot = (Math.random() + Math.random()) / 2;
+  const edgePadding = itemWidth * 0.1;
+  const randomOffsetInsideItem = (randomSpot - 0.5) * (itemWidth - edgePadding);
+  const jitter = (Math.random() - 0.5) * 3;
+
   const offset = -(
     winnerIndex * itemWidth
     - containerWidth / 2
     + itemWidth / 2
+    + randomOffsetInsideItem
+    + jitter
   );
 
   strip.style.transition = "none";
@@ -326,8 +335,7 @@ function spinToItem(winningItem) {
     });
 
     showWinner(winningItem);
-
-    isSpinning = false; 
+    isSpinning = false; // cooldown ends
   }, 3200);
 }
 
