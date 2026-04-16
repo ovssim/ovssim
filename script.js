@@ -344,7 +344,7 @@ function spinToItem(winningItem) {
   setTimeout(() => {
     showWinner(winningItem);
 
-    // SAFE unlock (only if not still spinning)
+    
     if (document.getElementById("spinner-strip").children.length <= 1) {
       isSpinning = false;
     }
