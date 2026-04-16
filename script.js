@@ -7,7 +7,7 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-// Prevent opening multiple cases at once (COOLDOWN)
+// Prevent opening multiple cases at once
 let isSpinning = false;
 
 
@@ -335,7 +335,7 @@ function spinToItem(winningItem) {
     });
 
     showWinner(winningItem);
-    isSpinning = false; // cooldown ends
+    isSpinning = false; // cooldown end
   }, 3200);
 }
 
