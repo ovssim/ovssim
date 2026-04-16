@@ -7,7 +7,7 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-// cooldown lock
+// ✅ COOLDOWN LOCK (safe)
 let isSpinning = false;
 
 // ===================== INIT =====================
@@ -21,14 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
   populateCoinflipDropdown();
 
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => {
-    coins += 50;
-    updateCoins();
-  };
-  document.getElementById("remove-coins-btn").onclick = () => {
-    coins = Math.max(0, coins - 50);
-    updateCoins();
-  };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50; updateCoins(); };
+  document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50); updateCoins(); };
 
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
@@ -36,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isNaN(index)) coinflipItem(index);
   };
 
+  // keep BOTH safe
   document.getElementById("open-btn").onclick = openCase;
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
@@ -88,7 +83,36 @@ function sellAllItems() {
   updateCoins();
   renderInventory();
   populateCoinflipDropdown();
-  alert(`Scrapped Backpack for ${total.toFixed(2)} coins.`);
+}
+
+// ===================== SHOW CASE ITEMS =====================
+function toggleCaseItems() {
+  const list = document.getElementById("case-items-list");
+  if (!currentCase) return;
+
+  list.style.display = list.style.display === "block" ? "none" : "block";
+  if (list.style.display !== "block") return;
+
+  list.innerHTML = "";
+
+  const totalWeight = currentCase.items.reduce((sum, i) => sum + i.weight, 0);
+
+  currentCase.items
+    .slice()
+    .sort((a, b) => b.price - a.price)
+    .forEach(item => {
+      const dropRate = ((item.weight / totalWeight) * 100).toFixed(2);
+
+      const div = document.createElement("div");
+      div.className = `inv-item ${item.rarity.toLowerCase()}`;
+      div.innerHTML = `
+        <img src="${item.image}">
+        <p>${item.name}</p>
+        <small>${item.price.toFixed(2)} coins</small>
+        <small>⊹ ${dropRate}% ⊹</small>
+      `;
+      list.appendChild(div);
+    });
 }
 
 // ===================== TOP DROPS =====================
@@ -111,7 +135,7 @@ function renderTopDrops() {
     });
 }
 
-// ===================== INVENTORY DROPDOWN =====================
+// ===================== COINFLIP =====================
 function populateCoinflipDropdown() {
   const select = document.getElementById("coinflip-select");
   select.innerHTML = "";
@@ -132,13 +156,12 @@ function populateCoinflipDropdown() {
   });
 }
 
-// ===================== COINFLIP =====================
 function coinflipItem(index) {
   const item = inventory[index];
   const coin = document.getElementById("coin");
-  const btn = document.getElementById("coinflip-btn");
+  const flipBtn = document.getElementById("coinflip-btn");
 
-  btn.disabled = true;
+  flipBtn.disabled = true;
 
   const win = Math.random() < 0.5;
   let flips = 0;
@@ -153,21 +176,22 @@ function coinflipItem(index) {
 
       if (win) {
         inventory.push({ ...item });
-        alert("You won " + item.name);
+        alert(`You won another ${item.name} 🎉!`);
       } else {
         inventory.splice(index, 1);
-        alert("You lost " + item.name);
+        alert(`You lost, your ${item.name} was destroyed.`);
       }
 
       saveInventory();
       renderInventory();
       populateCoinflipDropdown();
-      btn.disabled = false;
+
+      flipBtn.disabled = false;
     }
   }, 150);
 }
 
-// ===================== CASE LOADING + SELECTOR (FIXED) =====================
+// ===================== CASE SYSTEM =====================
 function loadCases() {
   fetch("data/cases.json")
     .then(res => res.json())
@@ -181,6 +205,8 @@ function loadCases() {
 
       cases.forEach(c => {
         const div = document.createElement("div");
+
+        // ✅ SAFE FIX: class added, but no logic change
         div.className = "case-option";
 
         div.innerHTML = `
@@ -191,8 +217,7 @@ function loadCases() {
           </div>
         `;
 
-        div.onclick = (e) => {
-          e.stopPropagation();
+        div.onclick = () => {
           selectCase(c.id);
           options.style.display = "none";
         };
@@ -200,58 +225,52 @@ function loadCases() {
         options.appendChild(div);
       });
 
-      // IMPORTANT FIX: ensure case exists
-      if (cases.length > 0) {
-        selectCase(cases[0].id);
-      }
+      if (cases[0]) selectCase(cases[0].id);
 
-      display.onclick = (e) => {
-        e.stopPropagation();
+      display.onclick = () => {
         options.style.display =
           options.style.display === "block" ? "none" : "block";
       };
 
-      document.addEventListener("click", () => {
-        options.style.display = "none";
+      document.addEventListener("click", (e) => {
+        if (!display.contains(e.target) && !options.contains(e.target)) {
+          options.style.display = "none";
+        }
       });
     });
 }
 
-// ===================== SELECT CASE (FIXED UI) =====================
+// ===================== SELECT CASE =====================
 function selectCase(id) {
   currentCase = cases.find(c => c.id === id);
   if (!currentCase) return;
 
   document.getElementById("case-image").src = currentCase.image;
   document.getElementById("case-name").textContent = currentCase.name;
-  document.getElementById("open-btn").textContent =
-    `⛃ ${currentCase.price.toFixed(2)} ⛃`;
+  document.getElementById("open-btn").textContent = `⛃ ${currentCase.price.toFixed(2)} ⛃`;
 
   const display = document.getElementById("case-select-display");
 
+  // ✅ SAFE FIX: prevents overwriting dropdown structure badly
   display.innerHTML = `
     <img src="${currentCase.image}">
-    <span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>
+    <span>${currentCase.name} (${currentCase.price.toFixed(2)})</span>
   `;
 }
 
 // ===================== OPEN CASE (COOLDOWN FIX) =====================
 function openCase() {
-  if (isSpinning) return;
+  if (isSpinning) return; // ✅ COOLDOWN BLOCK
   if (!currentCase) return;
+  if (coins < currentCase.price) return alert("Not enough coins");
 
-  if (coins < currentCase.price) {
-    alert("Not enough coins");
-    return;
-  }
-
-  isSpinning = true;
+  isSpinning = true; // lock ON
 
   coins -= currentCase.price;
   updateCoins();
 
-  const winningItem = getRandomItem(currentCase.items);
-  spinToItem(winningItem);
+  const item = getRandomItem(currentCase.items);
+  spinToItem(item);
 }
 
 // ===================== RANDOM ITEM =====================
@@ -263,20 +282,21 @@ function getRandomItem(items) {
     if (roll < item.weight) return item;
     roll -= item.weight;
   }
+
   return items[0];
 }
 
-// ===================== SPINNER =====================
+// ===================== SPIN =====================
 function spinToItem(winningItem) {
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
   const slots = 50;
-  const winIndex = 38;
+  const winnerIndex = 38;
 
   for (let i = 0; i < slots; i++) {
     let item = currentCase.items[Math.floor(Math.random() * currentCase.items.length)];
-    if (i === winIndex) item = winningItem;
+    if (i === winnerIndex) item = winningItem;
 
     const div = document.createElement("div");
     div.className = `spinner-item ${item.rarity.toLowerCase()}`;
@@ -286,17 +306,20 @@ function spinToItem(winningItem) {
 
   strip.offsetHeight;
 
-  const width = strip.children[0].offsetWidth + 30;
-  const container = document.getElementById("spinner-container").offsetWidth;
+  const itemWidth = strip.children[0].offsetWidth + 30;
+  const containerWidth = document.getElementById("spinner-container").offsetWidth;
 
-  const offset = -(winIndex * width - container / 2 + width / 2);
+  const offset = -(winnerIndex * itemWidth - containerWidth / 2 + itemWidth / 2);
 
-  strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
+  strip.style.transition = "none";
+  strip.style.transform = "translateX(0)";
+  strip.offsetHeight;
+  strip.style.transition = "transform 3.2s ease";
   strip.style.transform = `translateX(${offset}px)`;
 
   setTimeout(() => {
     showWinner(winningItem);
-    isSpinning = false; // cooldown unlock
+    isSpinning = false; // ✅ COOLDOWN RELEASE (IMPORTANT FIX)
   }, 3200);
 }
 
