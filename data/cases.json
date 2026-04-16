@@ -409,7 +409,7 @@
         { "name": "Spine-Tingling Skull", "rarity": "legendary", "price": 83.54, "weight": 999, "image": "images/items/spinetingle.png" },
         { "name": "Collector's Boston Basher", "rarity": "collector", "price": 117.50, "weight": 999, "image": "images/items/basher.png" },
         { "name": "Spine-Chilling Skull", "rarity": "legendary", "price": 158.32, "weight": 999, "image": "images/items/chillskull.png" },
-        { "name": "Horseless Headless Horsemann's Head", "rarity": "legendary", "price": 185.80, "weight": 999, "image": "images/items/hhhh.png" },
+        { "name": "Horseless Headless Horsemann's Head", "rarity": "legendary", "price": 185.80, "weight": 9990, "image": "images/items/hhhh.png" },
         { "name": "Stellar Ascent Horror Shawl", "rarity": "mythical", "price": 450.45, "weight": 999, "image": "images/items/usahs.png" },
         { "name": "Acid Climate Lumbercap", "rarity": "mythical", "price": 405.00, "weight": 499, "image": "images/items/uacl.png" },
         { "name": "Amaranthine Armored Authority", "rarity": "mythical", "price": 720.00, "weight": 499, "image": "images/items/uaaa.png" },
