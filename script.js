@@ -335,7 +335,7 @@ function spinToItem(winningItem) {
 
   setTimeout(() => {
     showWinner(winningItem);
-    isSpinning = false; // ✅ cooldown unlock HERE (IMPORTANT FIX)
+    isSpinning = false; // cooldown unlock 
   }, 3200);
 }
 
