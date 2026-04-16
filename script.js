@@ -266,21 +266,29 @@ function selectCase(id) {
 }
 
 
-// ===================== OPEN MULTIPLE CASES (COOLDOWN FIXED) =====================
+// ===================== OPEN CASES (SAFE COOLDOWN) =====================
 function openCases(count) {
-  // ❌ cooldown lock
   if (isSpinning) return;
   if (!currentCase) return;
 
   isSpinning = true;
 
+  let opened = 0;
+
   for (let i = 0; i < count; i++) {
     if (coins < currentCase.price) break;
+
     coins -= currentCase.price;
     updateCoins();
 
     const winningItem = getRandomItem(currentCase.items);
     spinToItem(winningItem);
+
+    opened++;
+  }
+
+  if (opened === 0) {
+    isSpinning = false;
   }
 }
 
@@ -335,7 +343,11 @@ function spinToItem(winningItem) {
 
   setTimeout(() => {
     showWinner(winningItem);
-    isSpinning = false; // cooldown unlock 
+
+    // SAFE unlock (only if not still spinning)
+    if (document.getElementById("spinner-strip").children.length <= 1) {
+      isSpinning = false;
+    }
   }, 3200);
 }
 
