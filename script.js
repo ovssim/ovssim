@@ -214,7 +214,7 @@ function loadCases() {
       cases.forEach(c => {
         const div = document.createElement("div");
 
-        // ✅ FIXED STRUCTURE (this is what you were missing visually)
+        
         div.className = "case-option";
         div.innerHTML = `
           <img src="${c.image}">
@@ -328,7 +328,7 @@ function spinToItem(winningItem) {
 
   setTimeout(() => {
     showWinner(winningItem);
-    isSpinning = false; // ✅ cooldown unlock
+    isSpinning = false; //  cooldown unlock
   }, 3200);
 }
 
