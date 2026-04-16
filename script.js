@@ -1,15 +1,17 @@
 // ===================== GLOBAL STATE =====================
 let coins = parseFloat(localStorage.getItem("coins"));
-if (isNaN(coins) || coins < 0) coins = 10;
+if (isNaN(coins) || coins < 0) coins = 100;
 
 let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
 let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-// Prevent opening multiple cases at once
-let isSpinning = false;
+let isSpinning = false; // Prevent multiple opens
 
+// Admin password system
+let adminMode = false;
+const ADMIN_PASSWORD = "Trading";
 
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
-  document.getElementById("open-btn").onclick = openCase;
+  document.getElementById("open-btn").onclick = () => openCases(1); // single-case open
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
 
@@ -238,18 +240,21 @@ function selectCase(id) {
   display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
 
-// ===================== OPEN CASE =====================
-function openCase() {
-  if (isSpinning) return; // (cooldown)
-
+// ===================== OPEN CASES (CASE LOCK ADDED ONLY) =====================
+function openCases(count) {
+  if (isSpinning) return; // 🔒 CASE LOCK
   if (!currentCase) return;
-  if (coins < currentCase.price) return alert("Not enough coins.");
 
-  coins -= currentCase.price;
-  updateCoins();
+  isSpinning = true;
 
-  const winningItem = getRandomItem(currentCase.items);
-  spinToItem(winningItem);
+  for (let i = 0; i < count; i++) {
+    if (coins < currentCase.price) break;
+    coins -= currentCase.price;
+    updateCoins();
+
+    const winningItem = getRandomItem(currentCase.items);
+    spinToItem(winningItem);
+  }
 }
 
 function getRandomItem(items) {
@@ -264,8 +269,6 @@ function getRandomItem(items) {
 
 // ===================== SPINNER =====================
 function spinToItem(winningItem) {
-  isSpinning = true; // 
-
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
@@ -288,10 +291,17 @@ function spinToItem(winningItem) {
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
 
+  const randomSpot = (Math.random() + Math.random()) / 2;
+  const edgePadding = itemWidth * 0.1;
+  const randomOffsetInsideItem = (randomSpot - 0.5) * (itemWidth - edgePadding);
+  const jitter = (Math.random() - 0.5) * 3;
+
   const offset = -(
     winnerIndex * itemWidth
     - containerWidth / 2
     + itemWidth / 2
+    + randomOffsetInsideItem
+    + jitter
   );
 
   strip.style.transition = "none";
@@ -303,7 +313,6 @@ function spinToItem(winningItem) {
   const interval = setInterval(() => {
     const children = Array.from(strip.children);
     const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
-
     children.forEach((child) => {
       const rect = child.getBoundingClientRect();
       const dist = Math.abs(rect.left + rect.width / 2 - centerX);
@@ -327,7 +336,11 @@ function spinToItem(winningItem) {
 
     showWinner(winningItem);
 
-    isSpinning = false; 
+    // 🔓 unlock case after spin
+    setTimeout(() => {
+      isSpinning = false;
+    }, 200);
+
   }, 3200);
 }
 
@@ -367,4 +380,52 @@ function showWinner(item) {
     winnerBox.textContent = item.name;
     winnerBox.className = item.rarity.toLowerCase();
   }
+}
+
+// ===================== ADMIN GIVE =====================
+function adminGiveItem() {
+  const panel = document.getElementById("admin-give-panel");
+  const itemsContainer = document.getElementById("admin-give-items");
+
+  if (!adminMode) {
+    const password = prompt("Enter Trading passkey:");
+    if (password !== ADMIN_PASSWORD) return alert("Incorrect Trading Passkey.");
+    adminMode = true;
+    alert("Trading Mode Enabled.");
+  }
+
+  panel.style.display = "block";
+  itemsContainer.innerHTML = "";
+
+  let allItems = [];
+  cases.forEach(c => c.items.forEach(item => allItems.push(item)));
+
+  allItems.forEach((item) => {
+    const div = document.createElement("div");
+    div.className = "admin-give-item";
+    div.innerHTML = `
+      <img src="${item.image}">
+      <div class="admin-give-info">
+        <span class="name">${item.name}</span>
+        <span class="price">${item.price.toFixed(2)} coins</span>
+      </div>
+      <button>Trade</button>
+    `;
+    div.querySelector("button").onclick = () => {
+      if (coins < item.price) return alert("Not enough coins.");
+      coins -= item.price;
+      updateCoins();
+      inventory.push({ ...item });
+      saveInventory();
+      renderInventory();
+      populateCoinflipDropdown();
+      alert(`Traded ${item.name} for ${item.price.toFixed(2)} coins`);
+    };
+    itemsContainer.appendChild(div);
+  });
+
+  document.getElementById("admin-give-close").onclick = () => {
+    panel.style.display = "none";
+    adminMode = false;
+  };
 }
