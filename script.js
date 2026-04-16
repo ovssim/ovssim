@@ -7,10 +7,10 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-// Prevent opening multiple cases at once (COOLDOWN)
+// Prevent opening multiple cases at once (do0mzics)
 let isSpinning = false;
 
-// Admin password system (FIXED - only one)
+// Admin password system 
 let adminMode = false;
 const ADMIN_PASSWORD = "LeyLey";
 
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isNaN(index)) coinflipItem(index);
   };
 
-  // 🔥 SINGLE CASE OPEN (with cooldown)
+  // spam case fix
   document.getElementById("open-btn").onclick = () => openCases(1);
 
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
@@ -139,7 +139,7 @@ function selectCase(id) {
 
 // ===================== OPEN CASE =====================
 function openCases(count) {
-  if (isSpinning) return; // ⛔ COOLDOWN LOCK
+  if (isSpinning) return; // Cooldown
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins.");
 
@@ -162,7 +162,7 @@ function getRandomItem(items) {
 
 // ===================== SPINNER =====================
 function spinToItem(winningItem) {
-  isSpinning = true; // 🔒 LOCK
+  isSpinning = true; // LOCK
 
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
@@ -224,7 +224,7 @@ function spinToItem(winningItem) {
     });
 
     showWinner(winningItem);
-    isSpinning = false; // 🔓 UNLOCK
+    isSpinning = false; // UNLOCK
   }, 3200);
 }
 
