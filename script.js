@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isNaN(index)) coinflipItem(index);
   };
 
-  // ✅ SINGLE CASE OPEN ONLY
+  // 
   document.getElementById("open-btn").onclick = openCase;
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
@@ -247,11 +247,11 @@ function selectCase(id) {
 
 // ===================== OPEN CASE (COOLDOWN FIXED) =====================
 function openCase() {
-  if (isSpinning) return; // cooldown lock
+  if (isSpinning) return; // cooldown 
   if (!currentCase) return;
   if (coins < currentCase.price) return alert("Not enough coins.");
 
-  isSpinning = true; // LOCK immediately
+  isSpinning = true; // LOCK 
 
   coins -= currentCase.price;
   updateCoins();
@@ -338,7 +338,7 @@ function spinToItem(winningItem) {
 
     showWinner(winningItem);
 
-    isSpinning = false; // UNLOCK AFTER SPIN
+    isSpinning = false;
   }, 3200);
 }
 
