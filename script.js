@@ -7,7 +7,7 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-// ✅ cooldown lock
+//  cooldown lock
 let isSpinning = false;
 
 
@@ -330,7 +330,7 @@ function spinToItem(winningItem) {
   setTimeout(() => {
     showWinner(winningItem);
 
-    // ✅ UNLOCK COOLDOWN
+    // UNLOCK COOLDOWN
     isSpinning = false;
     document.getElementById("open-btn").disabled = false;
 
