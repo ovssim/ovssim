@@ -14,34 +14,30 @@ let isSpinning = false;
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("admin-give-btn").onclick = adminGiveItem;
-
   updateCoins();
   renderInventory();
   renderTopDrops();
   loadCases();
   populateCoinflipDropdown();
 
+  // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 0.05; updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
   document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
-
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
     const index = parseInt(select.value);
     if (!isNaN(index)) coinflipItem(index);
   };
-
-  document.getElementById("open-btn").onclick = () => openCases(1);
+  document.getElementById("open-btn").onclick = openCase;
   document.getElementById("show-case-items-btn").onclick = toggleCaseItems;
 });
-
 
 // ===================== COINS =====================
 function updateCoins() {
   document.getElementById("coins").textContent = `Balance: ${coins.toFixed(2)}`;
   localStorage.setItem("coins", coins);
 }
-
 
 // ===================== INVENTORY =====================
 function saveInventory() {
@@ -88,7 +84,6 @@ function sellAllItems() {
   alert(`Scrapped Backpack for ${total.toFixed(2)} coins.`);
 }
 
-
 // ===================== SHOW CASE ITEMS =====================
 function toggleCaseItems() {
   const list = document.getElementById("case-items-list");
@@ -119,7 +114,6 @@ function toggleCaseItems() {
   });
 }
 
-
 // ===================== TOP DROPS =====================
 function renderTopDrops() {
   const container = document.getElementById("top-drops");
@@ -139,7 +133,6 @@ function renderTopDrops() {
       container.appendChild(div);
     });
 }
-
 
 // ===================== COINFLIP =====================
 function populateCoinflipDropdown() {
@@ -199,36 +192,27 @@ function coinflipItem(index) {
   }, 150);
 }
 
-
 // ===================== CASE SYSTEM =====================
 function loadCases() {
   fetch("data/cases.json")
     .then(res => res.json())
     .then(data => {
       cases = data.cases;
-
       const display = document.getElementById("case-select-display");
       const options = document.getElementById("case-select-options");
-
       options.innerHTML = "";
 
       cases.forEach(c => {
         const div = document.createElement("div");
-        div.className = "case-option";
-        div.innerHTML = `
-          <img src="${c.image}">
-          <span>${c.name} (${c.price.toFixed(2)} coins)</span>
-        `;
-
+        div.innerHTML = `<img src="${c.image}"><span>${c.name} (${c.price.toFixed(2)} coins)</span>`;
         div.onclick = () => {
           selectCase(c.id);
           options.style.display = "none";
         };
-
         options.appendChild(div);
       });
 
-      if (cases[0]) selectCase(cases[0].id);
+      selectCase(cases[0].id);
 
       display.onclick = () => {
         options.style.display = options.style.display === "block" ? "none" : "block";
@@ -242,8 +226,6 @@ function loadCases() {
     });
 }
 
-
-// ===================== SELECT CASE =====================
 function selectCase(id) {
   currentCase = cases.find(c => c.id === id);
   if (!currentCase) return;
@@ -253,36 +235,26 @@ function selectCase(id) {
   document.getElementById("open-btn").textContent = `⛃ ${currentCase.price.toFixed(2)} ⛃`;
 
   const display = document.getElementById("case-select-display");
-  display.innerHTML = `
-    <img src="${currentCase.image}">
-    <span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>
-  `;
+  display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
 
+// ===================== OPEN CASE =====================
+function openCase() {
+  if (isSpinning) return; // (cooldown)
 
-// ===================== OPEN MULTIPLE CASES =====================
-function openCases(count) {
-  if (isSpinning) return;          // COOLDOWN LOCK 
   if (!currentCase) return;
+  if (coins < currentCase.price) return alert("Not enough coins.");
 
-  isSpinning = true;               //  LOCK ENABLED
+  coins -= currentCase.price;
+  updateCoins();
 
-  for (let i = 0; i < count; i++) {
-    if (coins < currentCase.price) break;
-    coins -= currentCase.price;
-    updateCoins();
-
-    const winningItem = getRandomItem(currentCase.items);
-    spinToItem(winningItem);
-  }
+  const winningItem = getRandomItem(currentCase.items);
+  spinToItem(winningItem);
 }
 
-
-// ===================== RANDOM =====================
 function getRandomItem(items) {
   const total = items.reduce((sum, i) => sum + i.weight, 0);
   let roll = Math.random() * total;
-
   for (let item of items) {
     if (roll < item.weight) return item;
     roll -= item.weight;
@@ -290,9 +262,10 @@ function getRandomItem(items) {
   return items[0];
 }
 
-
 // ===================== SPINNER =====================
 function spinToItem(winningItem) {
+  isSpinning = true; // 
+
   const strip = document.getElementById("spinner-strip");
   strip.innerHTML = "";
 
@@ -315,17 +288,10 @@ function spinToItem(winningItem) {
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
 
-  const randomSpot = (Math.random() + Math.random()) / 2;
-  const edgePadding = itemWidth * 0.1;
-  const randomOffsetInsideItem = (randomSpot - 0.5) * (itemWidth - edgePadding);
-  const jitter = (Math.random() - 0.5) * 3;
-
   const offset = -(
     winnerIndex * itemWidth
     - containerWidth / 2
     + itemWidth / 2
-    + randomOffsetInsideItem
-    + jitter
   );
 
   strip.style.transition = "none";
@@ -337,6 +303,7 @@ function spinToItem(winningItem) {
   const interval = setInterval(() => {
     const children = Array.from(strip.children);
     const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
+
     children.forEach((child) => {
       const rect = child.getBoundingClientRect();
       const dist = Math.abs(rect.left + rect.width / 2 - centerX);
@@ -360,10 +327,9 @@ function spinToItem(winningItem) {
 
     showWinner(winningItem);
 
-    isSpinning = false; //  COOLDOWN UNLOck
+    isSpinning = false; 
   }, 3200);
 }
-
 
 // ===================== WIN ITEM ANIMATION =====================
 function animateWinner(element) {
@@ -385,12 +351,10 @@ function animateWinner(element) {
   frame();
 }
 
-
 // ===================== WINNER =====================
 function showWinner(item) {
   inventory.push(item);
   recentDrops.push(item);
-
   if (recentDrops.length > 20) recentDrops.shift();
 
   saveInventory();
@@ -403,57 +367,4 @@ function showWinner(item) {
     winnerBox.textContent = item.name;
     winnerBox.className = item.rarity.toLowerCase();
   }
-}
-
-
-// ===================== ADMIN =====================
-let adminMode = false;
-const ADMIN_PASSWORD = "Trading";
-
-function adminGiveItem() {
-  const panel = document.getElementById("admin-give-panel");
-  const itemsContainer = document.getElementById("admin-give-items");
-
-  if (!adminMode) {
-    const password = prompt("Enter Trading passkey:");
-    if (password !== ADMIN_PASSWORD) return alert("Incorrect Trading Passkey.");
-    adminMode = true;
-    alert("Trading Mode Enabled.");
-  }
-
-  panel.style.display = "block";
-  itemsContainer.innerHTML = "";
-
-  let allItems = [];
-  cases.forEach(c => c.items.forEach(item => allItems.push(item)));
-
-  allItems.forEach((item) => {
-    const div = document.createElement("div");
-    div.className = "admin-give-item";
-    div.innerHTML = `
-      <img src="${item.image}">
-      <div class="admin-give-info">
-        <span class="name">${item.name}</span>
-        <span class="price">${item.price.toFixed(2)} coins</span>
-      </div>
-      <button>Trade</button>
-    `;
-
-    div.querySelector("button").onclick = () => {
-      if (coins < item.price) return alert("Not enough coins.");
-      coins -= item.price;
-      updateCoins();
-      inventory.push({ ...item });
-      saveInventory();
-      renderInventory();
-      populateCoinflipDropdown();
-    };
-
-    itemsContainer.appendChild(div);
-  });
-
-  document.getElementById("admin-give-close").onclick = () => {
-    panel.style.display = "none";
-    adminMode = false;
-  };
 }
