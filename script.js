@@ -85,6 +85,7 @@ function sellAllItems() {
   updateCoins();
   renderInventory();
   populateCoinflipDropdown();
+  alert(`Scrapped Backpack for ${total.toFixed(2)} coins.`);
 }
 
 
@@ -102,23 +103,20 @@ function toggleCaseItems() {
   list.innerHTML = "";
 
   const totalWeight = currentCase.items.reduce((sum, i) => sum + i.weight, 0);
+  const sortedItems = [...currentCase.items].sort((a, b) => b.price - a.price);
 
-  currentCase.items
-    .slice()
-    .sort((a, b) => b.price - a.price)
-    .forEach(item => {
-      const dropRate = ((item.weight / totalWeight) * 100).toFixed(2);
-
-      const div = document.createElement("div");
-      div.className = `inv-item ${item.rarity.toLowerCase()}`;
-      div.innerHTML = `
-        <img src="${item.image}">
-        <p>${item.name}</p>
-        <small>${item.price.toFixed(2)} coins</small>
-        <small>⊹ ${dropRate}% ⊹</small>
-      `;
-      list.appendChild(div);
-    });
+  sortedItems.forEach(item => {
+    const dropRate = ((item.weight / totalWeight) * 100).toFixed(2);
+    const div = document.createElement("div");
+    div.className = `inv-item ${item.rarity.toLowerCase()}`;
+    div.innerHTML = `
+      <img src="${item.image}">
+      <p>${item.name}</p>
+      <small>${item.price.toFixed(2)} coins</small>
+      <small style="font-size:14px; margin-top:5px;">⊹ ${dropRate}% ⊹ chance</small>
+    `;
+    list.appendChild(div);
+  });
 }
 
 
@@ -149,54 +147,54 @@ function populateCoinflipDropdown() {
   select.innerHTML = "";
 
   if (inventory.length === 0) {
-    select.innerHTML = `<option>No items</option>`;
+    select.innerHTML = `<option>No items available</option>`;
     select.disabled = true;
     return;
   }
 
   select.disabled = false;
-
   inventory.forEach((item, index) => {
     const option = document.createElement("option");
     option.value = index;
-    option.textContent = `${item.name} (${item.price.toFixed(2)})`;
+    option.textContent = `${item.name} (${item.price.toFixed(2)} coins)`;
     select.appendChild(option);
   });
 }
 
-
-// ===================== COINFLIP =====================
 function coinflipItem(index) {
   const item = inventory[index];
   const coin = document.getElementById("coin");
-  const btn = document.getElementById("coinflip-btn");
-
-  btn.disabled = true;
+  const flipBtn = document.getElementById("coinflip-btn");
+  flipBtn.disabled = true;
 
   const win = Math.random() < 0.5;
-  let flips = 0;
+  const finalClass = win ? "head" : "tail";
 
-  const interval = setInterval(() => {
+  let flips = 0;
+  const totalFlips = 10;
+
+  const flipInterval = setInterval(() => {
     coin.classList.toggle("head");
     coin.classList.toggle("tail");
-
     flips++;
-    if (flips > 10) {
-      clearInterval(interval);
+
+    if (flips > totalFlips) {
+      clearInterval(flipInterval);
+      coin.classList.remove("head", "tail");
+      coin.classList.add(finalClass);
 
       if (win) {
         inventory.push({ ...item });
-        alert("You won " + item.name);
+        alert(`You won another ${item.name} 🎉!`);
       } else {
         inventory.splice(index, 1);
-        alert("You lost " + item.name);
+        alert(`You lost, your ${item.name} was destroyed.`);
       }
 
       saveInventory();
       renderInventory();
       populateCoinflipDropdown();
-
-      btn.disabled = false;
+      flipBtn.disabled = false;
     }
   }, 150);
 }
@@ -219,10 +217,7 @@ function loadCases() {
         div.className = "case-option";
         div.innerHTML = `
           <img src="${c.image}">
-          <div>
-            <div>${c.name}</div>
-            <small>${c.price.toFixed(2)} coins</small>
-          </div>
+          <span>${c.name} (${c.price.toFixed(2)} coins)</span>
         `;
 
         div.onclick = () => {
@@ -236,8 +231,7 @@ function loadCases() {
       if (cases[0]) selectCase(cases[0].id);
 
       display.onclick = () => {
-        options.style.display =
-          options.style.display === "block" ? "none" : "block";
+        options.style.display = options.style.display === "block" ? "none" : "block";
       };
 
       document.addEventListener("click", (e) => {
@@ -266,29 +260,20 @@ function selectCase(id) {
 }
 
 
-// ===================== OPEN CASES (SAFE COOLDOWN) =====================
+// ===================== OPEN MULTIPLE CASES =====================
 function openCases(count) {
-  if (isSpinning) return;
+  if (isSpinning) return;          // ✅ COOLDOWN LOCK ADDED
   if (!currentCase) return;
 
-  isSpinning = true;
-
-  let opened = 0;
+  isSpinning = true;               // ✅ LOCK ENABLED
 
   for (let i = 0; i < count; i++) {
     if (coins < currentCase.price) break;
-
     coins -= currentCase.price;
     updateCoins();
 
     const winningItem = getRandomItem(currentCase.items);
     spinToItem(winningItem);
-
-    opened++;
-  }
-
-  if (opened === 0) {
-    isSpinning = false;
   }
 }
 
@@ -321,6 +306,7 @@ function spinToItem(winningItem) {
     const div = document.createElement("div");
     div.className = `spinner-item ${item.rarity.toLowerCase()}`;
     div.innerHTML = `<img src="${item.image}">`;
+    div.style.filter = "grayscale(100%)";
     strip.appendChild(div);
   }
 
@@ -329,26 +315,74 @@ function spinToItem(winningItem) {
   const itemWidth = strip.children[0].offsetWidth + 30;
   const containerWidth = document.getElementById("spinner-container").offsetWidth;
 
+  const randomSpot = (Math.random() + Math.random()) / 2;
+  const edgePadding = itemWidth * 0.1;
+  const randomOffsetInsideItem = (randomSpot - 0.5) * (itemWidth - edgePadding);
+  const jitter = (Math.random() - 0.5) * 3;
+
   const offset = -(
-    winnerIndex * itemWidth -
-    containerWidth / 2 +
-    itemWidth / 2
+    winnerIndex * itemWidth
+    - containerWidth / 2
+    + itemWidth / 2
+    + randomOffsetInsideItem
+    + jitter
   );
 
   strip.style.transition = "none";
   strip.style.transform = "translateX(0)";
   strip.offsetHeight;
-  strip.style.transition = "transform 3.2s ease";
+  strip.style.transition = "transform 3.2s cubic-bezier(.25,.85,.35,1)";
   strip.style.transform = `translateX(${offset}px)`;
 
+  const interval = setInterval(() => {
+    const children = Array.from(strip.children);
+    const centerX = strip.parentElement.getBoundingClientRect().left + containerWidth / 2;
+    children.forEach((child) => {
+      const rect = child.getBoundingClientRect();
+      const dist = Math.abs(rect.left + rect.width / 2 - centerX);
+      const factor = Math.max(0, 1 - dist / (containerWidth / 2));
+      child.style.filter = `grayscale(${(1 - factor) * 77}%) brightness(${0.6 + 0.4 * factor})`;
+    });
+  }, 30);
+
   setTimeout(() => {
+    clearInterval(interval);
+
+    const children = Array.from(strip.children);
+    children.forEach((child, i) => {
+      if (i === winnerIndex) {
+        child.style.filter = "grayscale(0%) brightness(1)";
+        animateWinner(child);
+      } else {
+        child.style.filter = "grayscale(35%) brightness(0.6)";
+      }
+    });
+
     showWinner(winningItem);
 
-    
-    if (document.getElementById("spinner-strip").children.length <= 1) {
-      isSpinning = false;
-    }
+    isSpinning = false; // ✅ COOLDOWN UNLOCK ADDED HERE
   }, 3200);
+}
+
+
+// ===================== WIN ITEM ANIMATION =====================
+function animateWinner(element) {
+  let scale = 1;
+  let growing = true;
+
+  function frame() {
+    if (growing) {
+      scale += 0.005;
+      if (scale >= 1.2) growing = false;
+    } else {
+      scale -= 0.005;
+      if (scale <= 1) growing = true;
+    }
+    element.style.transform = `scale(${scale})`;
+    requestAnimationFrame(frame);
+  }
+
+  frame();
 }
 
 
@@ -363,4 +397,63 @@ function showWinner(item) {
   renderInventory();
   renderTopDrops();
   populateCoinflipDropdown();
+
+  const winnerBox = document.getElementById("winner-name");
+  if (winnerBox) {
+    winnerBox.textContent = item.name;
+    winnerBox.className = item.rarity.toLowerCase();
+  }
+}
+
+
+// ===================== ADMIN =====================
+let adminMode = false;
+const ADMIN_PASSWORD = "Trading";
+
+function adminGiveItem() {
+  const panel = document.getElementById("admin-give-panel");
+  const itemsContainer = document.getElementById("admin-give-items");
+
+  if (!adminMode) {
+    const password = prompt("Enter Trading passkey:");
+    if (password !== ADMIN_PASSWORD) return alert("Incorrect Trading Passkey.");
+    adminMode = true;
+    alert("Trading Mode Enabled.");
+  }
+
+  panel.style.display = "block";
+  itemsContainer.innerHTML = "";
+
+  let allItems = [];
+  cases.forEach(c => c.items.forEach(item => allItems.push(item)));
+
+  allItems.forEach((item) => {
+    const div = document.createElement("div");
+    div.className = "admin-give-item";
+    div.innerHTML = `
+      <img src="${item.image}">
+      <div class="admin-give-info">
+        <span class="name">${item.name}</span>
+        <span class="price">${item.price.toFixed(2)} coins</span>
+      </div>
+      <button>Trade</button>
+    `;
+
+    div.querySelector("button").onclick = () => {
+      if (coins < item.price) return alert("Not enough coins.");
+      coins -= item.price;
+      updateCoins();
+      inventory.push({ ...item });
+      saveInventory();
+      renderInventory();
+      populateCoinflipDropdown();
+    };
+
+    itemsContainer.appendChild(div);
+  });
+
+  document.getElementById("admin-give-close").onclick = () => {
+    panel.style.display = "none";
+    adminMode = false;
+  };
 }
