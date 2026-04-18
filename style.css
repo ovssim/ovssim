@@ -609,3 +609,10 @@ h1 { margin-bottom: 10px; font-weight: 600; }
     width: 100%;
   }
 }
+
+.upgrade-item.selected {
+  background: rgba(0, 255, 255, 0.25);
+  box-shadow: 0 0 12px rgba(0,255,255,0.4);
+  transform: scale(1.02);
+  border: 1px solid cyan;
+}
