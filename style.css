@@ -534,3 +534,20 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   background: rgba(0,255,255,0.3);
   border-radius: 10px;
 }
+
+#upgrade-bar {
+  width: 300px;
+  height: 10px;
+  background: #222;
+  border-radius: 8px;
+  margin: 10px auto;
+  overflow: hidden;
+  border: 1px solid #00ffff;
+}
+
+#upgrade-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, red, yellow, lime);
+  transition: width 0.25s ease;
+}
