@@ -455,7 +455,7 @@ function adminGiveItem() {
 }
 
 
-// ======================= UPGRADER CORE (STABLE) =======================
+// ======================= UPGRADER CORE =======================
 
 let ALL_ITEMS = [];
 let wagerItems = [];
@@ -488,7 +488,7 @@ async function initUpgrader() {
   }
 }
 
-// ======================= OBSERVE INVENTORY (FIXES MISSING ITEMS) =======================
+// ======================= OBSERVE INVENTORY =======================
 function observeInventory() {
   const inv = document.getElementById("inventory");
   if (!inv) return;
@@ -502,7 +502,7 @@ function observeInventory() {
   hookInventory();
 }
 
-// ======================= HOOK INVENTORY (WAGER SYSTEM FIX) =======================
+// ======================= HOOK INVENTORY =======================
 function hookInventory() {
   const items = document.querySelectorAll("#inventory .inv-item");
 
@@ -529,14 +529,14 @@ function hookInventory() {
   });
 }
 
-// ======================= TARGET UI (FIXED INFINITE LIST) =======================
+// ======================= TARGET UI =======================
 function buildTargetUI() {
   const box = document.getElementById("target-list");
   if (!box) return;
 
   box.innerHTML = "";
 
-  // duplicate pool = “infinite feel”
+  
   const pool = [...ALL_ITEMS, ...ALL_ITEMS, ...ALL_ITEMS];
 
   pool.forEach(item => {
