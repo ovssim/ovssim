@@ -455,14 +455,15 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADER SYSTEM (FIXED + STABLE)
+   UPGRADER SYSTEM (FINAL BUILD)
    ========================= */
 
 let Upgrader = {
   cases: [],
   selectedWager: null,
   selectedTarget: null,
-  upgrading: false
+  upgrading: false,
+  history: []
 };
 
 /* ---------- INIT ---------- */
@@ -475,20 +476,19 @@ function initUpgrader() {
   updateUI();
 }
 
-/* ---------- KEEP DATA SYNCED ---------- */
+/* ---------- SYNC ---------- */
 
 function syncUpgraderData() {
-  // pull from main game state
   Upgrader.cases = cases || [];
 }
 
-/* ---------- INVENTORY ACCESS ---------- */
+/* ---------- INVENTORY ---------- */
 
 function getInventory() {
   return inventory || [];
 }
 
-/* ---------- ITEM CARD UI ---------- */
+/* ---------- ITEM UI ---------- */
 
 function itemCard(item) {
   return `
@@ -502,7 +502,7 @@ function itemCard(item) {
   `;
 }
 
-/* ---------- ALL CASE ITEMS ---------- */
+/* ---------- CASE ITEMS ---------- */
 
 function getAllSiteItems() {
   let all = [];
@@ -514,7 +514,7 @@ function getAllSiteItems() {
   return all;
 }
 
-/* ---------- WAGER (INVENTORY ITEMS) ---------- */
+/* ---------- WAGER ---------- */
 
 function renderWager() {
   const box = document.getElementById("wager-list");
@@ -542,7 +542,7 @@ function renderWager() {
   });
 }
 
-/* ---------- TARGET (CASE ITEMS) ---------- */
+/* ---------- TARGET ---------- */
 
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -570,7 +570,7 @@ function renderTarget() {
   });
 }
 
-/* ---------- CHANCE CALC ---------- */
+/* ---------- CHANCE ---------- */
 
 function calculateChance(w, t) {
   if (!w || !t) return 0;
@@ -583,17 +583,19 @@ function calculateChance(w, t) {
   return chance;
 }
 
-/* ---------- UI UPDATE ---------- */
+/* ---------- UI ---------- */
 
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
   const valueBox = document.getElementById("upgrade-value");
+  const fill = document.getElementById("upgrade-fill");
 
   if (!chanceBox || !valueBox) return;
 
   if (!Upgrader.selectedWager || !Upgrader.selectedTarget) {
     chanceBox.innerText = "Chance: 0%";
     valueBox.innerText = "0 ⛃ → 0 ⛃";
+    if (fill) fill.style.width = "0%";
     return;
   }
 
@@ -604,6 +606,18 @@ function updateUI() {
 
   chanceBox.innerText = `Chance: ${chance.toFixed(2)}%`;
   valueBox.innerText = `${w.price} ⛃ → ${t.price} ⛃`;
+
+  if (fill) {
+    fill.style.width = chance + "%";
+  }
+}
+
+/* ---------- REMOVE ITEM SAFELY ---------- */
+
+function removeFromInventory(item) {
+  inventory = inventory.filter(i =>
+    i.id ? i.id !== item.id : i.name !== item.name
+  );
 }
 
 /* ---------- UPGRADE ACTION ---------- */
@@ -617,26 +631,33 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (!w || !t) return;
 
   const chance = calculateChance(w, t);
-
-  if (chance <= 0) {
-    alert("Invalid upgrade");
-    return;
-  }
+  if (chance <= 0) return;
 
   Upgrader.upgrading = true;
 
   const btn = document.getElementById("upgrade-btn");
   if (btn) btn.innerText = "Upgrading...";
 
+  // fake tension delay (feels like gambling sites)
   setTimeout(() => {
-    const roll = Math.random() * 100;
 
-    if (roll <= chance) {
-      alert("UPGRADE SUCCESS!");
+    const roll = Math.random() * 100;
+    const success = roll <= chance;
+
+    // ALWAYS remove wager item
+    removeFromInventory(w);
+
+    if (success) {
       inventory.push(t);
-    } else {
-      alert("UPGRADE FAILED!");
     }
+
+    // history log
+    Upgrader.history.unshift({
+      wager: w.name,
+      target: t.name,
+      success,
+      time: Date.now()
+    });
 
     saveInventory();
     renderInventory();
@@ -645,9 +666,10 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
     if (btn) btn.innerText = "Upgrade";
 
     renderWager();
+    renderTarget();
     updateUI();
 
-  }, 2000);
+  }, 1800);
 });
 
 /* ---------- LOAD BUTTONS ---------- */
@@ -660,7 +682,6 @@ function createLoadButtons() {
 
   if (wagerSide && !document.getElementById("load-wager-btn")) {
     const btn = document.createElement("button");
-    btn.id = "load-wager-btn";
     btn.className = "theme-btn";
     btn.innerText = "Load Wager Items";
     btn.onclick = renderWager;
@@ -669,7 +690,6 @@ function createLoadButtons() {
 
   if (targetSide && !document.getElementById("load-target-btn")) {
     const btn = document.createElement("button");
-    btn.id = "load-target-btn";
     btn.className = "theme-btn";
     btn.innerText = "Load Target Items";
     btn.onclick = renderTarget;
@@ -677,16 +697,12 @@ function createLoadButtons() {
   }
 }
 
-/* ---------- GLOBAL SYNC HOOK ---------- */
+/* ---------- REFRESH HOOK ---------- */
 
-// call this after inventory changes anywhere in your game
 function refreshUpgrader() {
   renderWager();
 }
 
-/* ---------- SAFE INIT ---------- */
+/* ---------- INIT ---------- */
 
-window.addEventListener("load", () => {
-  initUpgrader();
-});
-
+window.addEventListener("load", initUpgrader);
