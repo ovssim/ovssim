@@ -513,3 +513,97 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 #upgrade-info {
   margin: 10px 0;
 }
+
+/* ================= UPGRADER POLISH (ADDON) ================= */
+
+/* layout improvement */
+#upgrader-section {
+  border: 2px solid rgba(0, 255, 255, 0.25);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.08);
+}
+
+/* side panels cleaner spacing */
+.upgrader-side {
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+/* item rows (make them feel clickable like gambling sites) */
+.upgrade-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+}
+
+.upgrade-item:active {
+  transform: scale(0.98);
+}
+
+/* highlight hover selection */
+.upgrade-item:hover {
+  background: rgba(0, 255, 255, 0.18);
+  box-shadow: 0 0 10px rgba(0,255,255,0.2);
+}
+
+/* upgrade wheel glow upgrade */
+#upgrade-wheel {
+  background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 70%);
+  border: 2px solid rgba(0,255,255,0.3);
+  box-shadow:
+    0 0 25px rgba(0,255,255,0.15),
+    inset 0 0 25px rgba(0,0,0,0.5);
+}
+
+/* center glow ring feel */
+#upgrade-wheel::after {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 60px rgba(0,255,255,0.08);
+}
+
+/* chance text glow */
+#upgrade-chance {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0,255,255,0.6);
+}
+
+/* value display styling */
+#upgrade-value {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* upgrade button emphasis */
+#upgrade-btn {
+  margin-top: 10px;
+  padding: 12px 30px;
+  font-size: 18px;
+  background: linear-gradient(135deg, #00ffff, #00bfa5);
+  box-shadow: 0 0 20px rgba(0,255,255,0.25);
+}
+
+#upgrade-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 30px rgba(0,255,255,0.4);
+}
+
+/* layout improvement for mobile / spacing */
+@media (max-width: 800px) {
+  #upgrader-ui {
+    flex-direction: column;
+  }
+
+  .upgrader-side {
+    width: 100%;
+  }
+}
