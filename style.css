@@ -546,113 +546,82 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   box-shadow: 0 0 10px rgba(0,255,255,0.2);
 }
 
-/* upgrade wheel glow upgrade */
+/* ================= UPGRADE WHEEL (CIRCLE FIX) ================= */
+
 #upgrade-wheel {
+  width: 260px;
+  height: 260px;
+  display: block;
+  margin: 20px auto;
+  border-radius: 50%;
+
+  /* IMPORTANT: forces circle clipping */
+  overflow: hidden;
+
+  /* background glow */
   background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 70%);
-  border: 2px solid rgba(0,255,255,0.3);
+  border: 3px solid rgba(0, 255, 255, 0.35);
+
   box-shadow:
-    0 0 25px rgba(0,255,255,0.15),
-    inset 0 0 25px rgba(0,0,0,0.5);
+    0 0 25px rgba(0,255,255,0.25),
+    inset 0 0 25px rgba(0,0,0,0.6);
 }
 
-/* center glow ring feel */
-#upgrade-wheel::after {
+/* OUTER RING GLOW */
+#upgrade-wheel-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 20px auto;
+  border-radius: 50%;
+}
+
+/* glowing ring effect */
+#upgrade-wheel-wrapper::before {
   content: "";
   position: absolute;
-  width: 320px;
-  height: 320px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  inset: -10px;
   border-radius: 50%;
-  pointer-events: none;
-  box-shadow: 0 0 60px rgba(0,255,255,0.08);
+  background: conic-gradient(
+    from 0deg,
+    rgba(0,255,255,0.3),
+    rgba(0,255,150,0.1),
+    rgba(255,0,0,0.2),
+    rgba(0,255,255,0.3)
+  );
+  filter: blur(12px);
+  z-index: -1;
+  opacity: 0.6;
 }
 
-/* chance text glow */
-#upgrade-chance {
-  font-size: 20px;
-  font-weight: bold;
-  color: #00ffff;
-  text-shadow: 0 0 10px rgba(0,255,255,0.6);
+/* CENTER POINTER LINE */
+#upgrade-wheel-wrapper::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  transform: translateX(-50%);
+  background: gold;
+  box-shadow: 0 0 12px gold, 0 0 25px orange;
+  z-index: 5;
 }
 
-/* value display styling */
-#upgrade-value {
-  font-size: 14px;
-  opacity: 0.85;
+#upgrade-wheel-wrapper {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin: 20px auto;
 }
 
-/* upgrade button emphasis */
-#upgrade-btn {
-  margin-top: 10px;
-  padding: 12px 30px;
-  font-size: 18px;
-  background: linear-gradient(135deg, #00ffff, #00bfa5);
-  box-shadow: 0 0 20px rgba(0,255,255,0.25);
-}
-
-#upgrade-btn:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 30px rgba(0,255,255,0.4);
-}
-
-/* layout improvement for mobile / spacing */
-@media (max-width: 800px) {
-  #upgrader-ui {
-    flex-direction: column;
-  }
-
-  .upgrader-side {
-    width: 100%;
-  }
-}
-
-.upgrade-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px;
-  margin: 6px 0;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.05);
-  cursor: pointer;
-  transition: 0.15s;
-}
-
-.upgrade-item img {
-  width: 45px;
-  height: 45px;
-  object-fit: contain;
-}
-
-.upgrade-item:hover {
-  background: rgba(0,255,255,0.12);
-}
-
-.upgrade-item.selected {
-  background: rgba(0,255,255,0.25);
-  box-shadow: 0 0 10px rgba(0,255,255,0.3);
-}
-
-/* make scroll actually feel like a shop */
-.upgrader-side {
-  max-height: 350px;
-  overflow-y: auto;
-}
-
-/* nicer text block */
-.upgrade-meta {
-  display: flex;
-  flex-direction: column;
-  font-size: 13px;
-}
-
-#upgrade-wheel {
-  width: 220px;
-  height: 220px;
-  display: block;
-  margin: 10px auto;
-  background: #111;
-  border-radius: 10px;
+#upgrade-pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 40px;
+  background: gold;
+  box-shadow: 0 0 10px gold;
 }
