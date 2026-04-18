@@ -670,6 +670,9 @@
         { "name": "Radiant Rivalry Machina", "rarity": "mythical", "price": 3286.95, "weight": 500, "image": "images/items/radmachina.png" },
         { "name": "Radiant Legacy Festive Scattergun", "rarity": "mythical", "price": 3489.23, "weight": 700, "image": "images/items/festunus.png" },
         { "name": "Soulful Slice Tomb Wrapper", "rarity": "mythical", "price": 300.77, "weight": 7500, "image": "images/items/tombslicre.png" },
+        { "name": "Lumbricus Lid", "rarity": "legendary", "price": 4.29, "weight": 9000, "image": "images/items/lumblid.png" },
+        { "name": "Pumpkin Moon Honcho's Headgear", "rarity": "mythical", "price": 1287.43, "weight": 4000, "image": "images/items/pmhh2.png" },
+        { "name": "Beaming Beacon Flak Jack", "rarity": "mythical", "price": 1904.00, "weight": 2000, "image": "images/items/bbflak.png" },
         { "name": "Cosmic Constellations", "rarity": "mythical", "price": 84000.00, "weight": 10, "image": "images/items/cosmicconstellation.png" }
       ]
     },
@@ -681,10 +684,10 @@
       "items": [
         { "name": "Spine-Chilling Skull", "rarity": "legendary", "price": 158.32, "weight": 7000, "image": "images/items/chillskull.png" },
         { "name": "Abduction Hardy Laurel", "rarity": "mythical", "price": 435.32, "weight": 1500, "image": "images/items/frosharl.png" },
-        { "name": "Voltiac Hat Protector Skull Island Topper", "rarity": "mythical", "price": 823.00, "weight": 1200, "image": "images/items/akit.png" },
+        { "name": "Violet Vortex Skull Island Topper", "rarity": "mythical", "price": 823.00, "weight": 1200, "image": "images/items/akit.png" },
         { "name": "Atomic Accursed Apparition", "rarity": "mythical", "price": 732.00, "weight": 4000, "image": "images/items/vhpaa.png" },
         { "name": "Neutron Star Parasight", "rarity": "mythical", "price": 1230.00, "weight": 1000, "image": "images/items/atompara.png" },
-        { "name": "Nebula Mannhattan Project", "rarity": "mythical", "price": 11333.00, "weight": 20, "image": "images/items/nsmp.png" },
+        { "name": "Nebula Haunted Hat", "rarity": "mythical", "price": 11333.00, "weight": 20, "image": "images/items/nsmp.png" },
         { "name": "Scrap", "rarity": "legendary", "price": 0.01, "weight": 10000, "image": "images/items/scrap.png" }
       ]
     },
