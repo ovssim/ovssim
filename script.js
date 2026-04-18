@@ -458,6 +458,7 @@ function adminGiveItem() {
 /* =========================
    UPGRADER SYSTEM 
    ========================= */
+console.log("UPGRADER LOADED");
 
 let Upgrader = {
   cases: [],
