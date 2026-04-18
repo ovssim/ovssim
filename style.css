@@ -460,3 +460,56 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 .cyan-btn:hover {
   filter: brightness(1.2);
 }
+
+/* ================= UPGRADER ================= */
+#upgrader-section {
+  margin: 50px auto;
+  max-width: 900px;
+  padding: 20px;
+  background: rgba(25,25,30,0.85);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+}
+
+#upgrader-ui {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.upgrader-side {
+  width: 45%;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 12px;
+  min-height: 120px;
+}
+
+.upgrader-side h3 {
+  margin-bottom: 10px;
+}
+
+.upgrade-item {
+  padding: 5px;
+  margin: 5px 0;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.upgrade-item:hover {
+  background: rgba(0,255,255,0.15);
+}
+
+#upgrade-wheel {
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
+  display: block;
+  border-radius: 50%;
+}
+
+#upgrade-info {
+  margin: 10px 0;
+}
