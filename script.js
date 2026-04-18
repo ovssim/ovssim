@@ -789,3 +789,5 @@ function createLoadButtons() {
 window.addEventListener("load", () => {
   initUpgrader();
 });
+
+document.getElementById("chance-fill").style.width = chance + "%";
