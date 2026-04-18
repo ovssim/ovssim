@@ -27,9 +27,9 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   animation: neonPulse 1.5s ease-in-out infinite alternate;
 }
 @keyframes neonPulse {
-  0% { text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff4d4d; }
-  50% { text-shadow: 0 0 15px #ff4d4d, 0 0 30px #ff6666, 0 0 50px #ff8080; }
-  100% { text-shadow: 0 0 25px #ff6666, 0 0 50px #ff8080, 0 0 70px #ff9999; }
+  0% { text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #00ffff; }
+  50% { text-shadow: 0 0 15px #ffffff, 0 0 30px #fff00f, 0 0 50px #ff0000; }
+  100% { text-shadow: 0 0 25px #f00ff0, 0 0 50px #00ff0f, 0 0 70px #00f0ff; }
 }
 
 /* ================= BUTTON THEME ================= */
