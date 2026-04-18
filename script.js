@@ -453,142 +453,138 @@ function adminGiveItem() {
     adminMode = false;
   };
 }
-// ===================== UPGRADER ADDON =====================
+// ======================= SAFE UPGRADER ADDON =======================
 
-let ALL_ITEMS = [];
+let ALL_UPGRADE_ITEMS = [];
 let selectedWager = [];
 let selectedTarget = [];
 let upgrading = false;
 
-// CHANGE THIS if your inventory is stored differently
-let INVENTORY = window.inventory || [];
-
-const wagerBox = document.getElementById("wager-list");
-const targetBox = document.getElementById("target-list");
-
-const chanceText = document.getElementById("upgrade-chance");
-const valueText = document.getElementById("upgrade-value");
-
-const upgradeBtn = document.getElementById("upgrade-btn");
-const wheel = document.getElementById("upgrade-wheel");
-const ctx = wheel.getContext("2d");
-
-// ================= LOAD CASE ITEMS =================
-async function loadItems() {
+// ======================= LOAD ALL SITE ITEMS =======================
+async function loadUpgradeItems() {
   const res = await fetch("cases.json");
   const data = await res.json();
 
-  ALL_ITEMS = [];
+  ALL_UPGRADE_ITEMS = [];
 
   data.cases.forEach(c => {
     c.items.forEach(i => {
-      ALL_ITEMS.push({
-        ...i,
-        sourceCase: c.name
-      });
+      ALL_UPGRADE_ITEMS.push(i);
     });
   });
 
-  renderWager();
   renderTargets();
+  hookWagerClicks(); // uses your existing inventory
 }
 
-// ================= RENDER WAGER =================
-function renderWager() {
-  wagerBox.innerHTML = "";
+// ======================= WAGER (USES YOUR EXISTING BACKPACK) =======================
+function hookWagerClicks() {
+  const items = document.querySelectorAll("#inventory .inv-item");
 
-  INVENTORY.forEach((item, idx) => {
-    const el = createItemCard(item, () => {
-      toggleSelect(selectedWager, item);
+  items.forEach(el => {
+    if (el.dataset.upgradeHooked) return;
+    el.dataset.upgradeHooked = "true";
+
+    el.addEventListener("click", () => {
+      const name = el.querySelector("img")?.src;
+      const priceText = el.innerText.match(/\$?([\d.]+)/);
+
+      if (!priceText) return;
+
+      const item = {
+        name: el.dataset.name || "item",
+        price: parseFloat(priceText[1]),
+        image: el.querySelector("img")?.src || "",
+        rarity: el.dataset.rarity || "common"
+      };
+
+      toggle(selectedWager, item);
       updateUI();
     });
-
-    if (selectedWager.includes(item)) el.classList.add("selected");
-
-    wagerBox.appendChild(el);
   });
 }
 
-// ================= RENDER TARGETS (FIXED) =================
+// ======================= TARGET LIST =======================
 function renderTargets() {
-  targetBox.innerHTML = "";
+  const box = document.getElementById("target-list");
+  if (!box) return;
 
-  // "infinite style": duplicate list so it feels endless scroll
-  const pool = [...ALL_ITEMS, ...ALL_ITEMS, ...ALL_ITEMS];
+  box.innerHTML = "";
 
-  pool.forEach((item, idx) => {
-    const el = createItemCard(item, () => {
-      toggleSelect(selectedTarget, item);
+  const pool = [...ALL_UPGRADE_ITEMS, ...ALL_UPGRADE_ITEMS]; // "infinite feel"
+
+  pool.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "upgrade-item " + item.rarity;
+
+    div.innerHTML = `
+      <img src="${item.image}">
+      <div>
+        <div>${item.name}</div>
+        <small>$${item.price}</small>
+      </div>
+    `;
+
+    div.onclick = () => {
+      toggle(selectedTarget, item);
       updateUI();
-    });
+    };
 
-    if (selectedTarget.includes(item)) el.classList.add("selected");
+    if (selectedTarget.includes(item)) {
+      div.style.outline = "2px solid cyan";
+    }
 
-    targetBox.appendChild(el);
+    box.appendChild(div);
   });
 }
 
-// ================= ITEM CARD =================
-function createItemCard(item, onClick) {
-  const div = document.createElement("div");
-  div.className = "upgrade-item " + item.rarity;
+// ======================= TOGGLE =======================
+function toggle(arr, item) {
+  const i = arr.findIndex(x => x.name === item.name && x.price === item.price);
 
-  div.innerHTML = `
-    <img src="${item.image}" style="width:40px;height:40px;object-fit:contain;">
-    <div>
-      <div>${item.name}</div>
-      <small>$${item.price.toFixed(2)}</small>
-    </div>
-  `;
-
-  div.onclick = onClick;
-  return div;
-}
-
-// ================= SELECT LOGIC =================
-function toggleSelect(arr, item) {
-  const index = arr.indexOf(item);
-
-  if (index > -1) arr.splice(index, 1);
+  if (i > -1) arr.splice(i, 1);
   else arr.push(item);
 }
 
-// ================= CALCULATION =================
-function getValue(arr) {
-  return arr.reduce((sum, i) => sum + i.price, 0);
+// ======================= VALUE CALC =======================
+function sum(arr) {
+  return arr.reduce((a, b) => a + (b.price || 0), 0);
 }
 
+// ======================= UI UPDATE =======================
 function updateUI() {
-  const wagerValue = getValue(selectedWager);
-  const targetValue = getValue(selectedTarget);
+  const wagerValue = sum(selectedWager);
+  const targetValue = sum(selectedTarget);
+
+  const chanceEl = document.getElementById("upgrade-chance");
+  const valueEl = document.getElementById("upgrade-value");
 
   if (!wagerValue || !targetValue) {
-    chanceText.innerText = "Chance: 0%";
-    valueText.innerText = "0 ⛃ → 0 ⛃";
+    chanceEl.innerText = "Chance: 0%";
+    valueEl.innerText = "0 → 0";
     return;
   }
 
   let chance = (wagerValue * 0.95 / targetValue) * 100;
 
-  // BLOCK impossible upgrades
   if (chance > 100) {
-    chanceText.innerText = "Upgrade Not Allowed (Too Risky)";
-    upgradeBtn.disabled = true;
+    chanceEl.innerText = "Upgrade Not Allowed (Too High Target)";
+    document.getElementById("upgrade-btn").disabled = true;
     return;
   }
 
-  upgradeBtn.disabled = false;
+  document.getElementById("upgrade-btn").disabled = false;
 
-  chanceText.innerText = `Chance: ${chance.toFixed(2)}%`;
-  valueText.innerText = `${wagerValue.toFixed(2)} ⛃ → ${targetValue.toFixed(2)} ⛃`;
+  chanceEl.innerText = `Chance: ${chance.toFixed(2)}%`;
+  valueEl.innerText = `${wagerValue.toFixed(2)} ⛃ → ${targetValue.toFixed(2)} ⛃`;
 }
 
-// ================= UPGRADE ACTION =================
-upgradeBtn.onclick = async () => {
+// ======================= UPGRADE BUTTON =======================
+document.getElementById("upgrade-btn").onclick = async () => {
   if (upgrading) return;
 
-  const wagerValue = getValue(selectedWager);
-  const targetValue = getValue(selectedTarget);
+  const wagerValue = sum(selectedWager);
+  const targetValue = sum(selectedTarget);
 
   if (!wagerValue || !targetValue) return;
 
@@ -597,68 +593,65 @@ upgradeBtn.onclick = async () => {
   if (chance > 100) return;
 
   upgrading = true;
-  upgradeBtn.disabled = true;
+  document.getElementById("upgrade-btn").disabled = true;
 
-  // cooldown + spin animation
-  spinWheel(chance);
-
-  await new Promise(r => setTimeout(r, 3500));
+  await spinWheel(chance);
 
   const roll = Math.random() * 100;
 
   if (roll <= chance) {
     alert("UPGRADE SUCCESS!");
-
-    INVENTORY = INVENTORY.filter(i => !selectedWager.includes(i));
-    INVENTORY.push(...selectedTarget);
   } else {
     alert("UPGRADE FAILED!");
-    INVENTORY = INVENTORY.filter(i => !selectedWager.includes(i));
   }
 
   selectedWager = [];
   selectedTarget = [];
 
-  renderWager();
   renderTargets();
   updateUI();
 
   upgrading = false;
-  upgradeBtn.disabled = false;
+  document.getElementById("upgrade-btn").disabled = false;
 };
 
-// ================= WHEEL SPIN (PERIMETER STYLE) =================
-let rotation = 0;
-
+// ======================= SPIN ANIMATION =======================
 function spinWheel(chance) {
-  let targetAngle = (chance / 100) * 360;
+  return new Promise(resolve => {
+    const canvas = document.getElementById("upgrade-wheel");
+    if (!canvas) return resolve();
 
-  let start = performance.now();
+    const ctx = canvas.getContext("2d");
 
-  function animate(t) {
-    let progress = Math.min((t - start) / 3000, 1);
+    let start = performance.now();
 
-    rotation = progress * 1440 + targetAngle;
+    function frame(t) {
+      let p = Math.min((t - start) / 2500, 1);
 
-    ctx.clearRect(0, 0, wheel.width, wheel.height);
+      const rotation = p * 1500;
 
-    ctx.save();
-    ctx.translate(150, 150);
-    ctx.rotate((rotation * Math.PI) / 180);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.beginPath();
-    ctx.arc(0, 0, 120, 0, Math.PI * 2);
-    ctx.strokeStyle = "gold";
-    ctx.lineWidth = 8;
-    ctx.stroke();
+      ctx.save();
+      ctx.translate(150, 150);
+      ctx.rotate((rotation * Math.PI) / 180);
 
-    ctx.restore();
+      // outer ring spin
+      ctx.beginPath();
+      ctx.arc(0, 0, 120, 0, Math.PI * 2);
+      ctx.strokeStyle = "gold";
+      ctx.lineWidth = 8;
+      ctx.stroke();
 
-    if (progress < 1) requestAnimationFrame(animate);
-  }
+      ctx.restore();
 
-  requestAnimationFrame(animate);
+      if (p < 1) requestAnimationFrame(frame);
+      else resolve();
+    }
+
+    requestAnimationFrame(frame);
+  });
 }
 
-// ================= INIT =================
-loadItems();
+// ======================= INIT =======================
+loadUpgradeItems();
