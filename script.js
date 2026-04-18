@@ -456,7 +456,7 @@ function adminGiveItem() {
 
 
 /* =========================
-   UPGRADER SYSTEM 
+   UPGRADER SYSTEM
    ========================= */
 
 let Upgrader = {
@@ -466,32 +466,30 @@ let Upgrader = {
   upgrading: false
 };
 
-/* ---------- INIT LOAD ---------- */
+/* ---------- INIT ---------- */
 
-async function initUpgrader() {
-  try {
-    const res = await fetch("/data/cases.json");
-    const data = await res.json();
-
-    Upgrader.cases = data.cases || [];
-
-    renderWager();
-    renderTarget();
-    updateUI();
-
-  } catch (err) {
-    console.error("Failed to load cases.json:", err);
-  }
+function initUpgrader() {
+  createLoadButtons();
+  syncUpgraderData();
+  renderWager();
+  renderTarget();
+  updateUI();
 }
 
-/* ---------- LIVE INVENTORY LINK ---------- */
+/* ---------- KEEP DATA SYNCED ---------- */
+
+function syncUpgraderData() {
+  // pull from main game state
+  Upgrader.cases = cases || [];
+}
+
+/* ---------- INVENTORY ACCESS ---------- */
 
 function getInventory() {
-  
-  return inventory;
+  return inventory || [];
 }
 
-/* ---------- ITEM CARD ---------- */
+/* ---------- ITEM CARD UI ---------- */
 
 function itemCard(item) {
   return `
@@ -517,7 +515,7 @@ function getAllSiteItems() {
   return all;
 }
 
-/* ---------- WAGER LIST ---------- */
+/* ---------- WAGER (INVENTORY ITEMS) ---------- */
 
 function renderWager() {
   const box = document.getElementById("wager-list");
@@ -527,12 +525,12 @@ function renderWager() {
 
   const inv = getInventory();
 
-  if (inv.length === 0) {
+  if (!inv.length) {
     box.innerHTML = "<small>No items in inventory</small>";
     return;
   }
 
-  inv.forEach((item, index) => {
+  inv.forEach(item => {
     const div = document.createElement("div");
     div.innerHTML = itemCard(item);
 
@@ -545,7 +543,7 @@ function renderWager() {
   });
 }
 
-/* ---------- TARGET LIST ---------- */
+/* ---------- TARGET (CASE ITEMS) ---------- */
 
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -555,8 +553,8 @@ function renderTarget() {
 
   const items = getAllSiteItems();
 
-  if (items.length === 0) {
-    box.innerHTML = "<small>No case data loaded</small>";
+  if (!items.length) {
+    box.innerHTML = "<small>No cases loaded</small>";
     return;
   }
 
@@ -573,7 +571,7 @@ function renderTarget() {
   });
 }
 
-/* ---------- CHANCE ---------- */
+/* ---------- CHANCE CALC ---------- */
 
 function calculateChance(w, t) {
   if (!w || !t) return 0;
@@ -586,7 +584,7 @@ function calculateChance(w, t) {
   return chance;
 }
 
-/* ---------- UI ---------- */
+/* ---------- UI UPDATE ---------- */
 
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
@@ -609,7 +607,7 @@ function updateUI() {
   valueBox.innerText = `${w.price} ⛃ → ${t.price} ⛃`;
 }
 
-/* ---------- UPGRADE ---------- */
+/* ---------- UPGRADE ACTION ---------- */
 
 document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (Upgrader.upgrading) return;
@@ -665,7 +663,7 @@ function createLoadButtons() {
     const btn = document.createElement("button");
     btn.id = "load-wager-btn";
     btn.className = "theme-btn";
-    btn.innerText = "Reload Wager Items";
+    btn.innerText = "Load Wager Items";
     btn.onclick = renderWager;
     wagerSide.prepend(btn);
   }
@@ -674,15 +672,20 @@ function createLoadButtons() {
     const btn = document.createElement("button");
     btn.id = "load-target-btn";
     btn.className = "theme-btn";
-    btn.innerText = "Reload Target Items";
+    btn.innerText = "Load Target Items";
     btn.onclick = renderTarget;
     targetSide.prepend(btn);
   }
 }
 
-/* ---------- START ---------- */
+/* ---------- GLOBAL SYNC HOOK ---------- */
+
+function refreshUpgrader() {
+  renderWager();
+}
+
+/* ---------- SAFE INIT ---------- */
 
 window.addEventListener("load", () => {
-  createLoadButtons();
   initUpgrader();
 });
