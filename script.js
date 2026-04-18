@@ -16,12 +16,14 @@ const ADMIN_PASSWORD = "Trading";
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("admin-give-btn").onclick = adminGiveItem;
-  document.getElementById("sort-inv-btn").onclick = sortInventoryByPriceDesc;
+const sortBtn = document.getElementById("sort-inv-btn");
+if (sortBtn) sortBtn.onclick = sortInventoryByPriceDesc;
   updateCoins();
   renderInventory();
   renderTopDrops();
   loadCases();
   populateCoinflipDropdown();
+  updateBackpackValue();
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
@@ -73,6 +75,7 @@ function sellItem(index) {
   updateCoins();
   renderInventory();
   populateCoinflipDropdown();
+  updateBackpackValue();
 }
 
 function sellAllItems() {
@@ -84,7 +87,17 @@ function sellAllItems() {
   updateCoins();
   renderInventory();
   populateCoinflipDropdown();
+  updateBackpackValue();
   alert(`Scrapped Backpack for ${total.toFixed(2)} coins.`);
+}
+
+function updateBackpackValue() {
+  const total = inventory.reduce((sum, item) => sum + item.price, 0);
+
+  const el = document.getElementById("backpack-value");
+  if (el) {
+    el.textContent = `Backpack Value: ⛃ ${total.toFixed(2)}`;
+  }
 }
 
 // ===================== SORT INVENTORY =====================
@@ -92,6 +105,7 @@ function sortInventoryByPriceDesc() {
   inventory.sort((a, b) => b.price - a.price);
   saveInventory();
   renderInventory();
+  updateBackpackValue();
 }
 
 // ===================== SHOW CASE ITEMS =====================
@@ -248,9 +262,9 @@ function selectCase(id) {
   display.innerHTML = `<img src="${currentCase.image}"><span>${currentCase.name} (${currentCase.price.toFixed(2)} coins)</span>`;
 }
 
-// ===================== OPEN CASES (CASE LOCK ADDED ONLY) =====================
+// ===================== OPEN CASES =====================
 function openCases(count) {
-  if (isSpinning) return; // 🔒 CASE LOCK
+  if (isSpinning) return; // CASE LOCK
   if (!currentCase) return;
 
   isSpinning = true;
@@ -344,7 +358,7 @@ function spinToItem(winningItem) {
 
     showWinner(winningItem);
 
-    // 🔓 unlock case after spin
+    // unlock case after spin
     setTimeout(() => {
       isSpinning = false;
     }, 200);
@@ -382,6 +396,7 @@ function showWinner(item) {
   renderInventory();
   renderTopDrops();
   populateCoinflipDropdown();
+  updateBackpackValue();
 
   const winnerBox = document.getElementById("winner-name");
   if (winnerBox) {
@@ -427,6 +442,7 @@ function adminGiveItem() {
       saveInventory();
       renderInventory();
       populateCoinflipDropdown();
+      updateBackpackValue();
       alert(`Traded ${item.name} for ${item.price.toFixed(2)} coins`);
     };
     itemsContainer.appendChild(div);
