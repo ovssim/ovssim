@@ -16,6 +16,7 @@ const ADMIN_PASSWORD = "Trading";
 // ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("admin-give-btn").onclick = adminGiveItem;
+  document.getElementById("sort-inv-btn").onclick = sortInventoryByPriceDesc;
   updateCoins();
   renderInventory();
   renderTopDrops();
@@ -84,6 +85,13 @@ function sellAllItems() {
   renderInventory();
   populateCoinflipDropdown();
   alert(`Scrapped Backpack for ${total.toFixed(2)} coins.`);
+}
+
+// ===================== SORT INVENTORY =====================
+function sortInventoryByPriceDesc() {
+  inventory.sort((a, b) => b.price - a.price);
+  saveInventory();
+  renderInventory();
 }
 
 // ===================== SHOW CASE ITEMS =====================
