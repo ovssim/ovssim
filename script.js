@@ -572,7 +572,7 @@ function highlightSelection(container, el) {
 }
 
 /* ================================
-   CHANCE SYSTEM (YOUR RULES)
+   CHANCE SYSTEM 
    ================================ */
 
 function calculateChance(wager, target) {
@@ -632,7 +632,7 @@ function bindUpgradeButton() {
 }
 
 /* ================================
-   UPGRADE LOGIC + SPINNER
+   UPGRADE LOGIC
    ================================ */
 
 function startUpgrade(chance) {
@@ -658,7 +658,7 @@ function startUpgrade(chance) {
 }
 
 /* ================================
-   WHEEL SPIN (PERIMETER STYLE FEEL)
+   WHEEL SPIN 
    ================================ */
 
 function spinWheel(success) {
