@@ -647,3 +647,12 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   flex-direction: column;
   font-size: 13px;
 }
+
+#upgrade-wheel {
+  width: 220px;
+  height: 220px;
+  display: block;
+  margin: 10px auto;
+  background: #111;
+  border-radius: 10px;
+}
