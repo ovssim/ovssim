@@ -20,9 +20,9 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   text-shadow:
     0 0 5px #ff0000,
     0 0 10px #00ffff,
-    0 0 20px #ff4d4d,
-    0 0 30px #ff4d4d,
-    0 0 40px #ff6666;
+    0 0 20px #00ff0f,
+    0 0 30px #00f0ff,
+    0 0 40px #00fff0;
   margin-bottom: 20px;
   animation: neonPulse 1.5s ease-in-out infinite alternate;
 }
