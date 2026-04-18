@@ -423,3 +423,14 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   filter: grayscale(100%) brightness(60%);
   opacity: 0.5;
 }
+
+.cyan-btn {
+  background: linear-gradient(135deg, #00eaff, #00bcd4);
+  color: black;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 234, 255, 0.6);
+}
+
+.cyan-btn:hover {
+  filter: brightness(1.2);
+}
