@@ -667,7 +667,7 @@
         { "name": "Strange Corpse Carrier", "rarity": "strange", "price": 21.36, "weight": 11500, "image": "images/items/corpsecarrier.png" },
         { "name": "Strange Aurora Skies Cranial Cowl", "rarity": "mythical", "price": 2483.00, "weight": 1000, "image": "images/items/aurskicranc.png" },
         { "name": "Icestruck Ripped Rider", "rarity": "mythical", "price": 2673.36, "weight": 2000, "image": "images/items/iceripri.png" },
-        { "name": "Radiant Legacy Machina", "rarity": "mythical", "price": 3286.95, "weight": 500, "image": "images/items/radmachina.png" },
+        { "name": "Radiant Rivalry Machina", "rarity": "mythical", "price": 3286.95, "weight": 500, "image": "images/items/radmachina.png" },
         { "name": "Radiant Legacy Festive Scattergun", "rarity": "mythical", "price": 3489.23, "weight": 700, "image": "images/items/festunus.png" },
         { "name": "Soulful Slice Tomb Wrapper", "rarity": "mythical", "price": 300.77, "weight": 7500, "image": "images/items/tombslicre.png" },
         { "name": "Cosmic Constellations", "rarity": "mythical", "price": 84000.00, "weight": 10, "image": "images/items/cosmicconstellation.png" }
