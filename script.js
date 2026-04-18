@@ -456,25 +456,37 @@ function adminGiveItem() {
 
 // ===================== UPGRADER SYSTEM =====================
 
-let wagerItems = [];   // inventory indexes
-let targetItems = [];   // global item pool indexes
+let wagerItems = [];     // inventory indexes
+let targetItems = [];    // catalog IDs (strings)
 let isUpgrading = false;
-let upgradeMode = "low"; // "low" or "high"
 
 // --------------------- INIT ---------------------
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("upgrade-btn");
   if (btn) btn.onclick = runUpgrade;
 
-  renderUpgraderLists();
-  updateUpgradeUI();
+  // doomzics wait a bit to ensure cases are loaded
+  setTimeout(() => {
+    renderUpgraderLists();
+    updateUpgradeUI();
+  }, 300);
 });
 
-// --------------------- BUILD ITEM POOL ---------------------
+// --------------------- ITEM POOL ---------------------
 function getAllItems() {
-  let all = [];
-  cases.forEach(c => c.items.forEach(i => all.push(i)));
-  return all;
+  let pool = [];
+  if (!cases) return pool;
+
+  cases.forEach(c => {
+    c.items.forEach(item => pool.push(item));
+  });
+
+  return pool;
+}
+
+// --------------------- UNIQUE ID SYSTEM ---------------------
+function makeId(item, i) {
+  return `${item.name}-${item.price}-${i}`;
 }
 
 // --------------------- RENDER UI ---------------------
@@ -489,7 +501,7 @@ function renderUpgraderLists() {
 
   const allItems = getAllItems();
 
-  // ========== WAGER ==========
+  // ========== WAGER bp ==========
   inventory.forEach((item, i) => {
     const div = document.createElement("div");
     div.className = "upgrade-item";
@@ -522,10 +534,12 @@ function renderUpgraderLists() {
 
   // ========== TARGET ==========
   allItems.forEach((item, i) => {
+    const id = makeId(item, i);
+
     const div = document.createElement("div");
     div.className = "upgrade-item";
 
-    if (targetItems.includes(i)) div.classList.add("selected");
+    if (targetItems.includes(id)) div.classList.add("selected");
 
     div.innerHTML = `
       <img src="${item.image}">
@@ -538,10 +552,10 @@ function renderUpgraderLists() {
     div.onclick = () => {
       if (isUpgrading) return;
 
-      if (targetItems.includes(i)) {
-        targetItems = targetItems.filter(x => x !== i);
+      if (targetItems.includes(id)) {
+        targetItems = targetItems.filter(x => x !== id);
       } else {
-        targetItems.push(i);
+        targetItems.push(id);
       }
 
       renderUpgraderLists();
@@ -556,19 +570,22 @@ function renderUpgraderLists() {
 function getUpgradeChance() {
   if (wagerItems.length === 0 || targetItems.length === 0) return 0;
 
-  const wagerValue = wagerItems.reduce((s, i) => s + inventory[i].price, 0);
-
   const allItems = getAllItems();
-  const targetValue = targetItems.reduce((s, i) => s + allItems[i].price, 0);
+
+  const wagerValue = wagerItems.reduce((sum, i) => {
+    return sum + (inventory[i]?.price || 0);
+  }, 0);
+
+  const targetValue = targetItems.reduce((sum, id) => {
+    const item = allItems.find((x, i) => makeId(x, i) === id);
+    return sum + (item ? item.price : 0);
+  }, 0);
 
   if (targetValue <= 0) return 0;
 
   let chance = (wagerValue / targetValue) * 100;
 
-  // cap system
   chance = Math.min(85, chance);
-
-  // balance nerf
   chance *= 0.95;
 
   return Math.max(1, chance);
@@ -581,13 +598,21 @@ function updateUpgradeUI() {
   const chanceEl = document.getElementById("upgrade-chance");
   const valueEl = document.getElementById("upgrade-value");
 
-  if (chanceEl) chanceEl.textContent = `Chance: ${chance.toFixed(2)}%`;
+  if (chanceEl) {
+    chanceEl.textContent = `Chance: ${chance.toFixed(2)}%`;
+  }
 
   if (valueEl) {
     const allItems = getAllItems();
 
-    const wVal = wagerItems.reduce((s, i) => s + inventory[i].price, 0);
-    const tVal = targetItems.reduce((s, i) => s + allItems[i].price, 0);
+    const wVal = wagerItems.reduce((sum, i) => {
+      return sum + (inventory[i]?.price || 0);
+    }, 0);
+
+    const tVal = targetItems.reduce((sum, id) => {
+      const item = allItems.find((x, i) => makeId(x, i) === id);
+      return sum + (item ? item.price : 0);
+    }, 0);
 
     valueEl.textContent = `${wVal.toFixed(2)} ⛃ → ${tVal.toFixed(2)} ⛃`;
   }
@@ -595,14 +620,7 @@ function updateUpgradeUI() {
   drawWheel(chance);
 }
 
-// --------------------- MODE SWITCH (optional hotkey) ---------------------
-document.addEventListener("keydown", (e) => {
-  if (e.key === "m") {
-    upgradeMode = upgradeMode === "low" ? "high" : "low";
-  }
-});
-
-// --------------------- WHEEL DRAW ---------------------
+// --------------------- WHEEL ---------------------
 function drawWheel(chance) {
   const canvas = document.getElementById("upgrade-wheel");
   if (!canvas) return;
@@ -620,7 +638,6 @@ function drawWheel(chance) {
 
   const segments = 100;
   const winRange = Math.floor((chance / 100) * segments);
-
   const step = (Math.PI * 2) / segments;
 
   for (let i = 0; i < segments; i++) {
@@ -641,7 +658,7 @@ function drawWheel(chance) {
   ctx.fill();
 }
 
-// --------------------- MAIN UPGRADE LOGIC ---------------------
+// --------------------- UPGRADE ---------------------
 function runUpgrade() {
   if (isUpgrading) return;
   if (wagerItems.length === 0 || targetItems.length === 0) return;
@@ -651,18 +668,18 @@ function runUpgrade() {
   const chance = getUpgradeChance();
   const roll = Math.random() * 100;
 
-  animateSpin(chance, roll, () => {
-    const success = roll <= chance;
+  const allItems = getAllItems();
 
-    const allItems = getAllItems();
+  setTimeout(() => {
+    const success = roll <= chance;
 
     // remove wager items
     inventory = inventory.filter((_, i) => !wagerItems.includes(i));
 
+    // give target items on win
     if (success) {
-      // give target items
-      targetItems.forEach(i => {
-        const item = allItems[i];
+      targetItems.forEach(id => {
+        const item = allItems.find((x, i) => makeId(x, i) === id);
         if (item) inventory.push({ ...item });
       });
     }
@@ -678,57 +695,5 @@ function runUpgrade() {
     isUpgrading = false;
 
     alert(success ? "UPGRADE SUCCESS!" : "UPGRADE FAILED!");
-  });
-}
-
-// --------------------- SPIN ANIMATION ---------------------
-function animateSpin(chance, roll, cb) {
-  const canvas = document.getElementById("upgrade-wheel");
-  const ctx = canvas.getContext("2d");
-
-  let speed = 25;
-
-  function frame() {
-    speed *= 0.96;
-
-    drawPointer(speed, chance);
-
-    if (speed > 0.3) {
-      requestAnimationFrame(frame);
-    } else {
-      cb();
-    }
-  }
-
-  function drawPointer(offset, chance) {
-    const size = canvas.width;
-    const center = size / 2;
-    const radius = 120;
-
-    ctx.clearRect(0, 0, size, size);
-
-    const segments = 100;
-    const step = (Math.PI * 2) / segments;
-    const winRange = Math.floor((chance / 100) * segments);
-
-    for (let i = 0; i < segments; i++) {
-      ctx.beginPath();
-      ctx.moveTo(center, center);
-      ctx.arc(center, center, radius, i * step, (i + 1) * step);
-      ctx.fillStyle = i < winRange ? "#00ffcc" : "#222";
-      ctx.fill();
-    }
-
-    const angle = (offset % 360) * (Math.PI / 180);
-
-    const x = center + Math.cos(angle) * (radius - 10);
-    const y = center + Math.sin(angle) * (radius - 10);
-
-    ctx.beginPath();
-    ctx.arc(x, y, 6, 0, Math.PI * 2);
-    ctx.fillStyle = "gold";
-    ctx.fill();
-  }
-
-  frame();
+  }, 1200);
 }
