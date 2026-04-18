@@ -455,224 +455,285 @@ function adminGiveItem() {
 }
 
 
-// ======================= UPGRADER CORE =======================
+/* ================================
+   UPGRADER SYSTEM (ADDON)
+   ================================ */
 
-let ALL_ITEMS = [];
-let wagerItems = [];
-let targetItems = [];
+let selectedWager = null;
+let selectedTarget = null;
 let upgrading = false;
 
-// ======================= INIT LOAD =======================
-async function initUpgrader() {
-  try {
-    const res = await fetch("cases.json");
-    const data = await res.json();
+// cooldown (ms)
+const UPGRADE_COOLDOWN = 3500;
 
-    ALL_ITEMS = [];
+// wait for DOM + data
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(initUpgrader, 500);
+});
 
-    data.cases.forEach(c => {
-      c.items.forEach(i => {
-        ALL_ITEMS.push({
-          name: i.name,
-          price: Number(i.price),
-          image: i.image,
-          rarity: i.rarity || "common"
-        });
+function initUpgrader() {
+  buildTargetPool();
+  renderWagerItems();
+  renderTargetItems();
+  bindUpgradeButton();
+}
+
+/* ================================
+   BUILD TARGET POOL (ALL CASE ITEMS)
+   ================================ */
+
+let ALL_ITEMS = [];
+
+function buildTargetPool() {
+  if (!window.cases && typeof cases !== "undefined") {
+    window.cases = cases;
+  }
+
+  if (!cases?.cases) {
+    console.warn("Cases not loaded yet.");
+    return;
+  }
+
+  ALL_ITEMS = [];
+
+  cases.cases.forEach(c => {
+    c.items.forEach(i => {
+      ALL_ITEMS.push({
+        ...i,
+        sourceCase: c.name
       });
     });
-
-    buildTargetUI();
-    observeInventory(); // IMPORTANT FIX
-  } catch (err) {
-    console.error("Upgrader failed to load cases.json", err);
-  }
-}
-
-// ======================= OBSERVE INVENTORY =======================
-function observeInventory() {
-  const inv = document.getElementById("inventory");
-  if (!inv) return;
-
-  const obs = new MutationObserver(() => {
-    hookInventory();
-  });
-
-  obs.observe(inv, { childList: true, subtree: true });
-
-  hookInventory();
-}
-
-// ======================= HOOK INVENTORY =======================
-function hookInventory() {
-  const items = document.querySelectorAll("#inventory .inv-item");
-
-  items.forEach(el => {
-    if (el.dataset.upgraded) return;
-    el.dataset.upgraded = "true";
-
-    el.addEventListener("click", () => {
-      const name = el.dataset.name || el.querySelector("img")?.alt;
-      const priceText = el.innerText.match(/[\d.]+/);
-
-      if (!priceText) return;
-
-      const item = {
-        name,
-        price: parseFloat(priceText[0]),
-        image: el.querySelector("img")?.src,
-        rarity: el.dataset.rarity || "common"
-      };
-
-      toggle(wagerItems, item);
-      updateUI();
-    });
   });
 }
 
-// ======================= TARGET UI =======================
-function buildTargetUI() {
-  const box = document.getElementById("target-list");
-  if (!box) return;
+/* ================================
+   WAGER (PLAYER INVENTORY)
+   ================================ */
 
-  box.innerHTML = "";
+function renderWagerItems() {
+  const container = document.getElementById("wager-list");
+  if (!container) return;
 
-  
-  const pool = [...ALL_ITEMS, ...ALL_ITEMS, ...ALL_ITEMS];
+  container.innerHTML = "";
 
-  pool.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "upgrade-item " + item.rarity;
-
-    div.innerHTML = `
-      <img src="${item.image}">
-      <div>
-        <div>${item.name}</div>
-        <small>$${item.price.toFixed(2)}</small>
-      </div>
+  (inventory || []).forEach((item, index) => {
+    const el = document.createElement("div");
+    el.className = "upgrade-item";
+    el.innerHTML = `
+      <img src="${item.image}" style="width:30px;height:30px;vertical-align:middle;border-radius:4px;margin-right:6px;">
+      ${item.name} (${item.price} ⛃)
     `;
 
-    div.onclick = () => {
-      toggle(targetItems, item);
-      updateUI();
+    el.onclick = () => {
+      selectedWager = { ...item, index };
+      highlightSelection(container, el);
+      updateChanceUI();
     };
 
-    box.appendChild(div);
+    container.appendChild(el);
   });
 }
 
-// ======================= TOGGLE =======================
-function toggle(arr, item) {
-  const i = arr.findIndex(x => x.name === item.name && x.price === item.price);
+/* ================================
+   TARGET (ALL ITEMS IN GAME)
+   ================================ */
 
-  if (i >= 0) arr.splice(i, 1);
-  else arr.push(item);
+function renderTargetItems() {
+  const container = document.getElementById("target-list");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  ALL_ITEMS.forEach((item, index) => {
+    const el = document.createElement("div");
+    el.className = "upgrade-item";
+    el.innerHTML = `
+      <img src="${item.image}" style="width:30px;height:30px;vertical-align:middle;border-radius:4px;margin-right:6px;">
+      ${item.name} (${item.price} ⛃)
+    `;
+
+    el.onclick = () => {
+      selectedTarget = item;
+      highlightSelection(container, el);
+      updateChanceUI();
+    };
+
+    container.appendChild(el);
+  });
 }
 
-// ======================= VALUE =======================
-function total(arr) {
-  return arr.reduce((a, b) => a + (b.price || 0), 0);
+/* ================================
+   UI HELPERS
+   ================================ */
+
+function highlightSelection(container, el) {
+  [...container.children].forEach(c => c.style.background = "");
+  el.style.background = "rgba(0,255,255,0.2)";
 }
 
-// ======================= UI =======================
-function updateUI() {
-  const w = total(wagerItems);
-  const t = total(targetItems);
+/* ================================
+   CHANCE SYSTEM (YOUR RULES)
+   ================================ */
 
+function calculateChance(wager, target) {
+  if (!wager || !target) return 0;
+
+  const w = wager.price;
+  const t = target.price;
+
+  // invalid upgrade
+  if (t <= w * 0.95) return 100;
+
+  const chance = (w * 0.95 / t) * 100;
+  return Math.max(0, Math.min(chance, 100));
+}
+
+function updateChanceUI() {
   const chanceEl = document.getElementById("upgrade-chance");
   const valueEl = document.getElementById("upgrade-value");
-  const btn = document.getElementById("upgrade-btn");
 
-  if (!w || !t) {
-    chanceEl.innerText = "Chance: 0%";
-    valueEl.innerText = "0 → 0";
+  if (!chanceEl || !valueEl) return;
+
+  if (!selectedWager || !selectedTarget) {
+    chanceEl.textContent = "Chance: 0%";
+    valueEl.textContent = "0 ⛃ → 0 ⛃";
     return;
   }
 
-  let chance = (w * 0.95 / t) * 100;
+  const chance = calculateChance(selectedWager, selectedTarget);
 
-  if (chance > 100) {
-    chanceEl.innerText = "Upgrade Blocked (Target Too Cheap)";
-    btn.disabled = true;
-    return;
-  }
-
-  btn.disabled = false;
-
-  chanceEl.innerText = `Chance: ${chance.toFixed(2)}%`;
-  valueEl.innerText = `${w.toFixed(2)} ⛃ → ${t.toFixed(2)} ⛃`;
+  chanceEl.textContent = `Chance: ${chance.toFixed(2)}%`;
+  valueEl.textContent = `${selectedWager.price} ⛃ → ${selectedTarget.price} ⛃`;
 }
 
-// ======================= UPGRADE =======================
-document.getElementById("upgrade-btn").onclick = async () => {
-  if (upgrading) return;
+/* ================================
+   UPGRADE BUTTON
+   ================================ */
 
-  const w = total(wagerItems);
-  const t = total(targetItems);
+function bindUpgradeButton() {
+  const btn = document.getElementById("upgrade-btn");
+  if (!btn) return;
 
-  if (!w || !t) return;
+  btn.onclick = () => {
+    if (upgrading) return;
+    if (!selectedWager || !selectedTarget) return;
 
-  let chance = (w * 0.95 / t) * 100;
+    const chance = calculateChance(selectedWager, selectedTarget);
 
-  if (chance > 100) return;
+    if (chance <= 0 || chance > 100) return;
 
-  upgrading = true;
-
-  document.getElementById("upgrade-btn").disabled = true;
-
-  await spinAnimation(chance);
-
-  const roll = Math.random() * 100;
-
-  if (roll <= chance) {
-    alert("UPGRADE SUCCESS!");
-  } else {
-    alert("UPGRADE FAILED!");
-  }
-
-  wagerItems = [];
-  targetItems = [];
-
-  updateUI();
-  buildTargetUI();
-
-  upgrading = false;
-  document.getElementById("upgrade-btn").disabled = false;
-};
-
-// ======================= SPIN (SMOOTH PERIMETER STYLE) =======================
-function spinAnimation(chance) {
-  return new Promise(resolve => {
-    const canvas = document.getElementById("upgrade-wheel");
-    if (!canvas) return resolve();
-
-    const ctx = canvas.getContext("2d");
-
-    let start = performance.now();
-
-    function loop(t) {
-      let p = Math.min((t - start) / 2500, 1);
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      ctx.save();
-      ctx.translate(150, 150);
-      ctx.rotate(p * Math.PI * 8);
-
-      ctx.beginPath();
-      ctx.arc(0, 0, 120, 0, Math.PI * 2);
-      ctx.strokeStyle = "gold";
-      ctx.lineWidth = 6;
-      ctx.stroke();
-
-      ctx.restore();
-
-      if (p < 1) requestAnimationFrame(loop);
-      else resolve();
+    if (selectedTarget.price <= selectedWager.price * 0.95) {
+      alert("Invalid upgrade (too easy / broken ratio)");
+      return;
     }
 
-    requestAnimationFrame(loop);
-  });
+    startUpgrade(chance);
+  };
 }
 
-// ======================= START =======================
-initUpgrader();
+/* ================================
+   UPGRADE LOGIC + SPINNER
+   ================================ */
+
+function startUpgrade(chance) {
+  upgrading = true;
+
+  const roll = Math.random() * 100;
+  const success = roll <= chance;
+
+  spinWheel(success);
+
+  setTimeout(() => {
+    if (success) {
+      addToInventory(selectedTarget);
+      removeFromInventory(selectedWager);
+      alert("UPGRADE SUCCESS!");
+    } else {
+      removeFromInventory(selectedWager);
+      alert("Upgrade failed...");
+    }
+
+    resetUpgrader();
+  }, UPGRADE_COOLDOWN);
+}
+
+/* ================================
+   WHEEL SPIN (PERIMETER STYLE FEEL)
+   ================================ */
+
+function spinWheel(success) {
+  const wheel = document.getElementById("upgrade-wheel");
+  if (!wheel) return;
+
+  const ctx = wheel.getContext("2d");
+  const size = wheel.width = wheel.height = 300;
+
+  const segments = 24;
+  const angleStep = (Math.PI * 2) / segments;
+
+  let rotation = 0;
+  let targetAngle = Math.random() * Math.PI * 2;
+
+  if (success) {
+    targetAngle = 0; // "win zone"
+  }
+
+  let start = null;
+
+  function animate(t) {
+    if (!start) start = t;
+    const progress = (t - start) / UPGRADE_COOLDOWN;
+
+    const ease = 1 - Math.pow(1 - progress, 3);
+
+    rotation = ease * (10 * Math.PI * 2) + targetAngle;
+
+    ctx.clearRect(0, 0, size, size);
+
+    for (let i = 0; i < segments; i++) {
+      const angle = i * angleStep + rotation;
+
+      ctx.beginPath();
+      ctx.moveTo(150, 150);
+      ctx.arc(150, 150, 140, angle, angle + angleStep);
+      ctx.fillStyle = i === 0 ? "gold" : "#333";
+      ctx.fill();
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+/* ================================
+   INVENTORY HELPERS
+   ================================ */
+
+function addToInventory(item) {
+  inventory.push(item);
+  renderWagerItems();
+}
+
+function removeFromInventory(item) {
+  const i = inventory.findIndex(x => x.name === item.name && x.price === item.price);
+  if (i !== -1) inventory.splice(i, 1);
+
+  renderWagerItems();
+}
+
+/* ================================
+   RESET
+   ================================ */
+
+function resetUpgrader() {
+  upgrading = false;
+  selectedWager = null;
+  selectedTarget = null;
+
+  renderWagerItems();
+  renderTargetItems();
+  updateChanceUI();
+}
