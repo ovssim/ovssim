@@ -625,3 +625,20 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   background: gold;
   box-shadow: 0 0 10px gold;
 }
+
+#chance-bar {
+  width: 300px;
+  height: 12px;
+  background: #222;
+  border-radius: 10px;
+  margin: 10px auto;
+  overflow: hidden;
+  border: 1px solid #00ffff;
+}
+
+#chance-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, red, yellow, lime);
+  transition: width 0.3s ease;
+}
