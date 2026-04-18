@@ -455,9 +455,6 @@ function adminGiveItem() {
 }
 
 
-/* =========================
-   UPGRADER SYSTEM 
-   ========================= */
 console.log("UPGRADER LOADED");
 
 let Upgrader = {
@@ -477,29 +474,33 @@ function initUpgrader() {
   updateUI();
 }
 
-/* ================= SYNC DATA ================= */
+/* ================= SYNC ================= */
 
 function syncUpgraderData() {
   Upgrader.cases = cases || [];
 }
 
-/* ================= HELPERS ================= */
+/* ================= INVENTORY ================= */
 
 function getInventory() {
   return inventory || [];
 }
 
+/* ================= ITEM CARD ================= */
+
 function itemCard(item) {
   return `
-    <div class="upgrade-item ${item.rarity}">
+    <div class="upgrade-item ${item.rarity || ""}">
       <img src="${item.image}">
-      <div>
+      <div class="upgrade-meta">
         <div>${item.name}</div>
-        <small>${item.price.toFixed(2)} ⛃</small>
+        <small>${Number(item.price || 0).toFixed(2)} ⛃</small>
       </div>
     </div>
   `;
 }
+
+/* ================= ALL ITEMS ================= */
 
 function getAllSiteItems() {
   let all = [];
@@ -514,6 +515,8 @@ function getAllSiteItems() {
 /* ================= WAGER ================= */
 
 function renderWager() {
+  syncUpgraderData();
+
   const box = document.getElementById("wager-list");
   if (!box) return;
 
@@ -522,7 +525,7 @@ function renderWager() {
   const inv = getInventory();
 
   if (!inv.length) {
-    box.innerHTML = "<small>No items in inventory</small>";
+    box.innerHTML = "<small>No inventory items</small>";
     return;
   }
 
@@ -532,7 +535,6 @@ function renderWager() {
 
     div.onclick = () => {
       Upgrader.selectedWager = item;
-      highlightSelection();
       updateUI();
     };
 
@@ -543,6 +545,8 @@ function renderWager() {
 /* ================= TARGET ================= */
 
 function renderTarget() {
+  syncUpgraderData();
+
   const box = document.getElementById("target-list");
   if (!box) return;
 
@@ -561,7 +565,6 @@ function renderTarget() {
 
     div.onclick = () => {
       Upgrader.selectedTarget = item;
-      highlightSelection();
       updateUI();
     };
 
@@ -569,7 +572,7 @@ function renderTarget() {
   });
 }
 
-/* ================= CHANCE CALC ================= */
+/* ================= CHANCE ================= */
 
 function calculateChance(w, t) {
   if (!w || !t) return 0;
@@ -608,7 +611,7 @@ function updateUI() {
   drawWheel(chance);
 }
 
-/* ================= WHEEL DRAW (VISUAL %) ================= */
+/* ================= WHEEL VISUAL ================= */
 
 function drawWheel(percent) {
   const canvas = document.getElementById("upgrade-wheel");
@@ -624,13 +627,13 @@ function drawWheel(percent) {
 
   ctx.clearRect(0, 0, size, size);
 
-  // background
+  // base circle
   ctx.beginPath();
   ctx.arc(c, c, 100, 0, Math.PI * 2);
   ctx.fillStyle = "#111";
   ctx.fill();
 
-  // success area
+  // success zone
   ctx.beginPath();
   ctx.moveTo(c, c);
   ctx.arc(
@@ -652,12 +655,12 @@ function drawWheel(percent) {
 
   // text
   ctx.fillStyle = "white";
-  ctx.font = "20px Arial";
+  ctx.font = "18px Arial";
   ctx.textAlign = "center";
-  ctx.fillText(`${percent.toFixed(1)}%`, c, c + 5);
+  ctx.fillText(percent.toFixed(1) + "%", c, c + 5);
 }
 
-/* ================= UPGRADE BUTTON ================= */
+/* ================= UPGRADE ================= */
 
 document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (Upgrader.upgrading) return;
@@ -678,7 +681,7 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   const roll = Math.random() * 100;
   const success = roll <= chance;
 
-  spinWheel(success, chance);
+  spinWheel(success);
 
   setTimeout(() => {
     if (success) {
@@ -691,15 +694,14 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
     Upgrader.upgrading = false;
     if (btn) btn.innerText = "Upgrade";
 
-    renderWager();
-    renderTarget();
+    refreshUpgrader();
     updateUI();
   }, 2200);
 });
 
-/* ================= SPIN ANIMATION ================= */
+/* ================= SPIN ================= */
 
-function spinWheel(success, chance) {
+function spinWheel(success) {
   const canvas = document.getElementById("upgrade-wheel");
   if (!canvas) return;
 
@@ -719,17 +721,14 @@ function spinWheel(success, chance) {
 
     const c = size / 2;
 
-    // base
     ctx.beginPath();
     ctx.arc(c, c, 100, 0, Math.PI * 2);
     ctx.fillStyle = "#111";
     ctx.fill();
 
-    // pointer
     ctx.fillStyle = "gold";
     ctx.fillRect(c - 2, 10, 4, 25);
 
-    // rotating marker
     ctx.save();
     ctx.translate(c, c);
     ctx.rotate(angle);
@@ -749,12 +748,11 @@ function spinWheel(success, chance) {
   animate();
 }
 
-/* ================= SELECTION HIGHLIGHT ================= */
+/* ================= LIVE REFRESH ================= */
 
-function highlightSelection() {
-  document.querySelectorAll(".upgrade-item").forEach(el => {
-    el.classList.remove("selected");
-  });
+function refreshUpgrader() {
+  renderWager();
+  renderTarget();
 }
 
 /* ================= LOAD BUTTONS ================= */
@@ -767,7 +765,6 @@ function createLoadButtons() {
 
   if (wagerSide && !document.getElementById("load-wager-btn")) {
     const btn = document.createElement("button");
-    btn.id = "load-wager-btn";
     btn.className = "theme-btn";
     btn.innerText = "Load Wager Items";
     btn.onclick = renderWager;
@@ -776,7 +773,6 @@ function createLoadButtons() {
 
   if (targetSide && !document.getElementById("load-target-btn")) {
     const btn = document.createElement("button");
-    btn.id = "load-target-btn";
     btn.className = "theme-btn";
     btn.innerText = "Load Target Items";
     btn.onclick = renderTarget;
@@ -786,8 +782,4 @@ function createLoadButtons() {
 
 /* ================= START ================= */
 
-window.addEventListener("load", () => {
-  initUpgrader();
-});
-
-document.getElementById("chance-fill").style.width = chance + "%";
+window.addEventListener("load", initUpgrader);
