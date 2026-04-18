@@ -454,9 +454,7 @@ function adminGiveItem() {
   };
 }
 
-// ===================== UPGRADER SYSTEM =====================
-
-// STATE
+// ===================== UPGRADER STATE =====================
 let wagerItems = [];
 let targetItems = [];
 let isUpgrading = false;
@@ -464,19 +462,15 @@ let upgradeCooldown = false;
 let wheelAngle = 0;
 let spinningWheel = false;
 
-// ===================== ITEM POOL =====================
+// ===================== GLOBAL ITEM POOL =====================
 function getAllItems() {
+  if (!cases || cases.length === 0) return [];
   let all = [];
-  if (!cases) return all;
   cases.forEach(c => c.items.forEach(i => all.push(i)));
   return all;
 }
 
-function makeId(item, index) {
-  return `${item.name}_${index}`;
-}
-
-// ===================== RENDER UI =====================
+// ===================== UI RENDER =====================
 function renderUpgraderLists() {
   const wagerBox = document.getElementById("wager-list");
   const targetBox = document.getElementById("target-list");
@@ -485,12 +479,14 @@ function renderUpgraderLists() {
   wagerBox.innerHTML = "";
   targetBox.innerHTML = "";
 
-  // WAGER 
+  // ================= WAGER (inventory) =================
   inventory.forEach((item, i) => {
     const div = document.createElement("div");
     div.className = "upgrade-item";
+
     div.innerHTML = `
-      <img src="${item.image}" width="30"> ${item.name} (${item.price})
+      <img src="${item.image}" width="30">
+      ${item.name} (${item.price.toFixed(2)})
     `;
 
     div.onclick = () => {
@@ -505,24 +501,27 @@ function renderUpgraderLists() {
     wagerBox.appendChild(div);
   });
 
-  // TARGET
+  // ================= TARGET =================
   const all = getAllItems();
 
   all.forEach((item, i) => {
-    const id = makeId(item, i);
-
     const div = document.createElement("div");
     div.className = "upgrade-item";
+
     div.innerHTML = `
-      <img src="${item.image}" width="30"> ${item.name} (${item.price})
+      <img src="${item.image}" width="30">
+      ${item.name} (${item.price.toFixed(2)})
     `;
 
     div.onclick = () => {
-      if (targetItems.includes(id)) {
-        targetItems = targetItems.filter(x => x !== id);
+      const exists = targetItems.find(x => x.name === item.name);
+
+      if (exists) {
+        targetItems = targetItems.filter(x => x.name !== item.name);
       } else {
-        targetItems.push(id);
+        targetItems.push(item);
       }
+
       updateUpgradeUI();
     };
 
@@ -534,23 +533,38 @@ function renderUpgraderLists() {
 function getUpgradeChance() {
   const all = getAllItems();
 
-  const wagerValue = wagerItems.reduce((s, i) => s + (inventory[i]?.price || 0), 0);
+  const wagerValue = wagerItems.reduce((sum, i) => {
+    return sum + (inventory[i]?.price || 0);
+  }, 0);
 
-  let targetValue = 0;
-  targetItems.forEach(id => {
-    const item = all.find((x, i) => makeId(x, i) === id);
-    if (item) targetValue += item.price;
-  });
+  let targetValue = targetItems.reduce((sum, t) => {
+    return sum + (t.price || 0);
+  }, 0);
 
   if (wagerValue <= 0 || targetValue <= 0) return 0;
 
   let chance = (wagerValue * 0.95) / targetValue * 100;
 
-  // clamp rules
-  if (chance > 85) chance = 85; // max cap rule
+  // HARD RULES
+  if (chance > 85) chance = 85;
   if (chance < 0) chance = 0;
 
   return chance;
+}
+
+// ===================== VALIDATION =====================
+function isUpgradeValid() {
+  const wagerValue = wagerItems.reduce((sum, i) => sum + (inventory[i]?.price || 0), 0);
+  const targetValue = targetItems.reduce((sum, t) => sum + t.price, 0);
+
+  if (wagerValue <= 0 || targetValue <= 0) return false;
+
+  const chance = (wagerValue * 0.95) / targetValue * 100;
+
+  // BLOCK IMPOSSIBLE UPGRADES
+  if (chance > 100) return false;
+
+  return true;
 }
 
 // ===================== UI UPDATE =====================
@@ -561,25 +575,12 @@ function updateUpgradeUI() {
   const valueEl = document.getElementById("upgrade-value");
 
   const wagerValue = wagerItems.reduce((s, i) => s + (inventory[i]?.price || 0), 0);
-
-  let targetValue = 0;
-  const all = getAllItems();
-
-  targetItems.forEach(id => {
-    const item = all.find((x, i) => makeId(x, i) === id);
-    if (item) targetValue += item.price;
-  });
+  const targetValue = targetItems.reduce((s, i) => s + (i.price || 0), 0);
 
   if (chanceEl) chanceEl.textContent = `Chance: ${chance.toFixed(2)}%`;
   if (valueEl) valueEl.textContent = `${wagerValue.toFixed(2)} ⛃ → ${targetValue.toFixed(2)} ⛃`;
 
   drawWheel(chance, wheelAngle);
-}
-
-// ===================== VALIDATION =====================
-function isUpgradeValid() {
-  const chance = getUpgradeChance();
-  return chance > 0 && chance <= 85;
 }
 
 // ===================== RUN UPGRADE =====================
@@ -588,7 +589,7 @@ function runUpgrade() {
   if (wagerItems.length === 0 || targetItems.length === 0) return;
 
   if (!isUpgradeValid()) {
-    alert("Invalid upgrade (must be 0–85% chance)");
+    alert("Invalid upgrade: target too cheap or impossible chance");
     return;
   }
 
@@ -598,16 +599,13 @@ function runUpgrade() {
   const chance = getUpgradeChance();
 
   spinWheel(chance, (success) => {
-    const all = getAllItems();
-
     // remove wager items
     inventory = inventory.filter((_, i) => !wagerItems.includes(i));
 
-    // reward
+    // give reward
     if (success) {
-      targetItems.forEach(id => {
-        const item = all.find((x, i) => makeId(x, i) === id);
-        if (item) inventory.push({ ...item });
+      targetItems.forEach(item => {
+        inventory.push({ ...item });
       });
     }
 
@@ -629,7 +627,7 @@ function runUpgrade() {
   });
 }
 
-// ===================== SPINNER WHEEL =====================
+// ===================== SPINNER =====================
 function spinWheel(chance, callback) {
   if (spinningWheel) return;
   spinningWheel = true;
@@ -644,8 +642,7 @@ function spinWheel(chance, callback) {
   const finalAngle = Math.random() * Math.PI * 2;
 
   function animate(t) {
-    const elapsed = t - start;
-    const p = Math.min(elapsed / duration, 1);
+    const p = Math.min((t - start) / duration, 1);
     const ease = 1 - Math.pow(1 - p, 4);
 
     wheelAngle = spins * Math.PI * 2 * ease + finalAngle;
@@ -656,6 +653,7 @@ function spinWheel(chance, callback) {
       requestAnimationFrame(animate);
     } else {
       spinningWheel = false;
+
       const success = Math.random() * 100 <= chance;
       callback(success);
     }
@@ -664,13 +662,14 @@ function spinWheel(chance, callback) {
   requestAnimationFrame(animate);
 }
 
-// ===================== DRAW WHEEL =====================
+// ===================== WHEEL DRAW =====================
 function drawWheel(chance, rotation = 0) {
   const canvas = document.getElementById("upgrade-wheel");
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
   const size = 320;
+
   canvas.width = size;
   canvas.height = size;
 
@@ -714,7 +713,7 @@ function drawWheel(chance, rotation = 0) {
   ctx.fill();
 }
 
-// ===================== INIT HOOK =====================
+// ===================== INIT =====================
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("upgrade-btn");
   if (btn) btn.onclick = runUpgrade;
