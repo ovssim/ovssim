@@ -607,3 +607,43 @@ h1 { margin-bottom: 10px; font-weight: 600; }
     width: 100%;
   }
 }
+
+.upgrade-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  margin: 6px 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.upgrade-item img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.upgrade-item:hover {
+  background: rgba(0,255,255,0.12);
+}
+
+.upgrade-item.selected {
+  background: rgba(0,255,255,0.25);
+  box-shadow: 0 0 10px rgba(0,255,255,0.3);
+}
+
+/* make scroll actually feel like a shop */
+.upgrader-side {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+/* nicer text block */
+.upgrade-meta {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
