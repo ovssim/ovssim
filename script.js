@@ -1,6 +1,6 @@
 // ===================== GLOBAL STATE =====================
 let coins = parseFloat(localStorage.getItem("coins"));
-if (isNaN(coins) || coins < 0) coins = 100;
+if (isNaN(coins) || coins < 0) coins = 10;
 
 let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
 let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===================== COINS =====================
 function updateCoins() {
-  document.getElementById("coins").textContent = `Balance: ${coins.toFixed(2)}`;
+  document.getElementById("coins").textContent = `⛃: ${coins.toFixed(2)}`;
   localStorage.setItem("coins", coins);
 }
 
