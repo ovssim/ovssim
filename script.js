@@ -453,3 +453,205 @@ function adminGiveItem() {
     adminMode = false;
   };
 }
+
+// ===================== UPGRADER ADDON =====================
+
+let upgradeState = {
+  wager: [],
+  target: [],
+  spinning: false,
+  angle: 0,
+};
+
+// --------------------- INIT HOOK ---------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("upgrade-btn");
+  if (btn) btn.onclick = runUpgrade;
+
+  const canvas = document.getElementById("upgrade-wheel");
+  if (canvas) initUpgradeWheel(canvas);
+
+  refreshUpgradeUI();
+});
+
+// --------------------- ITEM SELECT ---------------------
+function addWagerItem(index) {
+  const item = inventory[index];
+  if (!item) return;
+
+  if (!upgradeState.wager.includes(item)) {
+    upgradeState.wager.push(item);
+  } else {
+    upgradeState.wager = upgradeState.wager.filter(i => i !== item);
+  }
+
+  refreshUpgradeUI();
+}
+
+function addTargetItem(index) {
+  const item = inventory[index];
+  if (!item) return;
+
+  if (!upgradeState.target.includes(item)) {
+    upgradeState.target.push(item);
+  } else {
+    upgradeState.target = upgradeState.target.filter(i => i !== item);
+  }
+
+  refreshUpgradeUI();
+}
+
+// --------------------- CHANCE CALC ---------------------
+function getUpgradeChance() {
+  const wagerValue = upgradeState.wager.reduce((a, b) => a + b.price, 0);
+  const targetValue = upgradeState.target.reduce((a, b) => a + b.price, 0);
+
+  if (targetValue <= 0) return 0;
+
+  let chance = (wagerValue / targetValue) * 100;
+
+  // clamp + 5% penalty like you requested
+  chance = Math.min(85, Math.max(1, chance * 0.95));
+
+  return chance;
+}
+
+// --------------------- UI UPDATE ---------------------
+function refreshUpgradeUI() {
+  const chance = getUpgradeChance();
+
+  const chanceEl = document.getElementById("upgrade-chance");
+  const wagerEl = document.getElementById("upgrade-wager-count");
+  const targetEl = document.getElementById("upgrade-target-count");
+  const valueEl = document.getElementById("upgrade-values");
+
+  if (chanceEl) chanceEl.textContent = `${chance.toFixed(2)}%`;
+  if (wagerEl) wagerEl.textContent = upgradeState.wager.length;
+  if (targetEl) targetEl.textContent = upgradeState.target.length;
+
+  if (valueEl) {
+    const w = upgradeState.wager.reduce((a, b) => a + b.price, 0);
+    const t = upgradeState.target.reduce((a, b) => a + b.price, 0);
+    valueEl.textContent = `${w.toFixed(2)} ⟶ ${t.toFixed(2)}`;
+  }
+
+  drawUpgradeWheel(chance);
+}
+
+// --------------------- WHEEL RENDER ---------------------
+function initUpgradeWheel(canvas) {
+  canvas.width = 300;
+  canvas.height = 300;
+}
+
+function drawUpgradeWheel(chance) {
+  const canvas = document.getElementById("upgrade-wheel");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  const center = 150;
+  const radius = 120;
+
+  ctx.clearRect(0, 0, 300, 300);
+
+  const winAngle = (chance / 100) * Math.PI * 2;
+
+  // WIN ZONE (green glow)
+  ctx.beginPath();
+  ctx.moveTo(center, center);
+  ctx.arc(center, center, radius, 0, winAngle);
+  ctx.fillStyle = "rgba(0, 255, 140, 0.35)";
+  ctx.fill();
+
+  // LOSS ZONE (red glow)
+  ctx.beginPath();
+  ctx.moveTo(center, center);
+  ctx.arc(center, center, radius, winAngle, Math.PI * 2);
+  ctx.fillStyle = "rgba(255, 60, 60, 0.35)";
+  ctx.fill();
+
+  // outer ring glow
+  ctx.beginPath();
+  ctx.arc(center, center, radius, 0, Math.PI * 2);
+  ctx.strokeStyle = "#00ffff";
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = "#00ffff";
+  ctx.stroke();
+}
+
+// --------------------- MAIN UPGRADE SPIN ---------------------
+function runUpgrade() {
+  if (upgradeState.spinning) return;
+  if (!upgradeState.wager.length || !upgradeState.target.length) return;
+
+  upgradeState.spinning = true;
+
+  const chance = getUpgradeChance();
+  const roll = Math.random() * 100;
+  const win = roll <= chance;
+
+  spinUpgradeWheel(chance, () => {
+    // remove wager always
+    upgradeState.wager.forEach(item => {
+      const idx = inventory.indexOf(item);
+      if (idx > -1) inventory.splice(idx, 1);
+    });
+
+    // win gives target
+    if (win) {
+      inventory.push(...upgradeState.target);
+    }
+
+    upgradeState.wager = [];
+    upgradeState.target = [];
+    upgradeState.spinning = false;
+
+    saveInventory();
+    renderInventory();
+    updateBackpackValue();
+    refreshUpgradeUI();
+  });
+}
+
+// --------------------- SPIN ANIMATION ---------------------
+function spinUpgradeWheel(chance, callback) {
+  const canvas = document.getElementById("upgrade-wheel");
+  if (!canvas) return callback();
+
+  let angle = 0;
+  let speed = 0.3 + Math.random() * 0.2;
+
+  const targetAngle = (chance / 100) * Math.PI * 2;
+  const finalAngle = Math.random() * Math.PI * 2;
+
+  function animate() {
+    angle += speed;
+    speed *= 0.985;
+
+    const ctx = canvas.getContext("2d");
+    const center = 150;
+
+    ctx.save();
+    ctx.clearRect(0, 0, 300, 300);
+    ctx.translate(center, center);
+    ctx.rotate(angle);
+
+    // pointer
+    ctx.beginPath();
+    ctx.moveTo(0, -110);
+    ctx.lineTo(-10, -90);
+    ctx.lineTo(10, -90);
+    ctx.fillStyle = "white";
+    ctx.fill();
+
+    ctx.restore();
+
+    if (speed > 0.01) {
+      requestAnimationFrame(animate);
+    } else {
+      callback();
+    }
+  }
+
+  animate();
+}
