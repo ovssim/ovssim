@@ -27,7 +27,7 @@ if (sortBtn) sortBtn.onclick = sortInventoryByPriceDesc;
 
   // Buttons
   document.getElementById("sell-all-btn").onclick = sellAllItems;
-  document.getElementById("add-coins-btn").onclick = () => { coins += 0.05; updateCoins(); };
+  document.getElementById("add-coins-btn").onclick = () => { coins += 50.00; updateCoins(); };
   document.getElementById("remove-coins-btn").onclick = () => { coins = Math.max(0, coins - 50.00); updateCoins(); };
   document.getElementById("coinflip-btn").onclick = () => {
     const select = document.getElementById("coinflip-select");
