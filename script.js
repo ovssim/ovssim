@@ -456,7 +456,7 @@ function adminGiveItem() {
 
 
 /* =========================
-   UPGRADER SYSTEM
+   UPGRADER SYSTEM 
    ========================= */
 
 let Upgrader = {
@@ -476,24 +476,23 @@ function initUpgrader() {
   updateUI();
 }
 
-/* ---------- KEEP DATA SYNCED ---------- */
+/* ---------- SYNC GAME DATA ---------- */
 
 function syncUpgraderData() {
-  // pull from main game state
   Upgrader.cases = cases || [];
 }
 
-/* ---------- INVENTORY ACCESS ---------- */
+/* ---------- INVENTORY ---------- */
 
 function getInventory() {
   return inventory || [];
 }
 
-/* ---------- ITEM CARD UI ---------- */
+/* ---------- ITEM UI ---------- */
 
 function itemCard(item) {
   return `
-    <div class="upgrade-item ${item.rarity}" data-name="${item.name}">
+    <div class="upgrade-item ${item.rarity}">
       <img src="${item.image}" width="40" height="40">
       <div>
         <div>${item.name}</div>
@@ -515,7 +514,7 @@ function getAllSiteItems() {
   return all;
 }
 
-/* ---------- WAGER (INVENTORY ITEMS) ---------- */
+/* ---------- WAGER ---------- */
 
 function renderWager() {
   const box = document.getElementById("wager-list");
@@ -541,9 +540,11 @@ function renderWager() {
 
     box.appendChild(div);
   });
+
+  updateUI();
 }
 
-/* ---------- TARGET (CASE ITEMS) ---------- */
+/* ---------- TARGET ---------- */
 
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -569,9 +570,11 @@ function renderTarget() {
 
     box.appendChild(div);
   });
+
+  updateUI();
 }
 
-/* ---------- CHANCE CALC ---------- */
+/* ---------- CHANCE ---------- */
 
 function calculateChance(w, t) {
   if (!w || !t) return 0;
@@ -584,7 +587,7 @@ function calculateChance(w, t) {
   return chance;
 }
 
-/* ---------- UI UPDATE ---------- */
+/* ---------- UI ---------- */
 
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
@@ -607,7 +610,59 @@ function updateUI() {
   valueBox.innerText = `${w.price} ⛃ → ${t.price} ⛃`;
 }
 
-/* ---------- UPGRADE ACTION ---------- */
+/* ---------- UPGRADE WHEEL ANIMATION ---------- */
+
+function spinUpgradeWheel(success) {
+  const canvas = document.getElementById("upgrade-wheel");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const size = 220;
+  canvas.width = size;
+  canvas.height = size;
+
+  let angle = 0;
+  let targetAngle = Math.random() * Math.PI * 2 + 12 * Math.PI;
+
+  if (!success) {
+    targetAngle += Math.PI;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, size, size);
+
+    // base circle
+    ctx.beginPath();
+    ctx.arc(size / 2, size / 2, 80, 0, Math.PI * 2);
+    ctx.fillStyle = "#222";
+    ctx.fill();
+
+    // pointer
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(size / 2 - 2, 10, 4, 20);
+
+    // rotating indicator
+    ctx.save();
+    ctx.translate(size / 2, size / 2);
+    ctx.rotate(angle);
+
+    ctx.fillStyle = success ? "lime" : "red";
+    ctx.fillRect(-5, -70, 10, 40);
+
+    ctx.restore();
+
+    angle += (targetAngle - angle) * 0.08;
+
+    if (Math.abs(targetAngle - angle) > 0.01) {
+      requestAnimationFrame(draw);
+    }
+  }
+
+  draw();
+}
+
+/* ---------- UPGRADE BUTTON ---------- */
 
 document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (Upgrader.upgrading) return;
@@ -631,8 +686,11 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
 
   setTimeout(() => {
     const roll = Math.random() * 100;
+    const success = roll <= chance;
 
-    if (roll <= chance) {
+    spinUpgradeWheel(success);
+
+    if (success) {
       alert("UPGRADE SUCCESS!");
       inventory.push(t);
     } else {
@@ -678,13 +736,7 @@ function createLoadButtons() {
   }
 }
 
-/* ---------- GLOBAL SYNC HOOK ---------- */
-
-function refreshUpgrader() {
-  renderWager();
-}
-
-/* ---------- SAFE INIT ---------- */
+/* ---------- INIT ---------- */
 
 window.addEventListener("load", () => {
   initUpgrader();
