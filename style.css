@@ -16,10 +16,10 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 #neon-banner {
   font-size: 28px;
   font-weight: bold;
-  color: #ff0000;
+  color: #00ffff;
   text-shadow:
     0 0 5px #ff0000,
-    0 0 10px #ff0000,
+    0 0 10px #00ffff,
     0 0 20px #ff4d4d,
     0 0 30px #ff4d4d,
     0 0 40px #ff6666;
