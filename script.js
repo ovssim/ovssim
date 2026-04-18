@@ -467,34 +467,32 @@ let Upgrader = {
   upgrading: false
 };
 
-/* ---------- INIT ---------- */
+/* ================= INIT ================= */
 
 function initUpgrader() {
-  createLoadButtons();
   syncUpgraderData();
+  createLoadButtons();
   renderWager();
   renderTarget();
   updateUI();
 }
 
-/* ---------- SYNC GAME DATA ---------- */
+/* ================= SYNC DATA ================= */
 
 function syncUpgraderData() {
   Upgrader.cases = cases || [];
 }
 
-/* ---------- INVENTORY ---------- */
+/* ================= HELPERS ================= */
 
 function getInventory() {
   return inventory || [];
 }
 
-/* ---------- ITEM UI ---------- */
-
 function itemCard(item) {
   return `
     <div class="upgrade-item ${item.rarity}">
-      <img src="${item.image}" width="40" height="40">
+      <img src="${item.image}">
       <div>
         <div>${item.name}</div>
         <small>${item.price.toFixed(2)} ⛃</small>
@@ -502,8 +500,6 @@ function itemCard(item) {
     </div>
   `;
 }
-
-/* ---------- ALL CASE ITEMS ---------- */
 
 function getAllSiteItems() {
   let all = [];
@@ -515,7 +511,7 @@ function getAllSiteItems() {
   return all;
 }
 
-/* ---------- WAGER ---------- */
+/* ================= WAGER ================= */
 
 function renderWager() {
   const box = document.getElementById("wager-list");
@@ -536,16 +532,15 @@ function renderWager() {
 
     div.onclick = () => {
       Upgrader.selectedWager = item;
+      highlightSelection();
       updateUI();
     };
 
     box.appendChild(div);
   });
-
-  updateUI();
 }
 
-/* ---------- TARGET ---------- */
+/* ================= TARGET ================= */
 
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -556,7 +551,7 @@ function renderTarget() {
   const items = getAllSiteItems();
 
   if (!items.length) {
-    box.innerHTML = "<small>No cases loaded</small>";
+    box.innerHTML = "<small>No case items loaded</small>";
     return;
   }
 
@@ -566,16 +561,15 @@ function renderTarget() {
 
     div.onclick = () => {
       Upgrader.selectedTarget = item;
+      highlightSelection();
       updateUI();
     };
 
     box.appendChild(div);
   });
-
-  updateUI();
 }
 
-/* ---------- CHANCE ---------- */
+/* ================= CHANCE CALC ================= */
 
 function calculateChance(w, t) {
   if (!w || !t) return 0;
@@ -588,7 +582,7 @@ function calculateChance(w, t) {
   return chance;
 }
 
-/* ---------- UI ---------- */
+/* ================= UI ================= */
 
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
@@ -599,6 +593,7 @@ function updateUI() {
   if (!Upgrader.selectedWager || !Upgrader.selectedTarget) {
     chanceBox.innerText = "Chance: 0%";
     valueBox.innerText = "0 ⛃ → 0 ⛃";
+    drawWheel(0);
     return;
   }
 
@@ -609,61 +604,60 @@ function updateUI() {
 
   chanceBox.innerText = `Chance: ${chance.toFixed(2)}%`;
   valueBox.innerText = `${w.price} ⛃ → ${t.price} ⛃`;
+
+  drawWheel(chance);
 }
 
-/* ---------- UPGRADE WHEEL ANIMATION ---------- */
+/* ================= WHEEL DRAW (VISUAL %) ================= */
 
-function spinUpgradeWheel(success) {
+function drawWheel(percent) {
   const canvas = document.getElementById("upgrade-wheel");
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
 
-  const size = 220;
+  const size = 260;
   canvas.width = size;
   canvas.height = size;
 
-  let angle = 0;
-  let targetAngle = Math.random() * Math.PI * 2 + 12 * Math.PI;
+  const c = size / 2;
 
-  if (!success) {
-    targetAngle += Math.PI;
-  }
+  ctx.clearRect(0, 0, size, size);
 
-  function draw() {
-    ctx.clearRect(0, 0, size, size);
+  // background
+  ctx.beginPath();
+  ctx.arc(c, c, 100, 0, Math.PI * 2);
+  ctx.fillStyle = "#111";
+  ctx.fill();
 
-    // base circle
-    ctx.beginPath();
-    ctx.arc(size / 2, size / 2, 80, 0, Math.PI * 2);
-    ctx.fillStyle = "#222";
-    ctx.fill();
+  // success area
+  ctx.beginPath();
+  ctx.moveTo(c, c);
+  ctx.arc(
+    c,
+    c,
+    100,
+    -Math.PI / 2,
+    (-Math.PI / 2) + (Math.PI * 2 * (percent / 100))
+  );
+  ctx.fillStyle = "rgba(0,255,0,0.35)";
+  ctx.fill();
 
-    // pointer
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(size / 2 - 2, 10, 4, 20);
+  // border
+  ctx.beginPath();
+  ctx.arc(c, c, 100, 0, Math.PI * 2);
+  ctx.strokeStyle = "#00ffff";
+  ctx.lineWidth = 3;
+  ctx.stroke();
 
-    // rotating indicator
-    ctx.save();
-    ctx.translate(size / 2, size / 2);
-    ctx.rotate(angle);
-
-    ctx.fillStyle = success ? "lime" : "red";
-    ctx.fillRect(-5, -70, 10, 40);
-
-    ctx.restore();
-
-    angle += (targetAngle - angle) * 0.08;
-
-    if (Math.abs(targetAngle - angle) > 0.01) {
-      requestAnimationFrame(draw);
-    }
-  }
-
-  draw();
+  // text
+  ctx.fillStyle = "white";
+  ctx.font = "20px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(`${percent.toFixed(1)}%`, c, c + 5);
 }
 
-/* ---------- UPGRADE BUTTON ---------- */
+/* ================= UPGRADE BUTTON ================= */
 
 document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (Upgrader.upgrading) return;
@@ -674,28 +668,21 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (!w || !t) return;
 
   const chance = calculateChance(w, t);
-
-  if (chance <= 0) {
-    alert("Invalid upgrade");
-    return;
-  }
+  if (chance <= 0) return;
 
   Upgrader.upgrading = true;
 
   const btn = document.getElementById("upgrade-btn");
   if (btn) btn.innerText = "Upgrading...";
 
+  const roll = Math.random() * 100;
+  const success = roll <= chance;
+
+  spinWheel(success, chance);
+
   setTimeout(() => {
-    const roll = Math.random() * 100;
-    const success = roll <= chance;
-
-    spinUpgradeWheel(success);
-
     if (success) {
-      alert("UPGRADE SUCCESS!");
-      inventory.push(t);
-    } else {
-      alert("UPGRADE FAILED!");
+      inventory.push({ ...t });
     }
 
     saveInventory();
@@ -705,12 +692,72 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
     if (btn) btn.innerText = "Upgrade";
 
     renderWager();
+    renderTarget();
     updateUI();
-
-  }, 2000);
+  }, 2200);
 });
 
-/* ---------- LOAD BUTTONS ---------- */
+/* ================= SPIN ANIMATION ================= */
+
+function spinWheel(success, chance) {
+  const canvas = document.getElementById("upgrade-wheel");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const size = 260;
+  canvas.width = size;
+  canvas.height = size;
+
+  let angle = 0;
+  let target = Math.random() * Math.PI * 6 + Math.PI * 10;
+
+  if (!success) target += Math.PI;
+
+  function animate() {
+    ctx.clearRect(0, 0, size, size);
+
+    const c = size / 2;
+
+    // base
+    ctx.beginPath();
+    ctx.arc(c, c, 100, 0, Math.PI * 2);
+    ctx.fillStyle = "#111";
+    ctx.fill();
+
+    // pointer
+    ctx.fillStyle = "gold";
+    ctx.fillRect(c - 2, 10, 4, 25);
+
+    // rotating marker
+    ctx.save();
+    ctx.translate(c, c);
+    ctx.rotate(angle);
+
+    ctx.fillStyle = success ? "lime" : "red";
+    ctx.fillRect(-5, -80, 10, 50);
+
+    ctx.restore();
+
+    angle += (target - angle) * 0.06;
+
+    if (Math.abs(target - angle) > 0.01) {
+      requestAnimationFrame(animate);
+    }
+  }
+
+  animate();
+}
+
+/* ================= SELECTION HIGHLIGHT ================= */
+
+function highlightSelection() {
+  document.querySelectorAll(".upgrade-item").forEach(el => {
+    el.classList.remove("selected");
+  });
+}
+
+/* ================= LOAD BUTTONS ================= */
 
 function createLoadButtons() {
   const sides = document.querySelectorAll(".upgrader-side");
@@ -737,7 +784,7 @@ function createLoadButtons() {
   }
 }
 
-/* ---------- INIT ---------- */
+/* ================= START ================= */
 
 window.addEventListener("load", () => {
   initUpgrader();
