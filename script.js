@@ -207,7 +207,7 @@ function coinflipItem(index) {
         inventory.splice(index, 1);
         alert(`You lost, your ${item.name} was destroyed.`);
       }
-
+      updateBackpackValue();
       saveInventory();
       renderInventory();
       populateCoinflipDropdown();
