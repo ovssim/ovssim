@@ -455,7 +455,7 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADE WHEEL (FIXED + VISUAL + PAUSE SYSTEM)
+   UPGRADE SYSTEM (FIXED + STABLE + PAUSE + CIRCLE SUPPORT)
 ========================= */
 
 let Upgrader = {
@@ -465,81 +465,150 @@ let Upgrader = {
   upgrading: false
 };
 
-const wheel = document.getElementById("upgrade-wheel");
-const ctx = wheel ? wheel.getContext("2d") : null;
-
-function resizeWheel() {
-  if (!wheel) return;
-  wheel.width = 320;
-  wheel.height = 320;
-}
-resizeWheel();
-
 /* =========================
-   CHANCE CALC
+   UNIQUE KEY (STABLE FIX)
 ========================= */
-function getChance() {
-  const wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
-  const target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
-  if (!wager || !target) return 0;
-  return Math.max(0, Math.min((wager * 0.95 / target) * 100, 100));
+
+function getKey(item, index) {
+  return `${item.name}|${item.price}|${item.image}|${index}`;
 }
 
 /* =========================
-   DRAW WHEEL (FIXED)
+   INIT (SAFE LOAD)
 ========================= */
-function drawWheel(percent, state = "preview") {
-  if (!ctx) return;
 
-  const size = 320;
-  const center = size / 2;
-  const radius = 120;
+window.addEventListener("load", () => {
+  waitForCases(() => {
+    Upgrader.cases = cases || [];
+    createLoadButtons();
+    renderWager();
+    renderTarget();
+    updateUI();
+  });
+});
 
-  ctx.clearRect(0, 0, size, size);
+function waitForCases(cb) {
+  if (!cases || !cases.length) {
+    setTimeout(() => waitForCases(cb), 150);
+    return;
+  }
+  cb();
+}
 
-  // background glow (cyan base always)
-  ctx.shadowBlur = 25;
-  ctx.shadowColor = "cyan";
+/* =========================
+   LOAD BUTTONS
+========================= */
 
-  // base circle
-  ctx.beginPath();
-  ctx.arc(center, center, radius, 0, Math.PI * 2);
-  ctx.fillStyle = "#0b1b2a";
-  ctx.fill();
+function createLoadButtons() {
+  const wagerParent = document.querySelector("#wager-list")?.parentElement;
+  const targetParent = document.querySelector("#target-list")?.parentElement;
 
-  // inner glow ring
-  ctx.lineWidth = 10;
-  ctx.strokeStyle = "rgba(0,255,255,0.25)";
-  ctx.stroke();
-
-  // fill arc
-  const end = (percent / 100) * Math.PI * 2;
-
-  ctx.beginPath();
-  ctx.moveTo(center, center);
-  ctx.arc(center, center, radius, 0, end);
-
-  if (state === "win") {
-    ctx.fillStyle = "rgba(0,255,120,0.85)";
-  } else if (state === "lose") {
-    ctx.fillStyle = "rgba(255,60,60,0.85)";
-  } else {
-    ctx.fillStyle = "rgba(120,180,255,0.65)"; // light blue preview
+  if (wagerParent && !document.getElementById("load-wager-btn")) {
+    const btn = document.createElement("button");
+    btn.id = "load-wager-btn";
+    btn.className = "theme-btn";
+    btn.textContent = "Load Wager Items";
+    btn.onclick = renderWager;
+    wagerParent.prepend(btn);
   }
 
-  ctx.fill();
-
-  // text
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = "white";
-  ctx.font = "bold 22px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(`${percent.toFixed(1)}%`, center, center + 5);
+  if (targetParent && !document.getElementById("load-target-btn")) {
+    const btn = document.createElement("button");
+    btn.id = "load-target-btn";
+    btn.className = "theme-btn";
+    btn.textContent = "Load Target Items";
+    btn.onclick = renderTarget;
+    targetParent.prepend(btn);
+  }
 }
 
 /* =========================
-   UPDATE UI
+   WAGER RENDER (FIXED)
 ========================= */
+
+function renderWager() {
+  const box = document.getElementById("wager-list");
+  if (!box) return;
+
+  box.innerHTML = "";
+
+  inventory.forEach((item, index) => {
+    const key = getKey(item, index);
+    const selected = Upgrader.selectedWagers.some(i => i.key === key);
+
+    const div = document.createElement("div");
+    div.className = `upgrade-item ${item.rarity} ${selected ? "selected" : ""}`;
+
+    div.innerHTML = `
+      <img src="${item.image}">
+      <small>${item.name}</small>
+      <small>${item.price.toFixed(2)} ⛃</small>
+    `;
+
+    div.onclick = () => {
+      const exists = Upgrader.selectedWagers.find(i => i.key === key);
+
+      if (exists) {
+        Upgrader.selectedWagers = Upgrader.selectedWagers.filter(i => i.key !== key);
+      } else {
+        Upgrader.selectedWagers.push({ item, index, key });
+      }
+
+      renderWager();
+      updateUI();
+    };
+
+    box.appendChild(div);
+  });
+}
+
+/* =========================
+   TARGET RENDER (FIXED INDEX BUG)
+========================= */
+
+function renderTarget() {
+  const box = document.getElementById("target-list");
+  if (!box) return;
+
+  box.innerHTML = "";
+
+  let allItems = [];
+  cases.forEach(c => (c.items || []).forEach(i => allItems.push(i)));
+
+  allItems.forEach((item, index) => {
+    const key = getKey(item, index);
+    const selected = Upgrader.selectedTargets.some(i => i.key === key);
+
+    const div = document.createElement("div");
+    div.className = `upgrade-item ${item.rarity} ${selected ? "selected" : ""}`;
+
+    div.innerHTML = `
+      <img src="${item.image}">
+      <small>${item.name}</small>
+      <small>${item.price.toFixed(2)} ⛃</small>
+    `;
+
+    div.onclick = () => {
+      const exists = Upgrader.selectedTargets.find(i => i.key === key);
+
+      if (exists) {
+        Upgrader.selectedTargets = Upgrader.selectedTargets.filter(i => i.key !== key);
+      } else {
+        Upgrader.selectedTargets.push({ item, index, key });
+      }
+
+      renderTarget();
+      updateUI();
+    };
+
+    box.appendChild(div);
+  });
+}
+
+/* =========================
+   UI UPDATE
+========================= */
+
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
   const valueBox = document.getElementById("upgrade-value");
@@ -547,82 +616,76 @@ function updateUI() {
   const wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
   const target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
 
-  const chance = getChance();
+  const chance = target ? Math.min(100, (wager * 0.95 / target) * 100) : 0;
 
   if (chanceBox) chanceBox.textContent = `Chance: ${chance.toFixed(2)}%`;
   if (valueBox) valueBox.textContent = `${wager.toFixed(2)} ⛃ → ${target.toFixed(2)} ⛃`;
 
-  drawWheel(chance, "preview");
-}
-
-/* =========================
-   CLICK SELECT HANDLERS
-========================= */
-function toggleWager(item, index) {
-  const key = `${item.name}-${index}`;
-  const exists = Upgrader.selectedWagers.find(i => i.key === key);
-
-  if (exists) {
-    Upgrader.selectedWagers = Upgrader.selectedWagers.filter(i => i.key !== key);
-  } else {
-    Upgrader.selectedWagers.push({ item, index, key });
-  }
-}
-
-function toggleTarget(item, index) {
-  const key = `${item.name}-${index}`;
-  const exists = Upgrader.selectedTargets.find(i => i.key === key);
-
-  if (exists) {
-    Upgrader.selectedTargets = Upgrader.selectedTargets.filter(i => i.key !== key);
-  } else {
-    Upgrader.selectedTargets.push({ item, index, key });
+  if (typeof updateUpgradeCircle === "function") {
+    updateUpgradeCircle(chance);
   }
 }
 
 /* =========================
-   UPGRADE BUTTON (WITH 2s PAUSE)
+   UPGRADE BUTTON (FIXED + 2s PAUSE)
 ========================= */
-document.getElementById("upgrade-btn")?.addEventListener("click", () => {
+
+document.getElementById("upgrade-btn").onclick = () => {
   if (Upgrader.upgrading) return;
   if (!Upgrader.selectedWagers.length || !Upgrader.selectedTargets.length) return;
 
-  const chance = getChance();
-  if (!chance) return;
+  const wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
+  const target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
+
+  const chance = Math.min(100, (wager * 0.95 / target) * 100);
 
   Upgrader.upgrading = true;
 
-  // show preview state first (light blue)
-  drawWheel(chance, "preview");
+  const circle = document.getElementById("upgrade-circle");
+  const fill = document.getElementById("upgrade-circle-fill");
+  const text = document.getElementById("upgrade-circle-text");
 
+  if (circle) circle.classList.remove("win", "lose");
+  if (fill) {
+    fill.style.background = "rgba(0,180,255,0.6)"; // light blue preview
+    fill.style.height = `${chance}%`;
+  }
+  if (text) text.textContent = `${chance.toFixed(2)}%`;
+
+  // =========================
+  // 2 SECOND PAUSE
+  // =========================
   setTimeout(() => {
     const roll = Math.random() * 100;
     const win = roll <= chance;
 
-    // final result
-    drawWheel(chance, win ? "win" : "lose");
+    if (win) {
+      Upgrader.selectedTargets.forEach(t => inventory.push({ ...t.item }));
 
-    setTimeout(() => {
-      if (win) {
-        Upgrader.selectedTargets.forEach(t => inventory.push({ ...t.item }));
-      }
+      if (circle) circle.classList.add("win");
+      if (fill) fill.style.background = "lime";
+      if (text) text.textContent = "WIN!";
+    } else {
+      if (circle) circle.classList.add("lose");
+      if (fill) fill.style.background = "red";
+      if (text) text.textContent = "LOSE!";
+    }
 
-      Upgrader.selectedWagers
-        .sort((a, b) => b.index - a.index)
-        .forEach(w => inventory.splice(w.index, 1));
+    // remove wager items safely (correct index order)
+    Upgrader.selectedWagers
+      .sort((a, b) => b.index - a.index)
+      .forEach(w => inventory.splice(w.index, 1));
 
-      Upgrader.selectedWagers = [];
-      Upgrader.selectedTargets = [];
+    Upgrader.selectedWagers = [];
+    Upgrader.selectedTargets = [];
 
-      saveInventory();
-      renderInventory();
+    saveInventory();
+    renderInventory();
+    renderWager();
+    renderTarget();
+    updateUI();
 
-      renderWager();
-      renderTarget();
-
-      Upgrader.upgrading = false;
-      updateUI();
-    }, 900);
+    Upgrader.upgrading = false;
 
   }, 2000);
-});
+};
