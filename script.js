@@ -455,7 +455,7 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADER SYSTEM (STABLE FIX)
+   UPGRADER SYSTEM (FIXED + STABLE)
    ========================= */
 
 let Upgrader = {
@@ -468,22 +468,21 @@ let Upgrader = {
 /* ---------- INIT ---------- */
 
 function initUpgrader() {
-  syncUpgraderData();
-  createLoadButtons();
+  waitForCasesThenSync();
+  setupLoadButtons();
   renderWager();
   renderTarget();
   updateUI();
 }
 
-/* ---------- CASE SYNC (FIXED TIMING ISSUE) ---------- */
+/* ---------- FIX: cases load timing ---------- */
 
-function syncUpgraderData() {
-  if (!window.cases || !Array.isArray(window.cases)) {
-    setTimeout(syncUpgraderData, 200);
+function waitForCasesThenSync() {
+  if (!cases || !Array.isArray(cases) || cases.length === 0) {
+    setTimeout(waitForCasesThenSync, 200);
     return;
   }
-
-  Upgrader.cases = window.cases;
+  Upgrader.cases = cases;
 }
 
 /* ---------- INVENTORY ---------- */
@@ -510,18 +509,16 @@ function itemCard(item, selected = false) {
 
 function getAllSiteItems() {
   let all = [];
-
   Upgrader.cases.forEach(c => {
     (c.items || []).forEach(i => all.push(i));
   });
-
   return all;
 }
 
-/* ---------- WAGER MULTI SELECT ---------- */
+/* ---------- WAGER TOGGLE (FIXED) ---------- */
 
 function toggleWager(item) {
-  const index = Upgrader.selectedWagers.indexOf(item);
+  const index = Upgrader.selectedWagers.findIndex(i => i.name === item.name);
 
   if (index >= 0) {
     Upgrader.selectedWagers.splice(index, 1);
@@ -548,7 +545,8 @@ function renderWager() {
   inv.forEach(item => {
     const div = document.createElement("div");
 
-    const selected = Upgrader.selectedWagers.includes(item);
+    const selected = Upgrader.selectedWagers.some(i => i.name === item.name);
+
     div.innerHTML = itemCard(item, selected);
 
     div.onclick = () => {
@@ -561,7 +559,7 @@ function renderWager() {
   });
 }
 
-/* ---------- TARGET SINGLE SELECT ---------- */
+/* ---------- TARGET (SINGLE SELECT FIXED) ---------- */
 
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -572,14 +570,15 @@ function renderTarget() {
   const items = getAllSiteItems();
 
   if (!items.length) {
-    box.innerHTML = "<small>No cases loaded</small>";
+    box.innerHTML = "<small>No case items loaded</small>";
     return;
   }
 
   items.forEach(item => {
     const div = document.createElement("div");
 
-    const selected = Upgrader.selectedTarget === item;
+    const selected = Upgrader.selectedTarget?.name === item.name;
+
     div.innerHTML = itemCard(item, selected);
 
     div.onclick = () => {
@@ -592,12 +591,12 @@ function renderTarget() {
   });
 }
 
-/* ---------- CHANCE CALC ---------- */
+/* ---------- CHANCE ---------- */
 
-function calculateChance(totalWager, target) {
-  if (!totalWager || !target) return 0;
+function calculateChance(total, target) {
+  if (!total || !target) return 0;
 
-  let chance = (totalWager * 0.95 / target.price) * 100;
+  let chance = (total * 0.95 / target.price) * 100;
 
   if (chance > 100) return 0;
   if (chance < 0) return 0;
@@ -605,13 +604,12 @@ function calculateChance(totalWager, target) {
   return chance;
 }
 
-/* ---------- REMOVE SELECTED ITEMS ---------- */
+/* ---------- REMOVE SELECTED ---------- */
 
 function removeWagers() {
   Upgrader.selectedWagers.forEach(w => {
-    inventory = inventory.filter(i =>
-      i.id ? i.id !== w.id : i !== w
-    );
+    const index = inventory.findIndex(i => i.name === w.name);
+    if (index !== -1) inventory.splice(index, 1);
   });
 
   Upgrader.selectedWagers = [];
@@ -634,19 +632,19 @@ function updateUI() {
   }
 
   const total = Upgrader.selectedWagers.reduce((a, b) => a + b.price, 0);
-  const t = Upgrader.selectedTarget;
+  const target = Upgrader.selectedTarget;
 
-  const chance = calculateChance(total, t);
+  const chance = calculateChance(total, target);
 
   chanceBox.innerText = `Chance: ${chance.toFixed(2)}%`;
-  valueBox.innerText = `${total.toFixed(2)} ⛃ → ${t.price} ⛃`;
+  valueBox.innerText = `${total.toFixed(2)} ⛃ → ${target.price} ⛃`;
 
   if (fill) fill.style.width = chance + "%";
 }
 
 /* ---------- LOAD BUTTONS (FIXED RELIABILITY) ---------- */
 
-function createLoadButtons() {
+function setupLoadButtons() {
   const interval = setInterval(() => {
     const sides = document.querySelectorAll(".upgrader-side");
     if (!sides.length) return;
@@ -661,7 +659,10 @@ function createLoadButtons() {
       btn.id = "load-wager-btn";
       btn.className = "theme-btn";
       btn.innerText = "Load Wager Items";
-      btn.onclick = renderWager;
+      btn.onclick = () => {
+        Upgrader.selectedWagers = [];
+        renderWager();
+      };
       wagerSide.prepend(btn);
     }
 
@@ -670,7 +671,10 @@ function createLoadButtons() {
       btn.id = "load-target-btn";
       btn.className = "theme-btn";
       btn.innerText = "Load Target Items";
-      btn.onclick = renderTarget;
+      btn.onclick = () => {
+        Upgrader.selectedTarget = null;
+        renderTarget();
+      };
       targetSide.prepend(btn);
     }
 
@@ -678,7 +682,7 @@ function createLoadButtons() {
   }, 200);
 }
 
-/* ---------- UPGRADE ACTION ---------- */
+/* ---------- UPGRADE BUTTON ---------- */
 
 document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (Upgrader.upgrading) return;
