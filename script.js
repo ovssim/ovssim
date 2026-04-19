@@ -454,54 +454,63 @@ function adminGiveItem() {
   };
 }
 
+/* =========================
+   UPGRADER SYSTEM (CLEAN FIXED VERSION)
+   ========================= */
+
 let Upgrader = {
   cases: [],
   selectedWagers: [],
   selectedTarget: null,
-  upgrading: false,
-  ready: false
+  upgrading: false
 };
 
-/* =====================
-   SAFE INIT SYSTEM
-   ===================== */
+/* =========================
+   INIT
+========================= */
 
-function initUpgrader() {
-  const wait = setInterval(() => {
-    if (!inventory || !cases) return;
-
-    const wagerBox = document.getElementById("wager-list");
-    const targetBox = document.getElementById("target-list");
-
-    if (!wagerBox || !targetBox) return;
-
-    clearInterval(wait);
-
-    Upgrader.ready = true;
+window.addEventListener("load", () => {
+  waitForCases(() => {
     Upgrader.cases = cases;
 
-    setupLoadButtons();
-    renderWager();
-    renderTarget();
-    updateUI();
-  }, 100);
+    initUpgrader();
+  });
+});
+
+function initUpgrader() {
+  setupLoadButtons();
+  renderWager();
+  renderTarget();
+  updateUI();
 }
 
-/* =====================
+/* =========================
+   WAIT FOR CASES
+========================= */
+
+function waitForCases(callback) {
+  if (!cases || !Array.isArray(cases) || cases.length === 0) {
+    setTimeout(() => waitForCases(callback), 150);
+    return;
+  }
+  callback();
+}
+
+/* =========================
    INVENTORY
-   ===================== */
+========================= */
 
 function getInventory() {
   return inventory || [];
 }
 
-/* =====================
+/* =========================
    ITEM CARD
-   ===================== */
+========================= */
 
 function itemCard(item, selected = false) {
   return `
-    <div class="upgrade-item ${item.rarity} ${selected ? "selected" : ""}">
+    <div class="upgrade-item ${selected ? "selected" : ""}">
       <img src="${item.image}">
       <div>
         <div>${item.name}</div>
@@ -511,28 +520,29 @@ function itemCard(item, selected = false) {
   `;
 }
 
-/* =====================
-   CASE ITEMS
-   ===================== */
+/* =========================
+   ALL CASE ITEMS
+========================= */
 
-function getAllSiteItems() {
+function getAllCaseItems() {
   let all = [];
 
   Upgrader.cases.forEach(c => {
-    (c.items || []).forEach(i => all.push(i));
+    (c.items || []).forEach(i => {
+      if (!i.id) i.id = crypto.randomUUID(); // safety fix
+      all.push(i);
+    });
   });
 
   return all;
 }
 
-/* =====================
-   TOGGLE WAGER
-   ===================== */
+/* =========================
+   WAGER TOGGLE (FIXED DUPLICATES ISSUE)
+========================= */
 
 function toggleWager(item) {
-  const index = Upgrader.selectedWagers.findIndex(i =>
-    (i.id && item.id) ? i.id === item.id : i.name === item.name
-  );
+  const index = Upgrader.selectedWagers.findIndex(i => i.id === item.id);
 
   if (index >= 0) {
     Upgrader.selectedWagers.splice(index, 1);
@@ -541,9 +551,9 @@ function toggleWager(item) {
   }
 }
 
-/* =====================
+/* =========================
    RENDER WAGER
-   ===================== */
+========================= */
 
 function renderWager() {
   const box = document.getElementById("wager-list");
@@ -561,9 +571,7 @@ function renderWager() {
   inv.forEach(item => {
     const div = document.createElement("div");
 
-    const selected = Upgrader.selectedWagers.some(i =>
-      (i.id && item.id) ? i.id === item.id : i.name === item.name
-    );
+    const selected = Upgrader.selectedWagers.some(i => i.id === item.id);
 
     div.innerHTML = itemCard(item, selected);
 
@@ -577,9 +585,9 @@ function renderWager() {
   });
 }
 
-/* =====================
-   RENDER TARGET
-   ===================== */
+/* =========================
+   TARGET SELECT
+========================= */
 
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -587,7 +595,7 @@ function renderTarget() {
 
   box.innerHTML = "";
 
-  const items = getAllSiteItems();
+  const items = getAllCaseItems();
 
   if (!items.length) {
     box.innerHTML = "<small>No case items loaded</small>";
@@ -597,11 +605,7 @@ function renderTarget() {
   items.forEach(item => {
     const div = document.createElement("div");
 
-    const selected =
-      Upgrader.selectedTarget &&
-      ((Upgrader.selectedTarget.id && item.id)
-        ? Upgrader.selectedTarget.id === item.id
-        : Upgrader.selectedTarget.name === item.name);
+    const selected = Upgrader.selectedTarget?.id === item.id;
 
     div.innerHTML = itemCard(item, selected);
 
@@ -615,47 +619,43 @@ function renderTarget() {
   });
 }
 
-/* =====================
-   CHANCE
-   ===================== */
+/* =========================
+   CHANCE CALC
+========================= */
 
 function calculateChance(total, target) {
   if (!total || !target) return 0;
 
-  let chance = (total * 0.95 / target.price) * 100;
+  const chance = (total * 0.95 / target.price) * 100;
 
   return Math.max(0, Math.min(chance, 100));
 }
 
-/* =====================
-   REMOVE ITEMS
-   ===================== */
+/* =========================
+   REMOVE WAGERS
+========================= */
 
 function removeWagers() {
   Upgrader.selectedWagers.forEach(w => {
-    inventory = inventory.filter(i =>
-      (i.id && w.id) ? i.id !== w.id : i.name !== w.name
-    );
+    inventory = inventory.filter(i => i.id !== w.id);
   });
 
   Upgrader.selectedWagers = [];
 }
 
-/* =====================
-   UI
-   ===================== */
+/* =========================
+   UI UPDATE
+========================= */
 
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
   const valueBox = document.getElementById("upgrade-value");
-  const fill = document.getElementById("upgrade-fill");
 
   if (!chanceBox || !valueBox) return;
 
   if (!Upgrader.selectedWagers.length || !Upgrader.selectedTarget) {
     chanceBox.innerText = "Chance: 0%";
     valueBox.innerText = "0 ⛃ → 0 ⛃";
-    if (fill) fill.style.width = "0%";
     return;
   }
 
@@ -666,18 +666,16 @@ function updateUI() {
 
   chanceBox.innerText = `Chance: ${chance.toFixed(2)}%`;
   valueBox.innerText = `${total.toFixed(2)} ⛃ → ${target.price} ⛃`;
-
-  if (fill) fill.style.width = `${chance}%`;
 }
 
-/* =====================
-   LOAD BUTTONS
-   ===================== */
+/* =========================
+   LOAD BUTTONS FIX
+========================= */
 
 function setupLoadButtons() {
   const interval = setInterval(() => {
     const sides = document.querySelectorAll(".upgrader-side");
-    if (sides.length < 2) return;
+    if (!sides.length) return;
 
     const wagerSide = sides[0];
     const targetSide = sides[1];
@@ -701,60 +699,47 @@ function setupLoadButtons() {
     }
 
     clearInterval(interval);
-  }, 150);
+  }, 200);
 }
 
-/* =====================
-   UPGRADE BUTTON (SAFE BIND)
-   ===================== */
+/* =========================
+   UPGRADE ACTION
+========================= */
 
-function bindUpgrade() {
-  const wait = setInterval(() => {
-    const btn = document.getElementById("upgrade-btn");
-    if (!btn) return;
+document.getElementById("upgrade-btn")?.addEventListener("click", () => {
+  if (Upgrader.upgrading) return;
+  if (!Upgrader.selectedWagers.length || !Upgrader.selectedTarget) return;
 
-    clearInterval(wait);
+  const total = Upgrader.selectedWagers.reduce((a, b) => a + b.price, 0);
+  const target = Upgrader.selectedTarget;
 
-    btn.onclick = () => {
-      if (Upgrader.upgrading) return;
-      if (!Upgrader.selectedWagers.length || !Upgrader.selectedTarget) return;
+  const chance = calculateChance(total, target);
+  if (chance <= 0) return;
 
-      const total = Upgrader.selectedWagers.reduce((a, b) => a + b.price, 0);
-      const target = Upgrader.selectedTarget;
+  Upgrader.upgrading = true;
 
-      const chance = calculateChance(total, target);
-      if (chance <= 0) return;
+  const btn = document.getElementById("upgrade-btn");
+  if (btn) btn.innerText = "Upgrading...";
 
-      Upgrader.upgrading = true;
-      btn.innerText = "Upgrading...";
+  setTimeout(() => {
+    const roll = Math.random() * 100;
+    const success = roll <= chance;
 
-      setTimeout(() => {
-        const roll = Math.random() * 100;
-        const success = roll <= chance;
+    removeWagers();
 
-        removeWagers();
+    if (success) {
+      inventory.push(target);
+    }
 
-        if (success) inventory.push(target);
+    saveInventory();
+    renderInventory();
 
-        saveInventory();
-        renderInventory();
+    Upgrader.upgrading = false;
 
-        Upgrader.upgrading = false;
-        btn.innerText = "Upgrade";
+    if (btn) btn.innerText = "Upgrade";
 
-        renderWager();
-        renderTarget();
-        updateUI();
-      }, 1800);
-    };
-  }, 150);
-}
-
-/* =====================
-   START
-   ===================== */
-
-window.addEventListener("load", () => {
-  initUpgrader();
-  bindUpgrade();
+    renderWager();
+    renderTarget();
+    updateUI();
+  }, 1800);
 });
