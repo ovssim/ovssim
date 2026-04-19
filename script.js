@@ -455,7 +455,7 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADER SYSTEM (FIXED MULTI SELECT + UNIQUE ITEMS)
+   UPGRADER SYSTEM (FINAL STABLE)
    ========================= */
 
 let Upgrader = {
@@ -465,7 +465,7 @@ let Upgrader = {
   upgrading: false
 };
 
-/* ---------- UNIQUE ID HELPER ---------- */
+/* ---------- UNIQUE ID ---------- */
 
 function assignItemId(item) {
   if (!item._uid) {
@@ -490,6 +490,15 @@ function syncUpgraderData() {
   Upgrader.cases = cases || [];
 }
 
+/* ---------- EXTERNAL REFRESH (FIXES LOAD ISSUE) ---------- */
+
+function refreshUpgraderData() {
+  Upgrader.cases = cases || [];
+  renderTarget();
+}
+
+window.refreshUpgraderData = refreshUpgraderData;
+
 /* ---------- INVENTORY ---------- */
 
 function getInventory() {
@@ -510,7 +519,7 @@ function itemCard(item, selected = false) {
   `;
 }
 
-/* ---------- CASE ITEMS ---------- */
+/* ---------- GET ALL CASE ITEMS ---------- */
 
 function getAllSiteItems() {
   let all = [];
@@ -536,7 +545,7 @@ function renderWager() {
   }
 
   inv.forEach(item => {
-    assignItemId(item); // ensure unique identity
+    assignItemId(item);
 
     const isSelected = Upgrader.selectedWagers.some(i => i._uid === item._uid);
 
@@ -553,7 +562,7 @@ function renderWager() {
   });
 }
 
-/* ---------- TOGGLE SELECT ---------- */
+/* ---------- TOGGLE ---------- */
 
 function toggleWager(item) {
   const index = Upgrader.selectedWagers.findIndex(i => i._uid === item._uid);
@@ -573,7 +582,7 @@ function renderTarget() {
 
   box.innerHTML = "";
 
-  const items = getAllSiteItems();
+  const items = (cases && cases.length) ? getAllSiteItems() : [];
 
   if (!items.length) {
     box.innerHTML = "<small>No cases loaded</small>";
@@ -637,7 +646,7 @@ function updateUI() {
   if (fill) fill.style.width = chance + "%";
 }
 
-/* ---------- REMOVE ONLY SELECTED ITEMS ---------- */
+/* ---------- REMOVE ONLY SELECTED ---------- */
 
 function removeSelectedWagers() {
   const selectedIds = Upgrader.selectedWagers.map(i => i._uid);
