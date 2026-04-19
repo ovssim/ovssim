@@ -638,3 +638,45 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   font-size: 11px;
   opacity: 0.8;
 }
+
+.upgrade-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #111;
+  position: relative;
+  margin: 15px auto;
+  box-shadow: 0 0 10px #000;
+  overflow: hidden;
+}
+
+#upgrade-circle-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0%;
+  background: green;
+  transition: height 2s ease;
+  filter: blur(1px);
+}
+
+#upgrade-circle-text {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: bold;
+  color: white;
+  z-index: 2;
+  font-size: 20px;
+}
+
+.upgrade-circle.win {
+  box-shadow: 0 0 20px lime;
+}
+
+.upgrade-circle.lose {
+  box-shadow: 0 0 20px red;
+}
