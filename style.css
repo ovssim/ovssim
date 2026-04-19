@@ -502,13 +502,6 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   background: rgba(0,255,255,0.15);
 }
 
-#upgrade-wheel {
-  width: 300px;
-  height: 300px;
-  margin: 20px auto;
-  display: block;
-  border-radius: 50%;
-}
 
 #upgrade-info {
   margin: 10px 0;
@@ -546,28 +539,7 @@ h1 { margin-bottom: 10px; font-weight: 600; }
   box-shadow: 0 0 10px rgba(0,255,255,0.2);
 }
 
-/* upgrade wheel glow upgrade */
-#upgrade-wheel {
-  background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 70%);
-  border: 2px solid rgba(0,255,255,0.3);
-  box-shadow:
-    0 0 25px rgba(0,255,255,0.15),
-    inset 0 0 25px rgba(0,0,0,0.5);
-}
 
-/* center glow ring feel */
-#upgrade-wheel::after {
-  content: "";
-  position: absolute;
-  width: 320px;
-  height: 320px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  pointer-events: none;
-  box-shadow: 0 0 60px rgba(0,255,255,0.08);
-}
 
 /* chance text glow */
 #upgrade-chance {
@@ -679,4 +651,59 @@ h1 { margin-bottom: 10px; font-weight: 600; }
 
 .upgrade-circle.lose {
   box-shadow: 0 0 20px red;
+}
+
+#upgrade-circle {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  position: relative;
+  background: #0b1220; /* dark base */
+  border: 4px solid rgba(0, 255, 255, 0.6);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  transition: all 0.3s ease;
+}
+
+/* INNER FILL */
+#upgrade-circle-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0%;
+  background: lightblue;
+  border-radius: 50%;
+  transition: height 2s ease, background 0.4s ease;
+  opacity: 0.9;
+}
+
+/* TEXT IN CENTER */
+#upgrade-circle-text {
+  position: relative;
+  z-index: 2;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 10px cyan;
+}
+
+/* DEFAULT CYAN GLOW */
+#upgrade-circle.neutral {
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.5),
+              0 0 60px rgba(0, 255, 255, 0.2);
+}
+
+/* WIN GLOW */
+#upgrade-circle.win {
+  box-shadow: 0 0 25px rgba(0, 255, 100, 0.8),
+              0 0 80px rgba(0, 255, 100, 0.4);
+}
+
+/* LOSE GLOW */
+#upgrade-circle.lose {
+  box-shadow: 0 0 25px rgba(255, 60, 60, 0.8),
+              0 0 80px rgba(255, 60, 60, 0.4);
 }
