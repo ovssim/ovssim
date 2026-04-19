@@ -454,8 +454,8 @@ function adminGiveItem() {
   };
 }
 
-/* =========================
-   UPGRADER SYSTEM (FULL FIXED + UI + PAUSE ANIMATION)
+//* =========================
+   UPGRADE WHEEL (FIXED + VISUAL + PAUSE SYSTEM)
 ========================= */
 
 let Upgrader = {
@@ -465,138 +465,15 @@ let Upgrader = {
   upgrading: false
 };
 
-/* =========================
-   UNIQUE KEY (NO BUGS)
-========================= */
-function getKey(item, index = 0) {
-  return `${item.name}|${item.price}|${item.image}|${index}`;
+const wheel = document.getElementById("upgrade-wheel");
+const ctx = wheel ? wheel.getContext("2d") : null;
+
+function resizeWheel() {
+  if (!wheel) return;
+  wheel.width = 320;
+  wheel.height = 320;
 }
-
-/* =========================
-   INIT
-========================= */
-window.addEventListener("load", () => {
-  waitForCases(() => {
-    Upgrader.cases = cases || [];
-    createLoadButtons();
-    renderWager();
-    renderTarget();
-    updateUI();
-  });
-});
-
-function waitForCases(cb) {
-  if (!cases || !cases.length) {
-    setTimeout(() => waitForCases(cb), 150);
-    return;
-  }
-  cb();
-}
-
-/* =========================
-   LOAD BUTTONS
-========================= */
-function createLoadButtons() {
-  const wagerParent = document.querySelector("#wager-list")?.parentElement;
-  const targetParent = document.querySelector("#target-list")?.parentElement;
-
-  if (wagerParent && !document.getElementById("load-wager-btn")) {
-    const btn = document.createElement("button");
-    btn.id = "load-wager-btn";
-    btn.className = "theme-btn";
-    btn.textContent = "Load Wager Items";
-    btn.onclick = renderWager;
-    wagerParent.prepend(btn);
-  }
-
-  if (targetParent && !document.getElementById("load-target-btn")) {
-    const btn = document.createElement("button");
-    btn.id = "load-target-btn";
-    btn.className = "theme-btn";
-    btn.textContent = "Load Target Items";
-    btn.onclick = renderTarget;
-    targetParent.prepend(btn);
-  }
-}
-
-/* =========================
-   RENDER WAGER
-========================= */
-function renderWager() {
-  const box = document.getElementById("wager-list");
-  if (!box) return;
-
-  box.innerHTML = "";
-
-  inventory.forEach((item, index) => {
-    const key = getKey(item, index);
-    const selected = Upgrader.selectedWagers.some(i => i.key === key);
-
-    const div = document.createElement("div");
-    div.className = `upgrade-item ${item.rarity} ${selected ? "selected" : ""}`;
-
-    div.innerHTML = `
-      <img src="${item.image}">
-      <small>${item.price.toFixed(2)}</small>
-    `;
-
-    div.onclick = () => {
-      const exists = Upgrader.selectedWagers.find(i => i.key === key);
-
-      if (exists) {
-        Upgrader.selectedWagers = Upgrader.selectedWagers.filter(i => i.key !== key);
-      } else {
-        Upgrader.selectedWagers.push({ item, index, key });
-      }
-
-      renderWager();
-      updateUI();
-    };
-
-    box.appendChild(div);
-  });
-}
-
-/* =========================
-   RENDER TARGET
-========================= */
-function renderTarget() {
-  const box = document.getElementById("target-list");
-  if (!box) return;
-
-  box.innerHTML = "";
-
-  let allItems = [];
-  cases.forEach(c => c.items.forEach(i => allItems.push(i)));
-
-  allItems.forEach((item, index) => {
-    const key = getKey(item, index);
-    const selected = Upgrader.selectedTargets.some(i => i.key === key);
-
-    const div = document.createElement("div");
-    div.className = `upgrade-item ${item.rarity} ${selected ? "selected" : ""}`;
-
-    div.innerHTML = `
-      <img src="${item.image}">
-      <small>${item.price.toFixed(2)}</small>
-    `;
-
-    div.onclick = () => {
-      const exists = Upgrader.selectedTargets.find(i => i.key === key);
-
-      if (exists) {
-        Upgrader.selectedTargets = Upgrader.selectedTargets.filter(i => i.key !== key);
-      } else {
-        Upgrader.selectedTargets.push({ item, index, key });
-      }
-
-      renderTarget();
-      updateUI();
-    };
-
-    box.appendChild(div);
-  });
-}
+resizeWheel();
 
 /* =========================
    CHANCE CALC
@@ -604,18 +481,68 @@ function renderTarget() {
 function getChance() {
   const wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
   const target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
-
-  if (!target) return 0;
-  return Math.min(100, (wager * 0.95 / target) * 100);
+  if (!wager || !target) return 0;
+  return Math.max(0, Math.min((wager * 0.95 / target) * 100, 100));
 }
 
 /* =========================
-   UI UPDATE (CYAN GLOW CIRCLE)
+   DRAW WHEEL (FIXED)
+========================= */
+function drawWheel(percent, state = "preview") {
+  if (!ctx) return;
+
+  const size = 320;
+  const center = size / 2;
+  const radius = 120;
+
+  ctx.clearRect(0, 0, size, size);
+
+  // background glow (cyan base always)
+  ctx.shadowBlur = 25;
+  ctx.shadowColor = "cyan";
+
+  // base circle
+  ctx.beginPath();
+  ctx.arc(center, center, radius, 0, Math.PI * 2);
+  ctx.fillStyle = "#0b1b2a";
+  ctx.fill();
+
+  // inner glow ring
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = "rgba(0,255,255,0.25)";
+  ctx.stroke();
+
+  // fill arc
+  const end = (percent / 100) * Math.PI * 2;
+
+  ctx.beginPath();
+  ctx.moveTo(center, center);
+  ctx.arc(center, center, radius, 0, end);
+
+  if (state === "win") {
+    ctx.fillStyle = "rgba(0,255,120,0.85)";
+  } else if (state === "lose") {
+    ctx.fillStyle = "rgba(255,60,60,0.85)";
+  } else {
+    ctx.fillStyle = "rgba(120,180,255,0.65)"; // light blue preview
+  }
+
+  ctx.fill();
+
+  // text
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "white";
+  ctx.font = "bold 22px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(`${percent.toFixed(1)}%`, center, center + 5);
+}
+
+/* =========================
+   UPDATE UI
 ========================= */
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
   const valueBox = document.getElementById("upgrade-value");
-  const fill = document.getElementById("upgrade-fill");
 
   const wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
   const target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
@@ -625,68 +552,77 @@ function updateUI() {
   if (chanceBox) chanceBox.textContent = `Chance: ${chance.toFixed(2)}%`;
   if (valueBox) valueBox.textContent = `${wager.toFixed(2)} ⛃ → ${target.toFixed(2)} ⛃`;
 
-  /* CYAN GLOW FILL */
-  if (fill) {
-    fill.style.width = `${chance}%`;
-    fill.style.background = "#00e5ff";
-    fill.style.boxShadow = "0 0 25px #00e5ff";
+  drawWheel(chance, "preview");
+}
+
+/* =========================
+   CLICK SELECT HANDLERS
+========================= */
+function toggleWager(item, index) {
+  const key = `${item.name}-${index}`;
+  const exists = Upgrader.selectedWagers.find(i => i.key === key);
+
+  if (exists) {
+    Upgrader.selectedWagers = Upgrader.selectedWagers.filter(i => i.key !== key);
+  } else {
+    Upgrader.selectedWagers.push({ item, index, key });
+  }
+}
+
+function toggleTarget(item, index) {
+  const key = `${item.name}-${index}`;
+  const exists = Upgrader.selectedTargets.find(i => i.key === key);
+
+  if (exists) {
+    Upgrader.selectedTargets = Upgrader.selectedTargets.filter(i => i.key !== key);
+  } else {
+    Upgrader.selectedTargets.push({ item, index, key });
   }
 }
 
 /* =========================
-   UPGRADE BUTTON (2 SECOND PAUSE + ANIMATION)
+   UPGRADE BUTTON (WITH 2s PAUSE)
 ========================= */
 document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (Upgrader.upgrading) return;
   if (!Upgrader.selectedWagers.length || !Upgrader.selectedTargets.length) return;
 
   const chance = getChance();
-  const circle = document.getElementById("upgrade-fill");
-
-  if (!circle) return;
+  if (!chance) return;
 
   Upgrader.upgrading = true;
 
-  /* RESET TO LIGHT BLUE BEFORE ROLL */
-  circle.style.transition = "width 0.3s ease, background 0.3s ease";
-  circle.style.background = "#7ad7ff";
-  circle.style.boxShadow = "0 0 25px #7ad7ff";
+  // show preview state first (light blue)
+  drawWheel(chance, "preview");
 
   setTimeout(() => {
-    const win = Math.random() * 100 <= chance;
+    const roll = Math.random() * 100;
+    const win = roll <= chance;
 
-    /* WIN/LOSE COLOR */
-    circle.style.transition = "all 0.5s ease";
+    // final result
+    drawWheel(chance, win ? "win" : "lose");
 
-    if (win) {
-      circle.style.background = "#00ff88";
-      circle.style.boxShadow = "0 0 35px #00ff88";
-
-      Upgrader.selectedTargets.forEach(t => {
-        inventory.push({ ...t.item });
-      });
-    } else {
-      circle.style.background = "#ff3b3b";
-      circle.style.boxShadow = "0 0 35px #ff3b3b";
+    setTimeout(() => {
+      if (win) {
+        Upgrader.selectedTargets.forEach(t => inventory.push({ ...t.item }));
+      }
 
       Upgrader.selectedWagers
         .sort((a, b) => b.index - a.index)
         .forEach(w => inventory.splice(w.index, 1));
-    }
 
-    /* RESET SELECTION */
-    Upgrader.selectedWagers = [];
-    Upgrader.selectedTargets = [];
+      Upgrader.selectedWagers = [];
+      Upgrader.selectedTargets = [];
 
-    saveInventory();
-    renderInventory();
-    renderWager();
-    renderTarget();
-    updateUI();
+      saveInventory();
+      renderInventory();
 
-    setTimeout(() => {
+      renderWager();
+      renderTarget();
+
       Upgrader.upgrading = false;
-    }, 500);
+      updateUI();
+    }, 900);
 
-  }, 2000); // 2 SECOND PAUSE
+  }, 2000);
 });
