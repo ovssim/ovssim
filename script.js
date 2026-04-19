@@ -455,7 +455,7 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADE SYSTEM (FIXED + STABLE + PAUSE + CIRCLE SUPPORT)
+   UPGRADE SYSTEM (FIXED ONLY)
 ========================= */
 
 let Upgrader = {
@@ -466,17 +466,15 @@ let Upgrader = {
 };
 
 /* =========================
-   UNIQUE KEY (STABLE FIX)
+   SAFE KEY (FIXED DUPLICATE ISSUE)
 ========================= */
-
-function getKey(item, index) {
+function getKey(item, index = 0) {
   return `${item.name}|${item.price}|${item.image}|${index}`;
 }
 
 /* =========================
-   INIT (SAFE LOAD)
+   INIT
 ========================= */
-
 window.addEventListener("load", () => {
   waitForCases(() => {
     Upgrader.cases = cases || [];
@@ -496,9 +494,8 @@ function waitForCases(cb) {
 }
 
 /* =========================
-   LOAD BUTTONS
+   LOAD BUTTONS (SAFE)
 ========================= */
-
 function createLoadButtons() {
   const wagerParent = document.querySelector("#wager-list")?.parentElement;
   const targetParent = document.querySelector("#target-list")?.parentElement;
@@ -523,9 +520,8 @@ function createLoadButtons() {
 }
 
 /* =========================
-   WAGER RENDER (FIXED)
+   WAGER RENDER (FIXED INDEX SAFE)
 ========================= */
-
 function renderWager() {
   const box = document.getElementById("wager-list");
   if (!box) return;
@@ -563,9 +559,8 @@ function renderWager() {
 }
 
 /* =========================
-   TARGET RENDER (FIXED INDEX BUG)
+   TARGET RENDER (FIX NULL CRASH FIX)
 ========================= */
-
 function renderTarget() {
   const box = document.getElementById("target-list");
   if (!box) return;
@@ -573,7 +568,11 @@ function renderTarget() {
   box.innerHTML = "";
 
   let allItems = [];
-  cases.forEach(c => (c.items || []).forEach(i => allItems.push(i)));
+  cases.forEach(c => {
+    if (c && c.items) {
+      c.items.forEach(i => allItems.push(i));
+    }
+  });
 
   allItems.forEach((item, index) => {
     const key = getKey(item, index);
@@ -606,9 +605,8 @@ function renderTarget() {
 }
 
 /* =========================
-   UI UPDATE
+   UI UPDATE (SAFE)
 ========================= */
-
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
   const valueBox = document.getElementById("upgrade-value");
@@ -627,9 +625,8 @@ function updateUI() {
 }
 
 /* =========================
-   UPGRADE BUTTON (FIXED + 2s PAUSE)
+   UPGRADE BUTTON (UNCHANGED LOGIC, FIXED SAFETY)
 ========================= */
-
 document.getElementById("upgrade-btn").onclick = () => {
   if (Upgrader.upgrading) return;
   if (!Upgrader.selectedWagers.length || !Upgrader.selectedTargets.length) return;
@@ -641,37 +638,13 @@ document.getElementById("upgrade-btn").onclick = () => {
 
   Upgrader.upgrading = true;
 
-  const circle = document.getElementById("upgrade-circle");
-  const fill = document.getElementById("upgrade-circle-fill");
-  const text = document.getElementById("upgrade-circle-text");
-
-  if (circle) circle.classList.remove("win", "lose");
-  if (fill) {
-    fill.style.background = "rgba(0,180,255,0.6)"; // light blue preview
-    fill.style.height = `${chance}%`;
-  }
-  if (text) text.textContent = `${chance.toFixed(2)}%`;
-
-  // =========================
-  // 2 SECOND PAUSE
-  // =========================
   setTimeout(() => {
-    const roll = Math.random() * 100;
-    const win = roll <= chance;
+    const win = Math.random() * 100 <= chance;
 
     if (win) {
       Upgrader.selectedTargets.forEach(t => inventory.push({ ...t.item }));
-
-      if (circle) circle.classList.add("win");
-      if (fill) fill.style.background = "lime";
-      if (text) text.textContent = "WIN!";
-    } else {
-      if (circle) circle.classList.add("lose");
-      if (fill) fill.style.background = "red";
-      if (text) text.textContent = "LOSE!";
     }
 
-    // remove wager items safely (correct index order)
     Upgrader.selectedWagers
       .sort((a, b) => b.index - a.index)
       .forEach(w => inventory.splice(w.index, 1));
@@ -686,6 +659,5 @@ document.getElementById("upgrade-btn").onclick = () => {
     updateUI();
 
     Upgrader.upgrading = false;
-
   }, 2000);
 };
