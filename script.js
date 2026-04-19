@@ -455,15 +455,24 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADER SYSTEM (MULTI SELECT)
+   UPGRADER SYSTEM (FIXED MULTI SELECT + UNIQUE ITEMS)
    ========================= */
 
 let Upgrader = {
   cases: [],
-  selectedWagers: [],   // NOW ARRAY
+  selectedWagers: [],
   selectedTarget: null,
   upgrading: false
 };
+
+/* ---------- UNIQUE ID HELPER ---------- */
+
+function assignItemId(item) {
+  if (!item._uid) {
+    item._uid = Math.random().toString(36).slice(2) + Date.now();
+  }
+  return item;
+}
 
 /* ---------- INIT ---------- */
 
@@ -491,7 +500,7 @@ function getInventory() {
 
 function itemCard(item, selected = false) {
   return `
-    <div class="upgrade-item ${item.rarity} ${selected ? "selected" : ""}" data-name="${item.name}">
+    <div class="upgrade-item ${item.rarity} ${selected ? "selected" : ""}">
       <img src="${item.image}" width="35" height="35">
       <div>
         <div>${item.name}</div>
@@ -505,15 +514,13 @@ function itemCard(item, selected = false) {
 
 function getAllSiteItems() {
   let all = [];
-
   Upgrader.cases.forEach(c => {
     (c.items || []).forEach(i => all.push(i));
   });
-
   return all;
 }
 
-/* ---------- WAGER (MULTI SELECT) ---------- */
+/* ---------- WAGER (MULTI SELECT FIXED) ---------- */
 
 function renderWager() {
   const box = document.getElementById("wager-list");
@@ -529,7 +536,9 @@ function renderWager() {
   }
 
   inv.forEach(item => {
-    const isSelected = Upgrader.selectedWagers.includes(item);
+    assignItemId(item); // ensure unique identity
+
+    const isSelected = Upgrader.selectedWagers.some(i => i._uid === item._uid);
 
     const div = document.createElement("div");
     div.innerHTML = itemCard(item, isSelected);
@@ -547,7 +556,7 @@ function renderWager() {
 /* ---------- TOGGLE SELECT ---------- */
 
 function toggleWager(item) {
-  const index = Upgrader.selectedWagers.findIndex(i => i === item);
+  const index = Upgrader.selectedWagers.findIndex(i => i._uid === item._uid);
 
   if (index >= 0) {
     Upgrader.selectedWagers.splice(index, 1);
@@ -556,7 +565,7 @@ function toggleWager(item) {
   }
 }
 
-/* ---------- TARGET ---------- */
+/* ---------- TARGET (SINGLE SELECT) ---------- */
 
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -573,7 +582,10 @@ function renderTarget() {
 
   items.forEach(item => {
     const div = document.createElement("div");
-    div.innerHTML = itemCard(item, Upgrader.selectedTarget === item);
+
+    const isSelected = Upgrader.selectedTarget === item;
+
+    div.innerHTML = itemCard(item, isSelected);
 
     div.onclick = () => {
       Upgrader.selectedTarget = item;
@@ -622,19 +634,15 @@ function updateUI() {
   chanceBox.innerText = `Chance: ${chance.toFixed(2)}%`;
   valueBox.innerText = `${totalWagerValue.toFixed(2)} ⛃ → ${t.price} ⛃`;
 
-  if (fill) {
-    fill.style.width = chance + "%";
-  }
+  if (fill) fill.style.width = chance + "%";
 }
 
-/* ---------- REMOVE MULTIPLE ITEMS ---------- */
+/* ---------- REMOVE ONLY SELECTED ITEMS ---------- */
 
 function removeSelectedWagers() {
-  Upgrader.selectedWagers.forEach(w => {
-    inventory = inventory.filter(i =>
-      i.id ? i.id !== w.id : i.name !== w.name
-    );
-  });
+  const selectedIds = Upgrader.selectedWagers.map(i => i._uid);
+
+  inventory = inventory.filter(item => !selectedIds.includes(item._uid));
 
   Upgrader.selectedWagers = [];
 }
@@ -665,7 +673,7 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
     removeSelectedWagers();
 
     if (success) {
-      inventory.push(t);
+      inventory.push(assignItemId({ ...t }));
     }
 
     saveInventory();
