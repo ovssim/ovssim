@@ -454,7 +454,7 @@ function adminGiveItem() {
   };
 }
 
-//* =========================
+/* =========================
    UPGRADE WHEEL (FIXED + VISUAL + PAUSE SYSTEM)
 ========================= */
 
