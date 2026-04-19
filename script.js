@@ -455,7 +455,7 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADE SYSTEM (FIXED + PAUSE + CIRCLE SUPPORT)
+   UPGRADER SYSTEM (FULL FIXED + UI + PAUSE ANIMATION)
 ========================= */
 
 let Upgrader = {
@@ -466,17 +466,15 @@ let Upgrader = {
 };
 
 /* =========================
-   KEY (NO DUPLICATES, STABLE INDEX)
+   UNIQUE KEY (NO BUGS)
 ========================= */
-
-function getKey(item, index) {
+function getKey(item, index = 0) {
   return `${item.name}|${item.price}|${item.image}|${index}`;
 }
 
 /* =========================
-   INIT (SAFE LOAD)
+   INIT
 ========================= */
-
 window.addEventListener("load", () => {
   waitForCases(() => {
     Upgrader.cases = cases || [];
@@ -498,7 +496,6 @@ function waitForCases(cb) {
 /* =========================
    LOAD BUTTONS
 ========================= */
-
 function createLoadButtons() {
   const wagerParent = document.querySelector("#wager-list")?.parentElement;
   const targetParent = document.querySelector("#target-list")?.parentElement;
@@ -523,9 +520,8 @@ function createLoadButtons() {
 }
 
 /* =========================
-   WAGER RENDER (INVENTORY CLICK SELECT)
+   RENDER WAGER
 ========================= */
-
 function renderWager() {
   const box = document.getElementById("wager-list");
   if (!box) return;
@@ -541,8 +537,7 @@ function renderWager() {
 
     div.innerHTML = `
       <img src="${item.image}">
-      <small>${item.name}</small>
-      <small>${item.price.toFixed(2)} ⛃</small>
+      <small>${item.price.toFixed(2)}</small>
     `;
 
     div.onclick = () => {
@@ -563,9 +558,8 @@ function renderWager() {
 }
 
 /* =========================
-   TARGET RENDER (CASE ITEMS)
+   RENDER TARGET
 ========================= */
-
 function renderTarget() {
   const box = document.getElementById("target-list");
   if (!box) return;
@@ -584,8 +578,7 @@ function renderTarget() {
 
     div.innerHTML = `
       <img src="${item.image}">
-      <small>${item.name}</small>
-      <small>${item.price.toFixed(2)} ⛃</small>
+      <small>${item.price.toFixed(2)}</small>
     `;
 
     div.onclick = () => {
@@ -606,75 +599,82 @@ function renderTarget() {
 }
 
 /* =========================
-   UI UPDATE (CHANCE + CIRCLE FEED)
+   CHANCE CALC
 ========================= */
+function getChance() {
+  const wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
+  const target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
 
+  if (!target) return 0;
+  return Math.min(100, (wager * 0.95 / target) * 100);
+}
+
+/* =========================
+   UI UPDATE (CYAN GLOW CIRCLE)
+========================= */
 function updateUI() {
   const chanceBox = document.getElementById("upgrade-chance");
   const valueBox = document.getElementById("upgrade-value");
+  const fill = document.getElementById("upgrade-fill");
 
-  let wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
-  let target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
+  const wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
+  const target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
 
-  const chance = target ? Math.min(100, (wager * 0.95 / target) * 100) : 0;
+  const chance = getChance();
 
   if (chanceBox) chanceBox.textContent = `Chance: ${chance.toFixed(2)}%`;
   if (valueBox) valueBox.textContent = `${wager.toFixed(2)} ⛃ → ${target.toFixed(2)} ⛃`;
 
-  // optional circle update hook
-  if (typeof updateUpgradeCircle === "function") {
-    updateUpgradeCircle(chance);
+  /* CYAN GLOW FILL */
+  if (fill) {
+    fill.style.width = `${chance}%`;
+    fill.style.background = "#00e5ff";
+    fill.style.boxShadow = "0 0 25px #00e5ff";
   }
 }
 
 /* =========================
-   UPGRADE BUTTON (2 SECOND PAUSE + RESULT)
+   UPGRADE BUTTON (2 SECOND PAUSE + ANIMATION)
 ========================= */
-
-document.getElementById("upgrade-btn").onclick = () => {
+document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (Upgrader.upgrading) return;
   if (!Upgrader.selectedWagers.length || !Upgrader.selectedTargets.length) return;
 
-  let wager = Upgrader.selectedWagers.reduce((a, b) => a + b.item.price, 0);
-  let target = Upgrader.selectedTargets.reduce((a, b) => a + b.item.price, 0);
+  const chance = getChance();
+  const circle = document.getElementById("upgrade-fill");
 
-  const chance = Math.min(100, (wager * 0.95 / target) * 100);
+  if (!circle) return;
 
   Upgrader.upgrading = true;
 
-  const circle = document.getElementById("upgrade-circle");
-  const fill = document.getElementById("upgrade-circle-fill");
-  const text = document.getElementById("upgrade-circle-text");
+  /* RESET TO LIGHT BLUE BEFORE ROLL */
+  circle.style.transition = "width 0.3s ease, background 0.3s ease";
+  circle.style.background = "#7ad7ff";
+  circle.style.boxShadow = "0 0 25px #7ad7ff";
 
-  if (circle) circle.classList.remove("win", "lose");
-  if (fill) {
-    fill.style.background = "green";
-    fill.style.height = `${chance}%`;
-  }
-  if (text) text.textContent = `${chance.toFixed(2)}%`;
-
-  // 🔥 2 SECOND PAUSE
   setTimeout(() => {
-    const roll = Math.random() * 100;
-    const win = roll <= chance;
+    const win = Math.random() * 100 <= chance;
+
+    /* WIN/LOSE COLOR */
+    circle.style.transition = "all 0.5s ease";
 
     if (win) {
-      Upgrader.selectedTargets.forEach(t => inventory.push({ ...t.item }));
+      circle.style.background = "#00ff88";
+      circle.style.boxShadow = "0 0 35px #00ff88";
 
-      if (circle) circle.classList.add("win");
-      if (fill) fill.style.background = "lime";
-      if (text) text.textContent = "WIN!";
+      Upgrader.selectedTargets.forEach(t => {
+        inventory.push({ ...t.item });
+      });
     } else {
-      if (circle) circle.classList.add("lose");
-      if (fill) fill.style.background = "red";
-      if (text) text.textContent = "LOSE!";
+      circle.style.background = "#ff3b3b";
+      circle.style.boxShadow = "0 0 35px #ff3b3b";
+
+      Upgrader.selectedWagers
+        .sort((a, b) => b.index - a.index)
+        .forEach(w => inventory.splice(w.index, 1));
     }
 
-    // remove wager items (correct indexes)
-    Upgrader.selectedWagers
-      .sort((a, b) => b.index - a.index)
-      .forEach(w => inventory.splice(w.index, 1));
-
+    /* RESET SELECTION */
     Upgrader.selectedWagers = [];
     Upgrader.selectedTargets = [];
 
@@ -684,7 +684,9 @@ document.getElementById("upgrade-btn").onclick = () => {
     renderTarget();
     updateUI();
 
-    Upgrader.upgrading = false;
+    setTimeout(() => {
+      Upgrader.upgrading = false;
+    }, 500);
 
-  }, 2000);
-};
+  }, 2000); // 2 SECOND PAUSE
+});
