@@ -455,7 +455,7 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADER SYSTEM (FIXED)
+   UPGRADER SYSTEM (STABLE FIX)
    ========================= */
 
 let Upgrader = {
@@ -475,10 +475,15 @@ function initUpgrader() {
   updateUI();
 }
 
-/* ---------- SYNC ---------- */
+/* ---------- CASE SYNC (FIXED TIMING ISSUE) ---------- */
 
 function syncUpgraderData() {
-  Upgrader.cases = cases || [];
+  if (!window.cases || !Array.isArray(window.cases)) {
+    setTimeout(syncUpgraderData, 200);
+    return;
+  }
+
+  Upgrader.cases = window.cases;
 }
 
 /* ---------- INVENTORY ---------- */
@@ -501,13 +506,15 @@ function itemCard(item, selected = false) {
   `;
 }
 
-/* ---------- CASE ITEMS ---------- */
+/* ---------- ALL CASE ITEMS ---------- */
 
 function getAllSiteItems() {
   let all = [];
+
   Upgrader.cases.forEach(c => {
     (c.items || []).forEach(i => all.push(i));
   });
+
   return all;
 }
 
@@ -554,7 +561,7 @@ function renderWager() {
   });
 }
 
-/* ---------- TARGET (SINGLE SELECT) ---------- */
+/* ---------- TARGET SINGLE SELECT ---------- */
 
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -585,7 +592,7 @@ function renderTarget() {
   });
 }
 
-/* ---------- CHANCE ---------- */
+/* ---------- CHANCE CALC ---------- */
 
 function calculateChance(totalWager, target) {
   if (!totalWager || !target) return 0;
@@ -598,7 +605,7 @@ function calculateChance(totalWager, target) {
   return chance;
 }
 
-/* ---------- REMOVE ITEMS ---------- */
+/* ---------- REMOVE SELECTED ITEMS ---------- */
 
 function removeWagers() {
   Upgrader.selectedWagers.forEach(w => {
@@ -637,35 +644,41 @@ function updateUI() {
   if (fill) fill.style.width = chance + "%";
 }
 
-/* ---------- LOAD BUTTON FIX (IMPORTANT FIX) ---------- */
+/* ---------- LOAD BUTTONS (FIXED RELIABILITY) ---------- */
 
 function createLoadButtons() {
-  const sides = document.querySelectorAll(".upgrader-side");
-  if (!sides.length) return;
+  const interval = setInterval(() => {
+    const sides = document.querySelectorAll(".upgrader-side");
+    if (!sides.length) return;
 
-  const wagerSide = sides[0];
-  const targetSide = sides[1];
+    const wagerSide = sides[0];
+    const targetSide = sides[1];
 
-  if (wagerSide && !document.getElementById("load-wager-btn")) {
-    const btn = document.createElement("button");
-    btn.id = "load-wager-btn";
-    btn.className = "theme-btn";
-    btn.innerText = "Load Wager Items";
-    btn.onclick = renderWager;
-    wagerSide.prepend(btn);
-  }
+    if (!wagerSide || !targetSide) return;
 
-  if (targetSide && !document.getElementById("load-target-btn")) {
-    const btn = document.createElement("button");
-    btn.id = "load-target-btn";
-    btn.className = "theme-btn";
-    btn.innerText = "Load Target Items";
-    btn.onclick = renderTarget;
-    targetSide.prepend(btn);
-  }
+    if (!document.getElementById("load-wager-btn")) {
+      const btn = document.createElement("button");
+      btn.id = "load-wager-btn";
+      btn.className = "theme-btn";
+      btn.innerText = "Load Wager Items";
+      btn.onclick = renderWager;
+      wagerSide.prepend(btn);
+    }
+
+    if (!document.getElementById("load-target-btn")) {
+      const btn = document.createElement("button");
+      btn.id = "load-target-btn";
+      btn.className = "theme-btn";
+      btn.innerText = "Load Target Items";
+      btn.onclick = renderTarget;
+      targetSide.prepend(btn);
+    }
+
+    clearInterval(interval);
+  }, 200);
 }
 
-/* ---------- UPGRADE ---------- */
+/* ---------- UPGRADE ACTION ---------- */
 
 document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   if (Upgrader.upgrading) return;
@@ -685,8 +698,6 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
   setTimeout(() => {
     const roll = Math.random() * 100;
     const success = roll <= chance;
-
-    spinUpgradeWheel(chance, success);
 
     removeWagers();
 
