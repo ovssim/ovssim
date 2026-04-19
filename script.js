@@ -455,7 +455,7 @@ function adminGiveItem() {
 }
 
 /* =========================
-   UPGRADE SYSTEM (FIXED FINAL)
+   UPGRADE SYSTEM (FIXED FULL)
 ========================= */
 
 let Upgrader = {
@@ -520,11 +520,11 @@ function createLoadButtons() {
 }
 
 /* =========================
-   WAGER RENDER (SAFE)
+   WAGER RENDER
 ========================= */
 function renderWager() {
   const box = document.getElementById("wager-list");
-  if (!box || !inventory) return;
+  if (!box) return;
 
   box.innerHTML = "";
 
@@ -559,7 +559,7 @@ function renderWager() {
 }
 
 /* =========================
-   TARGET RENDER (SAFE CASE CHECK)
+   TARGET RENDER
 ========================= */
 function renderTarget() {
   const box = document.getElementById("target-list");
@@ -568,9 +568,8 @@ function renderTarget() {
   box.innerHTML = "";
 
   let allItems = [];
-
-  (cases || []).forEach(c => {
-    if (c && Array.isArray(c.items)) {
+  cases.forEach(c => {
+    if (c?.items) {
       c.items.forEach(i => allItems.push(i));
     }
   });
@@ -606,7 +605,7 @@ function renderTarget() {
 }
 
 /* =========================
-   CIRCLE UPDATE (FIXED VISUAL STATE)
+   CIRCLE UPDATE (THIS FIXES YOUR ISSUE)
 ========================= */
 function updateUpgradeCircle(chance, state = "idle") {
   const circle = document.getElementById("upgrade-circle");
@@ -649,9 +648,9 @@ function updateUI() {
 }
 
 /* =========================
-   UPGRADE BUTTON (STABLE FINAL)
+   UPGRADE BUTTON (2 SECOND PAUSE + FIXED CIRCLE)
 ========================= */
-document.getElementById("upgrade-btn")?.addEventListener("click", () => {
+document.getElementById("upgrade-btn").onclick = () => {
   if (Upgrader.upgrading) return;
   if (!Upgrader.selectedWagers.length || !Upgrader.selectedTargets.length) return;
 
@@ -662,6 +661,7 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
 
   Upgrader.upgrading = true;
 
+  // show cyan preview first
   updateUpgradeCircle(chance, "idle");
 
   setTimeout(() => {
@@ -688,4 +688,4 @@ document.getElementById("upgrade-btn")?.addEventListener("click", () => {
 
     Upgrader.upgrading = false;
   }, 2000);
-});
+};
