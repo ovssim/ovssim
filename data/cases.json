@@ -721,12 +721,15 @@
         { "name": "Strange Corpse Carrier", "rarity": "strange", "price": 21.36, "weight": 11500, "image": "images/items/corpsecarrier.png" },
         { "name": "Strange Aurora Skies Cranial Cowl", "rarity": "mythical", "price": 2483.00, "weight": 1000, "image": "images/items/aurskicranc.png" },
         { "name": "Icestruck Ripped Rider", "rarity": "mythical", "price": 2673.36, "weight": 2000, "image": "images/items/iceripri.png" },
-        { "name": "Radiant Rivalry Machina", "rarity": "mythical", "price": 3286.95, "weight": 500, "image": "images/items/radmachina.png" },
-        { "name": "Radiant Legacy Festive Scattergun", "rarity": "mythical", "price": 3489.23, "weight": 700, "image": "images/items/festunus.png" },
+        { "name": "Radiant Rivalry Machina", "rarity": "mythical", "price": 4286.95, "weight": 900, "image": "images/items/radmachina.png" },
+        { "name": "Radiant Legacy Festive Scattergun", "rarity": "mythical", "price": 4489.23, "weight": 900, "image": "images/items/festunus.png" },
         { "name": "Soulful Slice Tomb Wrapper", "rarity": "mythical", "price": 300.77, "weight": 7500, "image": "images/items/tombslicre.png" },
         { "name": "Lumbricus Lid", "rarity": "legendary", "price": 4.29, "weight": 9000, "image": "images/items/lumblid.png" },
         { "name": "Pumpkin Moon Honcho's Headgear", "rarity": "mythical", "price": 1287.43, "weight": 4000, "image": "images/items/pmhh2.png" },
         { "name": "Beaming Beacon Flak Jack", "rarity": "mythical", "price": 1904.00, "weight": 2000, "image": "images/items/bbflak.png" },
+        { "name": "Veteran's Medal", "rarity": "collector", "price": 1000000.00, "weight": 1, "image": "images/items/medal1.png" },
+        { "name": "Spectral Wick Grim Tweeter", "rarity": "mythical", "price": 777.00, "weight": 6000, "image": "images/items/specgrim.png" },
+        { "name": "Blazing Fireworks Metal Slug", "rarity": "mythical", "price": 413.42, "weight": 4000, "image": "images/items/bfms.png" },
         { "name": "Cosmic Constellations", "rarity": "mythical", "price": 84000.00, "weight": 10, "image": "images/items/cosmicconstellation.png" }
       ]
     },
