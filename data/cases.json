@@ -57,16 +57,16 @@
       "price": 7.75,
       "image": "images/cases/duelists.png",
       "items": [
-        { "name": "Dueling Mini-Game", "rarity": "legendary", "price": 0.16, "weight": 8000, "image": "images/items/duelminigame.png" },
-        { "name": "Ambassador", "rarity": "legendary", "price": 0.01, "weight": 12000, "image": "images/items/amby.png" },
+        { "name": "Dueling Mini-Game", "rarity": "legendary", "price": 0.16, "weight": 6000, "image": "images/items/duelminigame.png" },
+        { "name": "Ambassador", "rarity": "legendary", "price": 0.01, "weight": 10000, "image": "images/items/amby.png" },
         { "name": "Strange Australium Professional Killstreak Ambassador", "rarity": "strange", "price": 47.00, "weight": 1700, "image": "images/items/aussieamby.png" },
         { "name": "Collector's Ambassador", "rarity": "collector", "price": 197.43, "weight": 100, "image": "images/items/amby.png" },
-        { "name": "Three Rune Blade", "rarity": "legendary", "price": 0.23, "weight": 8000, "image": "images/items/threers.png" },
+        { "name": "Three Rune Blade", "rarity": "legendary", "price": 0.23, "weight": 6000, "image": "images/items/threers.png" },
         { "name": "Strange Genuine Three Rune Blade", "rarity": "genuine", "price": 92.97, "weight": 1000, "image": "images/items/threers.png" },
-        { "name": "Strange Splendid Shield", "rarity": "legendary", "price": 47.32, "weight": 893, "image": "images/items/spenshield.png" },
+        { "name": "Strange Splendid Shield", "rarity": "strange", "price": 47.32, "weight": 893, "image": "images/items/spenshield.png" },
         { "name": "Collector's Splendid Shield", "rarity": "collector", "price": 313.00, "weight": 20, "image": "images/items/spenshield.png" },
         { "name": "Collector's Enforcer", "rarity": "collector", "price": 151.00, "weight": 120, "image": "images/items/enforcer.png" },
-        { "name": "Strange Enforcer", "rarity": "strange", "price": 0.28, "weight": 12000, "image": "images/items/enforcer.png" },
+        { "name": "Strange Enforcer", "rarity": "strange", "price": 0.28, "weight": 8000, "image": "images/items/enforcer.png" },
         { "name": "Devilish Diablo Shogun's Shoulder Guard", "rarity": "mythical", "price": 421.24, "weight": 10, "image": "images/items/ddssg.png" },
         { "name": "Roaring Rockets Dark Falkirk Helm", "rarity": "mythical", "price": 78.41, "weight": 58, "image": "images/items/rrdfh.png" },
         { "name": "Strange Professional Killstreak Austrlium Knife", "rarity": "strange", "price": 78.41, "weight": 58, "image": "images/items/aussieknife.png" },
@@ -74,7 +74,7 @@
         { "name": "Ap-Sap", "rarity": "legendary", "price": 5.41, "weight": 588, "image": "images/items/apsap.png" },
         { "name": "Dead Head", "rarity": "legendary", "price": 30.13, "weight": 900, "image": "images/items/deadhead.png" },
         { "name": "Genuine Noh Mercy", "rarity": "genuine", "price": 5.73, "weight": 4000, "image": "images/items/nohmercy.png" },
-        { "name": "Claidheamh Mòr", "rarity": "legendary", "price": 0.01, "weight": 8000, "image": "images/items/claid.png" }
+        { "name": "Claidheamh Mòr", "rarity": "legendary", "price": 0.01, "weight": 6000, "image": "images/items/claid.png" }
       ]
     },
         {
@@ -265,7 +265,7 @@
         { "name": "Medimedes", "rarity": "legendary", "price": 32.61, "weight": 4000, "image": "images/items/medimedes.png" },
         { "name": "Green Confetti Ein", "rarity": "mythical", "price": 21.25, "weight": 2000, "image": "images/items/gce.png" },
         { "name": "Prinny Hat", "rarity": "legendary", "price": 0.32, "weight": 5000, "image": "images/items/prinnyhat.png" },
-        { "name": "Strange Grim Tweeter", "rarity": "legendary", "price": 80.43, "weight": 5000, "image": "images/items/grimtweet.png" },
+        { "name": "Strange Grim Tweeter", "rarity": "strange", "price": 80.43, "weight": 5000, "image": "images/items/grimtweet.png" },
         { "name": "Frosted Decadence Aristotle", "rarity": "mythical", "price": 37.92, "weight": 2000, "image": "images/items/fda.png" },
         { "name": "Archimedes", "rarity": "legendary", "price": 0.21, "weight": 5000, "image": "images/items/archimedes.png" },
         { "name": "Collector's Deadliest Duckling", "rarity": "collector", "price": 430.00, "weight": 100, "image": "images/items/deadliestd.png" },
@@ -534,7 +534,7 @@
      },
         {
       "id": "holborn",
-      "name": "Holborn Road",
+      "name": "Holborn Road (High)",
       "price": 87.26,
       "image": "images/cases/holborn.png",
       "items": [
