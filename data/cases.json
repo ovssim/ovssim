@@ -27,7 +27,7 @@
         { "name": "Strange Pistol", "rarity": "strange", "price": 0.89, "weight": 450, "image": "images/items/pistol.png" },
         { "name": "Miami Nights B-ANKH!", "rarity": "mythical", "price": 111.99, "weight": 10, "image": "images/items/miab.png" },
         { "name": "Hellfire Well-Rounded Rifleman", "rarity": "mythical", "price": 2700.99, "weight": 1, "image": "images/items/unusual1.png" },
-        { "name": "The Dark Doorway Heavy Artillery Officer's Cap", "rarity": "mythical", "price": 130.00, "weight": 8, "image": "images/items/tddh.png" }
+        { "name": "The Dark Doorway Heavy Artillery Officer's Cap", "rarity": "mythical", "price": 130.00, "weight": 10, "image": "images/items/tddh.png" }
       ]
     },
         {
