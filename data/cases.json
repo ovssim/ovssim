@@ -420,6 +420,36 @@
         { "name": "Collector's Rocket Jumper", "rarity": "collector", "price": 1050.00, "weight": 1000, "image": "images/items/rocketjumper.png" }
       ]
     },
+        {
+      "id": "wipe",
+      "name": "Wipeout",
+      "price": 52.88,
+      "image": "images/cases/wipe.png",
+      "items": [
+        { "name": "Strange Rocket Operator", "rarity": "strange", "price": 17.51, "weight": 4000, "image": "images/items/rocketop.png" },
+        { "name": "Monster Stompers", "rarity": "legendary", "price": 24.99, "weight": 2000, "image": "images/items/stompmon.png" },
+        { "name": "Itsy Bitsy Spyder", "rarity": "legendary", "price": 0.06, "weight": 7000, "image": "images/items/itsyspyder.png" },
+        { "name": "Strange Binoculus", "rarity": "strange", "price": 9.50, "weight": 3039, "image": "images/items/binoculus.png" },
+        { "name": "Burning Flames Burning Question", "rarity": "mythical", "price": 944.71, "weight": 170, "image": "images/items/burningquesun.png" },
+        { "name": "Smoking L'Inspecteur", "rarity": "mythical", "price": 22.97, "weight": 1890, "image": "images/items/uinspect.png" },
+        { "name": "Strange Western Wraps", "rarity": "strange", "price": 1.53, "weight": 2780, "image": "images/items/westernwraps.png" },
+        { "name": "Strange Icestruck Brimmed Bootlegger", "rarity": "mythical", "price": 448.82, "weight": 250, "image": "images/items/icebrimmed.png" },
+        { "name": "Photo Badge", "rarity": "legendary", "price": 0.07, "weight": 7500, "image": "images/items/photobadge.png" },
+        { "name": "Phantom Crown Last Bite", "rarity": "mythical", "price": 122.28, "weight": 4000, "image": "images/items/phantlast.png" },
+        { "name": "Strange Blast Bowl", "rarity": "strange", "price": 0.29, "weight": 5000, "image": "images/items/blastbowl.png" },
+        { "name": "Synestesia Crook Combatant", "rarity": "mythical", "price": 97.63, "weight": 4000, "image": "images/items/syncc.png" },
+        { "name": "Haunted Forgotten King's Pauldrons", "rarity": "haunted", "price": 35.75, "weight": 3500, "image": "images/items/forgotking.png" },
+        { "name": "Free Mann's Fashion", "rarity": "legendary", "price": 9.64, "weight": 2000, "image": "images/items/freemann.png" },
+        { "name": "Tempered Horns Tundra Top", "rarity": "mythical", "price": 587.66, "weight": 190, "image": "images/items/thttfkfk.png" },
+        { "name": "Divine Sunlight Bushman's Boonie", "rarity": "mythical", "price": 11.94, "weight": 2000, "image": "images/items/diivinbush.png" },
+        { "name": "Eerie Kracken Ethereal Hood", "rarity": "mythical", "price": 64.69, "weight": 6000, "image": "images/items/etheunu.png" },
+        { "name": "Balloonihoodie", "rarity": "legendary", "price": 16.33, "weight": 3000, "image": "images/items/balloonihoodie.png" },
+        { "name": "Trenchers Tunic", "rarity": "legendary", "price": 0.12, "weight": 3000, "image": "images/items/trenchertunic.png" },
+        { "name": "Gnome Dome", "rarity": "legendary", "price": 0.15, "weight": 1900, "image": "images/items/gnomedome.png" },
+        { "name": "Nuts N' Bolts Bills Hat", "rarity": "mythical", "price": 710.72, "weight": 160, "image": "images/items/nutbill.png" },
+        { "name": "Doublecross-Comm", "rarity": "legendary", "price": 0.21, "weight": 4000, "image": "images/items/doublecorssco.png" }
+      ]
+    },
      {
       "id": "halloween",
       "name": "Halloween (Big)",
