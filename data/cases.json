@@ -422,13 +422,13 @@
     },
         {
       "id": "wipe",
-      "name": "Wipeout",
+      "name": "Wipeout (High)",
       "price": 52.88,
       "image": "images/cases/wipe.png",
       "items": [
         { "name": "Strange Rocket Operator", "rarity": "strange", "price": 17.51, "weight": 4000, "image": "images/items/rocketop.png" },
         { "name": "Monster Stompers", "rarity": "legendary", "price": 24.99, "weight": 2000, "image": "images/items/stompmon.png" },
-        { "name": "Itsy Bitsy Spyder", "rarity": "legendary", "price": 0.06, "weight": 5000, "image": "images/items/itsyspyder.png" },
+        { "name": "Itsy Bitsy Spyder", "rarity": "legendary", "price": 0.06, "weight": 4000, "image": "images/items/itsyspyder.png" },
         { "name": "Strange Binoculus", "rarity": "strange", "price": 9.50, "weight": 3039, "image": "images/items/binoculus.png" },
         { "name": "Burning Flames Burning Question", "rarity": "mythical", "price": 944.71, "weight": 210, "image": "images/items/burningquesun.png" },
         { "name": "Smoking L'Inspecteur", "rarity": "mythical", "price": 22.97, "weight": 1890, "image": "images/items/uinspect.png" },
