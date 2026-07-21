@@ -7,7 +7,7 @@ let recentDrops = JSON.parse(localStorage.getItem("recentDrops")) || [];
 let cases = [];
 let currentCase = null;
 
-let isSpinning = true; // Prevent multiple opens
+
 
 // Admin password system
 let adminMode = false;
